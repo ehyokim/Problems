@@ -7,11 +7,11 @@
 
 \usepackage{amsmath,amsfonts,amssymb,amsthm}
 
-\title{Problems in Algebra}
+\title{Problems in Lang's Algebra}
 \author{Edward Kim}
 
 \begin{document}
-
+\maketitle
 \hrulefill
 
 \section*{Lang Chapter 1 (Groups)}
@@ -84,6 +84,40 @@ Note: We can extend this definition for $H$ be the normalizer of any subgroup $N
 Note: We note why the map $f$ above is so significant. What's stopping the map $H \times N \rightarrow HN$ is precisely the conjugation issue $(hnh^{-1} = n)$ for all $n \in N, h \in H$.
 
 \subsection*{Problem 17}
+
+Question: Let $X,Y$ be finite sets and let $C \subseteq X \times Y$. For $x \in X$, let $\phi(x) = | \{y \in Y \vert (x,y) \in C\}|$. Verify that $|C| = \sum_{x \in X} \phi(x)$
+
+\begin{proof}
+	Let $|X| = n_1$ and $|Y| = n_2$. 
+\end{proof}
+
+\subsection*{Problem 18}
+
+\begin{proof}
+	We use Problem 17 by taking our set to be $S \times T$ and our subset $C$ to be the entirety of $S \times T$. The result follows from the finite sum shown above.
+\end{proof}
+
+\subsection*{Problem 19}
+
+\begin{enumerate}
+	\item 
+	\begin{proof}
+		This follows by weighting the cardinality of orbit $G_s$ for each element. 	
+	\end{proof}
+	\item 
+	\begin{proof}
+	By Lagrange's Theorem, we know that $|G:G_s| = |G|/|G_s|$ where $G_s$ is the stabilizer of $s \in S$. By the part above: 
+	$$\sum_{t \in Gs} \frac{1}{|Gt|} = \frac{1}{|G|}\sum_{t \in Gs} |G_t| = 1 $$
+	Hence, we can add this sum over all coset representatives $S_r$:
+	$$ \frac{1}{|G|} \sum_{s_r \in \mathcal{O}} \sum_{t \in Gs_r} |G_t| = |\{\mathcal{O}_i\}|$$
+	where $\{\mathcal{O}_i\}$ is the set of orbits of $G$ in $S$. Finally, we note that the following sums are equivalent:
+	$$\sum_{s \in Gs} |Gs| = \sum_{g \in G} f(x)$$ where $f(x)$ is the number of fixed points $x \in G$ exhibits. Substituting the sum yields our desired result:
+	$$ \frac{1}{|G|} \sum_{g \in G} f(x) = |\{\mathcal{O}_i\}|$$	   
+	\end{proof}	
+\end{enumerate}
+
+
+
 
 
 \end{document}
