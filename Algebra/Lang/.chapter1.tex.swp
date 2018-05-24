@@ -1,18 +1,6 @@
-\documentclass[12pt]{article}
-\setlength{\oddsidemargin}{0in}
-\setlength{\evensidemargin}{0in}
-\setlength{\textwidth}{6.5in}
-\setlength{\parindent}{0in}
-\setlength{\parskip}{\baselineskip}
-
-\usepackage{amsmath,amsfonts,amssymb,amsthm}
-
-\title{Problems in Lang's Algebra}
-\author{Edward Kim}
+\documentclass[Lang.tex]{subfiles}
 
 \begin{document}
-\maketitle
-\hrulefill
 
 \section*{Lang Chapter 1 (Groups)}
 \subsection*{Problem 6}
@@ -115,8 +103,6 @@ Question: Let $X,Y$ be finite sets and let $C \subseteq X \times Y$. For $x \in 
 	$$ \frac{1}{|G|} \sum_{g \in G} f(x) = |\{\mathcal{O}_i\}|$$	   
 	\end{proof}	
 \end{enumerate}
-
-
 
 
 
