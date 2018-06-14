@@ -1,0 +1,34 @@
+\documentclass[12pt]{article}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\parindent}{0in}
+\setlength{\parskip}{\baselineskip}
+
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{subfiles}
+
+\title{Problems in Alperin and Bell's Groups and Reps}
+\author{Edward Kim}
+
+\begin{document}
+\maketitle
+\clearpage
+
+\section{Chapter 1 Section 2}
+
+Let $N$ and $H$ be groups. We deem a group $E$ to be an extension of $N$ by $H$ if 
+
+$$ 0 \rightarrow N \xrightarrow{i} E \xrightarrow{\pi} H \rightarrow 0 $$ is an exact sequence ($i$ is a monomorphism and $\pi$ is an epimorphism).
+
+An extension $E$ is called a split extension if there exists a homomorphism $t: H \rightarrow E$ such that 
+$\pi \circ t$ yields the identity map on $H$. $t$ is deemed as the splitting homomorphism. Show that $E$ is a split extension iff it is exactly $N \rtimes_{\phi} H$ where the conjugation homomorphism $\phi: H \rightarrow Aut(N)$. 
+
+\begin{proof}
+Suppose $E = N \rtimes H$, then defining the splitting homomorphism as $t(h) = (1,h)$. It follows that $\pi \circ t = id_H$. We note that $i(N) = ker(\pi)$ as $\pi((N,1)) = 1_H$. Conversely, let $E$ be a split extension and $t$ be the splitting homomorphism for $E$. Define the map $\psi: E \rightarrow N \rtimes H$ : for all $n \in N$, $\psi(i(n)) = (n,1)$ and for all $h \in H$, $\psi(t(h)) = (1,h)$. To show that $\psi$ is indeed a group homomorphism, observe that, without loss of generality, for $x,y \in t(H)$ where $x \in i(N), y\not\in i(N)$, we can define 
+
+$$\psi(xy) = \psi(i(n)t(h)) = (n,1) \times (1,h) = (n,h)  $$ Since the sequence above is exact, $\psi$ is injective and by $t$, the map is also surjective. Thus, we see that $E$ is isomorphic to a semidirect product of $N$ and $H$.  
+\end{proof}  
+
+
+\end{document}
