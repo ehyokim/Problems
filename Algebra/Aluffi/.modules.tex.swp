@@ -50,7 +50,7 @@ By embedding $R$ into the first term, we create an $R$-algebra, called the Rees 
 \end{problem}
 
 \begin{proof}
-Consider the map $F: \text{Rees}_R((a)) \rightarrow R[x]$ that takes $(r_0,r_1a,r_2a^2,r_3a^3,...) \mapsto r_0 + r_1x + r_2x^2 + r_3x^3 + ...$ Consider the definition of the Rees and algebra and note that 
+Consider the map $F: \text{Rees}_R((a)) \rightarrow R[x]$ that takes $s_i = (0,0,0,...,1_Ra^i,...) \mapsto x^i$ for $i \geq 0$.  Consider the definition of the Rees and algebra and note that 
 $ I = \{ri \vert i \in I\}$, $I^2 = \{\sum_{r,t \in R,finite} ra \cdot ta \}$ and hence forth. This exactly concides with multiplication operation on elements in the ring $R[X]$. Hence, the map is a surjective ring homomorphism. Injectivity follows from the assumption that $a$ is a non-zero divisor in $R$. The map preserves the $R$-module structure and thus is an $R$-algebra isomorphism.  
 \end{proof}
 
