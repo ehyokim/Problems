@@ -58,6 +58,15 @@ $ I = \{ri \vert i \in I\}$, $I^2 = \{\sum_{r,t \in R,finite} ra \cdot ta \}$ an
 \subsection{Section 6}
 
 \begin{problem}
+Prove that $\mathbb{Z}^{\mathbb{N}} \not\cong \mathbb{Z}^{\oplus \mathbb{N}}$
+\end{problem}
+
+\begin{proof}
+We note that $\mathbb{Z}^{\oplus \mathbb{N}} = \{ \alpha: A \rightarrow \mathbb{Z} \vert \alpha(i) \neq 0 \text{for finite number of $i$} \}$ which has cardinality $\aleph_1 > |\mathbb{Z}^{\mathbb{N}}|$ 
+\end{proof}
+
+
+\begin{problem}
 Let $R$ be a ring. A $R$-module is cyclic if $M = \langle m \rangle$ for some $m \in M$. Prove that simple modules are cyclic. Prove that an $R$-module $M$ is cyclic if and only if $M \cong R/I$ for some left ideal $I$ Prove that every quotient of a cyclic module is cyclic. 
 \end{problem}
 
@@ -71,8 +80,51 @@ If $M/N$ is a non-trival quotient $R$- module.
 (Rest of problems are yet to be typed.) 
 \end{proof}
 
+\subsection{Section 7}
+
+\begin{problem}
+Suppose the seqeuence $... \rightarrow 0 \xrightarrow{\phi_1}  M  \xrightarrow{\phi_2} 0 \rightarrow ....$
+is exact. Prove that $M\cong 0$
+\end{problem}
+
+\begin{proof}
+By exactness, we see that $\phi_1$ induced $\phi_2$ into a monomorphism. Thus, $M \cong 0$. 
+\end{proof}
+
+\begin{problem}
+Assume that the complex $... \rightarrow 0 \rightarrow M \rightarrow M' \rightarrow 0 \rightarrow ...$
+\end{problem}
+
+\begin{proof}
+Simple application of the first isomorphism theorem yields our desired result.
+\end{proof}
 
 
+\begin{problem}
+Construct short exact seqeunces of the follows:
+
+$$ 0 \rightarrow \mathbb{Z}^{\oplus \mathbb{N}} \rightarrow  \mathbb{Z}^{\oplus \mathbb{N}} \rightarrow \mathbb{Z} \rightarrow 0 $$
+\end{problem}
+
+\begin{proof}
+Consider the map $\phi_1: \mathbb{Z}^{\oplus \mathbb{N}} \rightarrow \mathbb{Z}^{\oplus \mathbb{N}}$ such that $(z_1,z_2,z_3,...) \mapsto (0,z_1.z_2,z_3,...)$. The map $\phi_2 \mathbb{Z}^{\oplus \mathbb{N}} \rightarrow \mathbb{Z}$ will be a $\mathbb{Z}$-module homomorphism that makes the cosets $[z]$ injectivity to $z$. Note that we can construct a more general short seqeuence:
+
+$$ 0 \rightarrow \mathbb{Z}^{\oplus \mathbb{N}} \rightarrow  \mathbb{Z}^{\oplus \mathbb{N}} \rightarrow \mathbb{Z}^{\oplus \mathbb{N}} \rightarrow  0$$ by shifting $\phi_!$ move by $n \in \mathbb{N}$ steps.  
+\end{proof}
+
+
+\begin{problem}
+In the snake lemma, assume that $\lambda$ and $\nu$are isomorphisms. Use the sanke lemma and prove that $\mu$ is an isomorphism. (Short Five Lemma)
+\end{problem}
+
+\begin{proof}
+If $\lambda$, and $\nu$ are isomorphisms, then exact sequence: 
+
+$$0 \rightarrow ker\lambda \rightarrow ker\mu \rightarrow ker \nu \rightarrow 0 $$ becomes
+$$ 0 \rightarrow 0 \rightarrow ker \nu \rightarrow 0  $$
+
+Thus $ker \mu = 0$. We can apply the same argument to the exact sequence of cokernels on the bottom row to yield that $coker (\mu) = 0$. Hence, $\mu$ is an isomorphism.
+\end{proof}
 
 \end{document}
 
