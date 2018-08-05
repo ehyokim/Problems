@@ -1,0 +1,39 @@
+\documentclass[12pt]{article}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\parindent}{0in}
+\setlength{\parskip}{\baselineskip}
+
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{question}{Question}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}{Proposition}[section]
+
+\title{Problems in Arora/Barak}
+\author{Edward Kim}
+
+\begin{document}
+\maketitle
+\hrulefill
+
+
+\section{Chapter 3}
+
+
+\begin{question}
+	Show that there is a language $B \in \bold{EXP}$ such that $\bold{NP}^B \neq \bold{P}^B$
+\end{question}
+
+\begin{question}
+	Show that there exists a function that is not time-constructible
+\end{question}
+
+\begin{proof}
+	Consider the function $f(n) = \log \log n $. For any input $x$ such that $|x| > \log \log |x|$, any TM would have insufficient time to read the tape for its input. Thus, $f(n)$ cannot be time-constructible.
+\end{proof}
+
+\end{document}
