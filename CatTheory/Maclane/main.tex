@@ -1,0 +1,103 @@
+\documentclass[12pt]{article}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\parindent}{0in}
+\setlength{\parskip}{\baselineskip}
+
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{amsthm}
+\usepackage{subfiles}
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{question}{Question}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{example}{Example}[section]
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\title{Problems in Category Theory (Maclane)}
+\author{Edward Kim}
+
+\begin{document}
+\maketitle
+\clearpage
+
+
+\section{Chapter 1}
+
+\subsection{Section 4}
+
+\begin{question}
+Question: Let $S$ be a fixed set and $X^S$ be the set of all functions $f: S \rightarrow X$. Show that the map $X \mapsto X^S$ is the object functor ${\bf Set} \rightarrow {\bf Set}$, and that the evaluation function $e_x: X^S \times S \rightarrow X$ defined by $e_x(h,s) = h(s)$ is a natural transformation.
+\end{question}
+
+\begin{proof}
+ Let $X \mapsto X^S$ be the object functor of the functor $\mathcal{F}$ equipped with a morphism functor defined as follows: Given a morphism between two sets $f: X \rightarrow Y$, $\mathcal{F}(f): X^S \rightarrow Y^S$ such that $\mathcal{F}(g_x) = f \circ g_x$ for $g_x \in X^S$. To see that $e_x$ is a natural transformation: consider the functor $\mathcal{F}\times id: <X^S,S> \rightarrow <Y^S, S>$. Taking the evaluation mapping $e_x: X^S,S \rightarrow X$ yields one element set from $X_{\theta}$: $\{h_X(s)\}$. Similarly for $e_Y:<Y^S,S> \rightarrow Y$, the evaluation function yields $Y_{\theta } = \{h_Y(s)\}$. Define the map between $f_{\theta}: X_{\theta} \rightarrow Y_{\theta}$ by $f_{\theta}(h_X(s)) = h_Y(s) $ By our definition above, the functor $\mathcal{F}$ respects the behavior of such a morphism $f: X \rightarrow Y$. Thus, we can define a functor $\mathcal{H}$ as above, yielding our natural transformation. \end{proof}
+
+\begin{question}
+ If $H$ is a fixed group, show that $G \rightarrow H \times G$ defines a functor $H\times() :{\bf Grp} \rightarrow {\bf Grp}$ and that each morphism $f: H \rightarrow K$ defines a natural transformation such that $H\times () \rightarrow G\times ()$.
+\end{question}
+
+\begin{proof}
+ We can define a functor $\mathcal{F}$ first by the natural object mapping from $G \mapsto H \times G$ and the morphism mapping for $g: G \rightarrow R$: $\mathcal{F}(f): H \times G \rightarrow H \times R$. The natural transformation easily $H \times () \rightarrow G \times ()$ follows as such:
+ 
+ Given two groups $G_1,G_2$ let $f_1: H \times G_1 \rightarrow H \times G_2$ and let $f_2: G \times G_1 \rightarrow G \times G_2$. The natural transformation would be the morphism that takes $h: H \rightarrow G$ as this makes $ h \circ f_1=f_2 \circ h$.\end{proof}
+
+\begin{question}
+ For functors $S,T: C \rightarrow P$ where $C$ is a category and $P$ is a preorder, show that there is a natural transformation $S \rightarrow T$ iff $S \leq T$ for every object in $C$.
+\end{question}
+
+\begin{proof}
+ If there is a natural transformation from $S \rightarrow T$, then the transformation must respect the morphims (which are the orderings) of the preorder $P$. Thus, according to $P$, $Sc \leq Tc$. Conversely, if such an ordering existed for every object $c \in C$, then we can define the natural transformation $S \rightarrow T$ as follows: Let $f_s: Sc \rightarrow Sc'$ and $f_c:Tc \rightarrow Tc'$, then define $\theta: S\rightarrow T$ as $\theta(Tc) = Sc$ and $\theta(Sc') = Tc'$. This map is well-defined as there can be only one morphism between two objects as defined by the preorder.
+\end{proof}
+
+\subsection{Section 5}
+
+\begin{question}
+ Find a category with an arrow which is both epi and monic, but not invertible.
+\end{question}
+
+\begin{proof}
+ Consider the category of topological spaces and the arrow $\mathbb{Q} \xrightarrow{i} \mathbb{R}$. If $Y$ is a topological space such that 
+ $Y \rightrightarrows \mathbb{Q}\rightarrow \mathbb{R}$ and both composite arrows are equal to each other, it follows that the parallel arrows $Y \rightrightarrows \mathbb{Q}$ are equal to each other, showing that the inclusion arrow is monic. To show that it is an epimorphism, consider $\mathbb{Q} \xrightarrow{i} \mathbb{R} \rightrightarrows X$ for some topological space $X$ such that the composite arrows are equal. By the density of $\mathbb{Q}$ in $\mathbb{R}$, the two parallel arrows will converge by taking the rationals to converge to every point in $\mathbb{R}$ as a Cauchy sequence. Thus, the two parallel continuous functions must be equal. However, we immediately see that the inclusion function is not invertible.
+\end{proof}
+
+\begin{question}
+ Prove that the composite of monics is monic and likewise for epis
+\end{question}
+ 
+\begin{proof}
+ Let $\phi,\theta$ be monics in a category $\mathcal{C}$. Suppose that for maps $\xi_1,\xi_2$, $\theta\phi \xi_1 = \theta\phi\xi_2$. Then by associativity:
+ $$ \theta(\phi\xi_1) = \theta(\phi\xi_2) \implies \theta \xi_1= \theta \xi_2 \implies \xi_1 = \xi_2$$
+ 
+ A similar procedure will determine the same property for epis.
+\end{proof}
+
+\begin{question}
+ An arrow $f: a \rightarrow b$ in a category $\mathbb{C}$ is regular when there exists an arrow $g: b \rightarrow a$ such that $fgf = f$. Show that $f$ is regular if it has a left or right inverse, and prove that every arrow in ${\bf Set}$ with $a \neq \emptyset$ is regular.
+\end{question}
+
+\begin{proof}
+Suppose that the arrow $f: a \rightarrow b$ as a right inverse $r:b \rightarrow a$ such that $fr = id_b$. Taking $r$ be our regular arrow yields $(fr)f = f$. Similarly, for a left inverse $l: b \rightarrow a$ $f(lf) = f$. Now suppose that $\phi: X \rightarrow Y$ is a morphism in ${\bf Set}$. Simply taking the coarsest inverse $\phi^{-1}$ will suffice. If the function is not injective such that there exists $x,y \in X$ such that $\phi(x) = \phi(y) = c \in T$. Then take $\phi^{-1}(c) = x$ or $\phi^{-1}(c) = y$. 
+\end{proof}
+
+\begin{question}
+ Consider the category with objects $<X,e,t>$, where $X$ is a set, $e \in X$, and $t:X \rightarrow X$ and with morphisms $f:<X,e,t> \rightarrow <X',e',t'>$ the functions $f: X \rightarrow X'$ with $fe = e'$ and $ft = t'f$. Prove that this category has an initial object in which $X$ is the set of natural numbers, $e =0$ and $t$ is the successor function.
+\end{question}
+
+\begin{proof}
+ Given object $<X,e,t> \in \mathcal{C}$,we will define an unique morphism $f_i$ from $<\mathbb{N},0,s>$ where $s:\mathbb{N} \rightarrow \mathbb{N}$ is the successor function. Define $f_i: \mathbb{N} \rightarrow X$ by first mapping 
+ $f_i(0) = e$ and $f_i(s^r0) = t^re$. It suffices to show that $tf_i = f_is$ By our construction above, this diagram must commute as given any $n \in \mathbb{N}$, $n = s^n(0)$ so $tf_i(n) = t(s^n(0)) = t\cdot t^ne = t^{n+1}e = f_i(s^{n+1}(0)) = f_i(s(n))$. As $f_i$ defined above is injective, the morphism is unique for every object in the category $\mathcal{C}$.
+\end{proof}
+
+
+ 
+ 
+
+
+\end{document}
