@@ -216,10 +216,18 @@ or equivalently if every non-empty open set is dense in $X$. Show that Spec($A$)
 
 \begin{proof}
  We show the converse first. If the nilradical $\mathfrak{R}$ is a prime ideal, then for every $x \in X$, $\mathfrak{R} \subseteq x$. Hence, any of the basic open sets must contain $\mathfrak{R}$, giving us non-empty
- intersection for all open sets in the topology. Now suppose that Spec($A$) is irreducible. Let $x,y \in A$ be two common elements of the complement of three disjoint closed sets $V(E_1),V(E_2),V(E_3)$ in $X$ such that $x,y \not\in \mathfrak{R}$ If $xy \in \mathfrak{R}$, then
- $xy \subset V(E_1),V(E_2),V(E_3)$. However, this directly contradicts our definition of the open sets of the topology.
-\end{proof}
+ intersection for all open sets in the topology. Now suppose that Spec($A$) is irreducible. Then let $\mathcal{O}_E$ and $\mathcal{O}_{\bar{E}}$ be the open sets
+ which are complements of $V(E)$ and $V(\overline{E})$ for some subset $E \subset A$. By irreducibility, there exists a prime ideal $P \in \mathcal{O}_E \cap \mathcal{O}_{\bar{E}}$. Hence, $P$ is contained in every prime ideal. In particular,
+ $P \in X_f$ for all the basic open sets in the topology. Hence, it must be contained in every prime ideal and conclusively in the intersection of all prime ideals, giving us that $P \subseteq \mathfrak{R}$. \end{proof}
 
+\subsection{Problem 20}
+
+Let $X$ be a topological space.
+
+\begin{enumerate}
+ \item If $Y$ is an irreducible subspace of $X$, then the closure $\overline{Y}$
+ of $Y$ in $X$ is also irreducible. 
+ \end{enumerate}
 
 
 \end{document} 

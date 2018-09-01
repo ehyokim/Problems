@@ -207,12 +207,19 @@ $X = \text{Spec}(A)$. When thinking of $x$ as a prime ideal of $A$, we denote it
   Consider the closed set $V((a))$. Without the loss of generality, suppose that $a \in x$, but $a \not\in y$. then 
   $x \not\in \overline{V((a))}$, but $y \in \overline{V((a))}$, showing the $T_0$ property.
  \end{proof}
+\end{enumerate}
 
 \subsection{Problem 19: Irreducible Zariski Topology}
 
 Question: A topological space $X$ is said to be irreducible if $X \neq \emptyset$ and if every pair of non-empty open sets in $X$ intersect,
-or equivalently if every non-empty open set is dense in $X$. 
+or equivalently if every non-empty open set is dense in $X$. Show that Spec($A$) is irreducible if and only if the nilradical of $A$ is a prime ideal. 
 
-\end{enumerate}
+\begin{proof}
+ We show the converse first. If the nilradical $\mathfrak{R}$ is a prime ideal, then for every $x \in X$, $\mathfrak{R} \subseteq x$. Hence, any of the basic open sets must contain $\mathfrak{R}$, giving us non-empty
+ intersection for all open sets in the topology. Now suppose that Spec($A$) is irreducible. Then let $\mathcal{O}_E$ and $\mathcal{O}_{\bar{E}}$ be the open sets
+ which are complements of $V(E)$ and $V(\overline{E})$ for some subset $E \subset A$. By irreducibility, there exists a prime ideal $P \in \mathcal{O}_E \cap \mathcal{O}_{\bar{E}}$. Hence, $P$ is contained in every prime ideal. In particular,
+ $P \in X_f$ for all the basic open sets in the topology. Hence, it must be contained in every prime ideal and conclusively in the intersection of all prime ideals, giving us that $P \subseteq \mathfrak{R}$. \end{proof}
+
+
 
 \end{document} 
