@@ -134,7 +134,7 @@ The following diagram commutes with a unique functor: $F: H \rightarrow \mathcal
 \end{figure}
 
 
-
+\subsection{Problem 2}
 
 \begin{question}
 Show that the product of two preorders is a preorder.
@@ -142,16 +142,9 @@ Show that the product of two preorders is a preorder.
 
 \begin{proof}
  Recall that a preorder is a category $\mathcal{C}$ such that for any two objects $p,p'$ there exists at most one arrow $p \rightarrow p'$
- We can define the product preorder category ${\bf Preord} \times {\bf Preord}$ with ordered tuples of objects $(e,d)$ for objects $e,d \in C,D$
- and we can define arrows between $(e,d) \rightarrow (e',d')$ iff there exists $e \rightarrow e'$ and $d \rightarrow d'$. As there can only be one arrow between objects in their
- respective catgories, the arrows in the product category are uniquely determined. Hence, the product category must also be a preorder.
+ 
 \end{proof}
 
-\subsection{Section 4}
-
-\begin{question}
- If {\bf Fin} is the category of all finite sets and $G$ is a finite group, describe ${\bf Fin}^G$
-\end{question}
 
 
 
