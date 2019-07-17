@@ -75,11 +75,11 @@ $\bullet$ Define the ring of trigonometric functions as the polynomial ring $\ma
 		\end{proof}
 	\item
 		\begin{proof}
-			Let $\mu$ be the Mobius function from elementary number theory. We first prove that $\mu$ is multiplicative. Indeed, let $m,n$ be relatively prime postive integers. We can product $mn$ as a product of distinct prime powers. $\mu(mn) = 0$ if either $m,n$ contains a non-trivial prime power. Thus, it suffices to take the case where $mn$ can be written as a product of single prime powers. Let $m = p_1...p_r$ and $n = p_{r+1}...p_{r+s}$ where all primes are distinct, then $\mu(mn) = (-1)^{r+s} = (-1)^r(-1)^s = \mu(m)\mu(n)$. Hence, $\mu$ is multiplicative. 
+			Let $\mu$ be the Mobius function defined as follows: $\mu(1) = 1,  \mu(p_1...p_r) = (-1)^r$ for $p_1,...,p_r$ distinct primes, and $\mu(x) = 0$ if $p^2 | x$ for some prime $p$. We first prove that $\mu$ is multiplicative. Indeed, let $m,n$ be relatively prime postive integers. We can product $mn$ as a product of distinct prime powers. $\mu(mn) = 0$ if either $m,n$ contains a non-trivial prime power. Thus, it suffices to take the case where $mn$ can be written as a product of single prime powers. Let $m = p_1...p_r$ and $n = p_{r+1}...p_{r+s}$ where all primes are distinct, then $\mu(mn) = (-1)^{r+s} = (-1)^r(-1)^s = \mu(m)\mu(n)$. Hence, $\mu$ is multiplicative. 
 			
 			Now consider the convolution product $ (\mu * \phi_1) $ where $\phi_1$ is the constant function taking values to $1$. We can expand the product as follows: Let $m = p_1^{a_1}...p_r^{a_r}$
 			
-			$$ (\mu \star \phi_1)(p_1^{a_1}...p_r^{a_r}) = \sum_{i = 1}^r {r \choose i} (-1)^i $$  If $m = 1$, then the product is $1$ trivially. If $m \neq 1$, then the sum vanishes (proof?). Thus, $(\mu \star \phi_1) = \delta$.
+			$$ (\mu \star \phi_1)(p_1^{a_1}...p_r^{a_r}) = \sum_{i = 1}^r {r \choose i} (-1)^i $$  If $m = 1$, then the product is $1$ trivially. If $m \neq 1$, then the sum vanishes (proof?). Thus, $(\mu \star \phi_1) = \delta$. 
 		\end{proof}
 \end{enumerate}
 
