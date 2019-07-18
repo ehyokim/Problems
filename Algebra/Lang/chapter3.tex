@@ -14,8 +14,13 @@ Consider the following commutative diagram:
 	\end{tikzcd}
 
 	\begin{enumerate}
-		\item Let us prove that if $f,h$ are monomorphisms, then $g$ is also a monomorphism. It suffices to show that if $g(x) = 0_N$, then $x = 0_M$. Since $h$ is a monomorphism, $\ker h = \{0_{M''}\}$. Thus, by the exactness of the top row and commutativity of the rightmost square, $x \in \text{img }\phi_1 \cap \ker{g}$. Since $x \in \text{img }\phi_1$, there exists $a \in M'$ such that $\phi(a) = x$. By commutativity of the leftmost square, $\psi(f(a)) = 0_N$. However, $f$ is a monomorphism and so is $\psi_1$ by the exactness of the bottom row. Hence, $a = 0_{M'}$ and $x = \phi_1(a) = 0_M$
+		\item Let us prove that if $f,h$ are monomorphisms, then $g$ is also a monomorphism. 
+		It suffices to show that if $g(x) = 0_N$, then $x = 0_M$. 
+		Since $h$ is a monomorphism, $\ker h = \{0_{M''}\}$. Thus, by the exactness of the top row and commutativity of the rightmost square, $x \in \text{img }\phi_1 \cap \ker{g}$. Since $x \in \text{img }\phi_1$, there exists $a \in M'$ such that $\phi(a) = x$. By commutativity of the leftmost square, $\psi_2(f(a)) = g(\phi_1(a)) = 0_N$. However, $f$ is a monomorphism and so is $\psi_1$ by the exactness of the bottom row. Hence, $a = 0_{M'}$ and $x = \phi_1(a) = 0_M$.
+		\item Now suppose that $f,h$ are surjective. Let us show that $g$ is also surjective. 
 	\end{enumerate}
+
+	
 
 
 \end{document}
