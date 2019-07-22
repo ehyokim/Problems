@@ -4,7 +4,7 @@
 
 \section*{Lang Chapter 3 (Modules)}
 
-\subsection{Problem 14}
+\subsection*{Problem 14}
 
 Consider the following commutative diagram:
 
@@ -18,9 +18,20 @@ Consider the following commutative diagram:
 		It suffices to show that if $g(x) = 0_N$, then $x = 0_M$. 
 		Since $h$ is a monomorphism, $\ker h = \{0_{M''}\}$. Thus, by the exactness of the top row and commutativity of the rightmost square, $x \in \text{img }\phi_1 \cap \ker{g}$. Since $x \in \text{img }\phi_1$, there exists $a \in M'$ such that $\phi(a) = x$. By commutativity of the leftmost square, $\psi_2(f(a)) = g(\phi_1(a)) = 0_N$. However, $f$ is a monomorphism and so is $\psi_1$ by the exactness of the bottom row. Hence, $a = 0_{M'}$ and $x = \phi_1(a) = 0_M$.
 		\item Now suppose that $f,h$ are surjective. Let us show that $g$ is also surjective. 
+		Given $c \in N$, let us consider the case where $\psi_2(c) = 0$. By the exactness of the bottom row, there exists $b \in N'$ such that $\psi_1(b) = c$. By our assumption of the surjectivity of $f$, there must exist $a \in M'$ such that $f(a) = b$. 
+		By commutativity of the leftmost square, $g(\phi_1(a)) = \psi_1(f(a))) = c$. Thus, $\phi_1(a)$ is the element in $M$ we desire, making $g$ surjective. 
+		Now we turn to the case where $\psi_2(x) \neq 0$. By surjectivity of $h$, there exists $r \in M''$ such that $h(r) = \psi_2(c)$. By the exactness of the top row, there must exist $q \in M$ such that $\phi_2(q) = r$. Let $s = g(q)$. By commutativity of the rightmost square, $\psi_2(s) - \psi_2(c) = \psi_2(s - c) = 0$. 
+		Thus, by exactness of the bottom row, there exists $t \in n'$ such that $\psi_1(t) = s - c$. By surjectivity of $f$ and the commutativity of the leftmost square, we have an element $z \in M'$ such that $g(\phi_1(z)) = f - c$. Thus, 
+		$$ g(\phi_1(z)) - f = g(\phi_1(z) - q) = c$$. Taking our desired element to be $\phi_1(z) - q$ shows that $q$ is surjective.
 	\end{enumerate}
 
+	\subsection*{Problem 18}
 	
+	Consider an inversely directed system of commutative rings $\{A_i\}$ and an inveresly directed system of $A$-modules $\{M_i\}$ such that the following diagram commutes:
+	
+	\begin{tikzcd}
+		A_{n+1} & \times & M_{n+1}
+	\end{tikzcd}	
 
 
 \end{document}
