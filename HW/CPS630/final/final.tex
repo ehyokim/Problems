@@ -1,0 +1,133 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\begin{document}
+
+\title{CPS 630 Final}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+\section*{Problem 1}
+\begin{enumerate}
+  \item We argue that the elements of the solution space of this integer program are precisely the $st$ cuts. To see this, we first note that since $x_s =0, x_t = 1$, $s \in V_1, t \in V_2$ by definition. Furthermore, given any assignment of $\{0,1\}$ to the $x_v$ for $v \in V$, this assignment defines an $st$ cut with such that $$z_e = 1  \text{ iff } e = (u,v), \; u \in V_1, v \in V_2 $$ $$ z_e = 0 \text{ iff } e= (u,v) \; u,v \in V_1 \text{ or } u,v \in V_2 $$ Hence, $\sum_{e \in E} c(e)z_e$ computes the value of the $st$ cut given by the assignment and minimizing this value must give the $st$ mincut as required.
+  \item Let $(V^\alpha_1,V^\alpha_2)$ be the $st$ cut induced by the rounding scheme with $\alpha$ as our threshold. The expected value of the solution can be expressed as
+  $${\bf E}_{\alpha \sim [0,1]}[C(V^\alpha_1,V^\alpha_2)] = \sum_{i=0}^{|E|} C(V^{\beta_i}_1,V^{\beta_i}_2)(x_{i+1} - x_i) $$
+  where $\beta_i \in (x_i,x_{i+1}]$. We claim that the expectation can be rewritten as follows:
+  $$ {\bf E}_{\alpha \sim [0,1]}[C(V^\alpha_1,V^\alpha_2)] = \sum_{e = (u,v), x_v \geq x_u} c(e)(x_v - x_u)$$
+  To achieve this, we first analyze how the $st$ changes as we change the partition of the ordered set $X_G =\{x_0,...,x_{|E|}\}$ where $x_0 = x_s$ and $x_{|E|} = x_t$. Let us see how the below terms simplify:
+  $$C(V^{\beta_{i+1}}_1,V^{\beta_{i+1}}_2)(x_{i+2} - x_{i+1}) + C(V^{\beta_i}_1,V^{\beta_i}_2)(x_{i+1} - x_i)  $$
+  Observe that the difference between cuts $(V^{\beta_i}_1,V^{\beta_i}_2)$ and $(V^{\beta_{i+1}}_1,V^{\beta_{i+1}}_2)$ is the removal of an edge $e$ by moving $x_{i+1}$ from $V_1$ to $V_2$ and the introduction of edges directed towards $x_{i+1}$ from the remaining vertices $\{x_0,...,x_{i}\}$ in $V_1$. If we denote $N(x_{i+1})$ to be the total capacity introduced into the cut by moving $x_{i+1}$ into $V_2$, the expression above simplifies:
+  $$C(V^{\beta_{i+1}}_1,V^{\beta_{i+1}}_2)x_{i+2} - C(V^{\beta_i}_1,V^{\beta_i}_2)x_i + (-c(e) + N(X_{i+1}))x_{i+1} $$
+  By applying this simplification inductively for each term, we see that edges $(x_u,x_v), \; x_v \geq x_u$ and thus their respective capacities are introduced when $x_v$ is first moved into $V_2$; then they removed when $x_u$ is introduced into $V_2$. This gives us the equality above. Finally, we observe that the expected value of the solution matches the value of the $st$ mincut given by the linear program after relaxation.
+\end{enumerate}
+
+\newpage
+\section*{Problem 2}
+\begin{enumerate}
+  \item We first note that for any two triangles in $G$, there exists a scheme such that both triangles are weakly 2-colorable and if the two triangles share at least one vertex, then a weak 2-coloring on one triangle induces a weak 2-coloring on the other. This is simply follows from the 3-colorability of $G$. We simply list out the cases. Let $\Delta_1,\Delta_2$ denote the set of vertices in two fixed triangles in $G$. We also assume that the colors of interest in our weak 2-coloring are red and blue.
+  \begin{enumerate}
+    \item If $|\Delta_1 \cap \Delta_2| = 0$, then the two triangles are independent of each other. As $G$ is 3-colorable, simply color the green vertex of each triangle to either blue or red.
+    \item If $|\Delta_1 \cap \Delta_2| = 1$, then the colorings would only be dependent if the shared vertex $v$ is of color green, in which case changing the shared vertex to either red or blue induces a weak two coloring on both. If the green vertex is not shared, then independently changing the colors suffices.
+    \item If $|\Delta_1 \cap \Delta_2| = 2$, then the two triangles are dependent if one of the two vertices is colored green. However, as each triangle is properly 3-colored, changing the green vertex to either color, will immeidately induce a weak 2-coloring on both. If the green vertex is not shared, once again independently changing the color suffices.
+  \end{enumerate}
+  Now every pair of triangles can be reduced into one of the three cases above. We inductively use these cases to weakly color every triangle in $G$, giving us the desired weak 2-coloring.
+
+  \item
+  \begin{enumerate}
+    \item Let $R_0,B_0,G_0$ denote the vertex subsets colored red,green, and blue for some 3-coloring as denoted by the question. Then by the definition of a proper 3-coloring, each vertex of the triangle must have one of each color, showing that $|T \cap R_0| = |T \cap B_0| = 1$.
+    \item Define $A_t = |R_t \cap R_0| + |B_t \cap B_0|$ denote the agreement between the 3-coloring and the coloring given at time $t$ of the algorithm. Now suppose that $(R_t,B_t)$ is not a weak 2-coloring, then there must exist a triangle $\Delta$ such that all of its vertices are of a single color. Thus, either $|\Delta \cap R_0| = 0$ or $|\Delta \cap B_0| = 0$. By our observation in the first portion, $A_t$ has not attained its largest possible value, giving us the result.
+    \item Let $\Delta$ denote the monochromatic triangle in question.
+    \begin{enumerate}
+      \item There is a $1/3$ probability of $A_t$ staying the same since this the case where the algorithm picks the green vertex $\Delta \cap G_0$ and flips its color to no change in $A_t$.
+      \item There is a $1/3$ probability of $A_t$ decreasing by one in the case where the algorithm picks the correctly colored vertex in $\Delta$. In other words, if $\Delta$ is colored red then the algorithm flips $\Delta \cap R_0$ and the same for blue.
+      \item There is a $1/3$ probability of $A_t$ increasing if the algorithm chooses the incorrectly colored vertex.
+    \end{enumerate}
+    \item Based on the probabilities calculated in the portion above, the evolution of $A_t$ follows a random walk on a line where the starting point is simply the values given by the initial coloring on $G$. The lowest value will be $0$ and the largest value will be $|R_0| + |B_0|$. By the bound on the covering time on this line, we bound the expected running of the time algorithm to be on the order of $4(|R_0|+|B_0|)^2$.
+  \end{enumerate}
+\end{enumerate}
+
+\newpage
+\section*{Problem 3}
+\begin{enumerate}
+  \item Consider subsets $A \subset V_1$ and $B \subset V_2$. Fix some $a \in A$, then for a random matching $M$:
+  $${\bf Pr}(M(a) \in B) = \frac{\beta n}{n} = \beta $$ Thus,
+  $$ {\bf Pr}(M(A) \subseteq B) = \beta^{\alpha n}$$ Now by iterating $d$ random matchings, the probability that the union of these matchings is still contained in $B$ is:
+  $${\bf Pr}(\cup^{d}_{i=1}M_i(A) \subseteq B) = \prod_{i=1}^d {\bf Pr}(M_i(A) \subseteq B) = \beta^{\alpha n d} $$
+  \item By utilizing the probability bound above, we iterate over all possible subsets $A \subset V_1, B \subset V_2$ such that $|A| = \alpha n$ and $|B| \leq \beta n$.
+  \begin{gather*}
+    {\bf Pr}(\exists A \subset V_1, \; B \subset V_2,  \; N(A) \subseteq B) \leq {n \choose \beta n}{n \choose \alpha n} \beta^{\alpha n d} \\
+    \leq 2^{nH(\alpha) + nH(\beta) + d \alpha\log_2\beta} = 2^{(H(\alpha) + H(\beta) + d \alpha\log_2\beta)n}
+  \end{gather*}
+  where the last inequality follows from the bound
+  $${n \choose \alpha n} \leq 2^{n H(\alpha)} $$
+  \item We have the following bounds on based on the parameters given:
+  \begin{gather*}
+    H(\alpha) = H(1/m) \leq 1 \\
+    H(\beta) = H(1/2) = 1 \\
+    \alpha d \log_2 \beta = -10
+  \end{gather*}
+  Combining these bounds, we arrive at the below inequality
+  $$2^{(H(\alpha) + H(\beta) + d \alpha\log_2\beta)n} \leq 2^{-8n} $$
+  This shows that the probaility that the constructed biparitite graph does not satisfy the expansion property goes to zero exponentially fast as $n \rightarrow \infty$. Hence, we showed that  the constructed biparitite graph satisfies the expansion property with high probability.
+\end{enumerate}
+
+\newpage
+\section*{Problem 4}
+\begin{enumerate}
+  \item We expand the dot product to get that $(u,v,w)$ is bad iff:
+  $$\sum_{i=1}^d (w_i - u_i)(v_i - u_i) = 0 $$
+  \item We start by arguing about a random triplet $(u,v,w)$ sampled from the $d$-dimensional hypercube. First fix a $u \in \{0,1\}^d$. We derive the following truth table for $u_i$ by simply referring to $(w_i - u_i)(v_i - u_i)$:
+  \begin{center}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    $u_i = 0$ & $w_i = 0$ & $w_i = 1$ \\
+   \hline
+    $v_i = 0$ & 0 & 0 \\
+     \hline
+    $v_i = 1$ & 0 & 1 \\
+     \hline
+   \end{tabular}
+   \quad
+   \begin{tabular}{|c|c|c|}
+     \hline
+     $u_i = 1$ & $w_i = 0$ & $w_i = 1$ \\
+    \hline
+     $v_i = 0$ & 1 & 0 \\
+      \hline
+     $v_i = 1$ & 0 & 0 \\
+      \hline
+    \end{tabular} \newline
+  \end{center}
+    Now for a fixed $w \in \{0,1\}^d$, we deduce from the first portion that for $(u,w,v)$ to be bad, the following must hold by cases:
+    \begin{gather*}
+      u_i = 0, w_i = 0 \implies v_i = 0,1 \\
+      u_i = 0, w_i = 1 \implies v_i = 0 \\
+      u_i = 1, w_i = 0 \implies v_i = 1 \\
+      u_i = 1, w_i = 1 \implies v_i = 0,1
+    \end{gather*}
+    Thus, we see that for every fixed $u,w$, the number of strings when which assigned to $v$ yield a bad tuple will be $2^{H(u,w)}$ where $H$ denotes the Hamming distance. We proceed to count how many assignments of $w,v$ yield bad tuples for fixed $u$. For any subset of indices of $u$, we can choose those indices to be flipped against $u$. The rest of the indices will be left alone. This gives the total number of bad strings against $u$ to be:
+    $$ \sum_{i=0}^d {d \choose i} 2^{i} = (1 + 2)^d = 3^d $$
+    where the equality follows from the binomial expansion. Thus, the probabiliy that we choose a bad tuple from randomly sampling the points on the hypercube will be:
+    $$ {\bf Pr}[(u,v,w) \text{ is bad}] = \frac{2^d 3^d}{2^{3d}} = \left(\frac{3}{4}\right)^d $$
+    Now fix a randomly chosen subset $S \subseteq \{0,1\}^d$ such that $|S| = n$. We bound the probability that $S$ will contain a bad tuple:
+    $${\bf Pr}[\exists u,v,w \in S ,\; (u,v,w) \text{ is bad}] \leq {n \choose 3}(3/4)^d$$
+    giving that:
+    $${\bf Pr}[\forall S \subseteq \{0,1\}^d \; |S| = n, \; \exists u,v,w \in S, \; (u,w,v) \text{ is bad}] \leq \left({n \choose 3}(3/4)^d\right)^{{2^d \choose n}} \leq (n^3 (3/4))^{2^{dn}} $$
+    Thus, if we set $n^3(3/4)^d < 1$, we have the inequality:
+    $$ n < \left(\frac{4}{3}\right)^{d/3} $$
+    So that
+    $${\bf Pr}[\exists S \subseteq \{0,1\}^d \; |S| = n \; \forall u,v,w \in S (u,w,v) \text{ is not bad}] > 0 $$
+    and the result follows from the probablistic method.
+
+\end{enumerate}
+
+
+\end{document}

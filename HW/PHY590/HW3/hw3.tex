@@ -1,0 +1,194 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{physics}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\begin{document}
+
+\title{PHYS 590 HW 3}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+\section*{Problem 1}
+\begin{enumerate}
+  \item
+  The equality follows from the definition of mutual information along with the assumption that our $\psi_{ABC}$ is pure. First, observe the following string of equalities:
+
+  \begin{gather*}
+    I(A;B)_{\psi} + I(A;C)_{\psi} = \\
+    H(A)_{\psi} + H(B)_{\psi} - H(AB)_{\psi} + H(A)_{\psi} + H(C)_{\psi} - H(AC)_{\psi}
+  \end{gather*}
+  Since $\psi_{ABC}$ is a pure state:
+  \begin{gather*}
+    H(AB)_{\psi} = H(C)_{\psi} \\
+    H(AC)_{\psi} = H(B)_{\psi} \\
+    H(BC)_{\psi} = H(A)_{\psi}
+  \end{gather*}
+
+  Substituting these equalities above gives us that:
+
+  \begin{gather*}
+    H(A)_{\psi} + H(BC)_{\psi}
+  \end{gather*}
+
+  Finally, since $H(ABC)_{\psi} = 0$ this yields the desired equality:
+  $$  I(A;B)_{\psi} + I(A;C)_{\psi} = \boxed{I(A;BC)_{\psi}} $$
+
+\item
+As previously, we decompose the expression through definitions:
+\begin{gather*}
+    I(A;B\vert C)_{\psi} = H(A\vert C)_{\psi} + H(B \vert C)_{\psi} + H(AB \vert C)_{\psi} = \\
+    [ H(AC)_{\psi} - H(C_{\psi})] + [H(BC)_{\psi} - H(C)_{\psi} + [H(ABC)_{\psi} - H(C_{\psi})]
+\end{gather*}
+By purity of $\psi_{ABCD}$:
+
+\begin{gather*}
+  H(AC)_{\psi} = H(BD)_{\psi} \\
+  H(AD)_{\psi} = H(BC)_{\psi} \\
+  H(ABC)_{\psi} = H(D)_{\psi} \\
+  H(C)_{\psi} = H(ABD)_{\psi}
+\end{gather*}
+
+Substituting these equalities above, we yield that:
+\begin{gather*}
+  H(BD)_{\psi} + H(AD)_{\psi} - H(ABD)_{\psi} - H(D)_{\psi} = \\
+  [H(BD)_{\psi} - H(D)_{\psi}] + [H(AD)_{\psi} - H(D)_{\psi}] - [H(ABD)_{\psi} - H(D)_{\psi}] = \\
+  H(A \vert D)_{\psi} + H(B \vert D)_{\psi} - H(AB \vert D)_{\psi} = \\
+  \boxed{I(A;B\vert D)_{\psi}}
+\end{gather*}
+
+\section*{Problem 2}
+The corresponding density matrix for $\rho_{AB}(p)$ is expressed as:
+$$
+\rho_{AB}(p) = \left[\begin{matrix}
+  \frac{p}{4} & 0 & 0 & 0 \\
+  0 & \frac{1}{2} - \frac{p}{4} & \frac{1-p}{2}  & 0 \\
+  0 & \frac{1-p}{2} & \frac{1}{2} - \frac{p}{4} & 0\\
+  0 & 0 & 0 & \frac{p}{4}
+\end{matrix} \right]$$
+Calculating the spectra directly shows that:
+$$\lambda_1 = \frac{p}{4}, \; \lambda_2 = \frac{p}{4}, \; \lambda_3 = 1 - \frac{3p}{4}, \; \lambda_4 = 1 - \frac{3p}{4} $$
+ \end{enumerate}
+ Thus, the joint quantum entropy is given by:
+ $$ H(AB)_{\rho(p)} =  - 2(\frac{p}{4})\log_2{(\frac{p}{4})} - 2 (1 - \frac{3p}{4})\log_2{(1- \frac{3p}{4})}$$
+ Finally, we calculate $\rho_A(p) = Tr_B(\rho_{AB}(p))$:
+ \begin{gather*}
+   Tr_B(\rho_{AB}(p)) =
+     \left[
+        \begin{matrix}
+          \frac{p}{4} & 0 \\
+          0 & \frac{1}{2} - \frac{p}{4}
+        \end{matrix}
+     \right] +
+     \left[
+        \begin{matrix}
+          \frac{1}{2} - \frac{p}{4} &  \\
+          0 & \frac{p}{4}
+        \end{matrix}
+     \right] =
+     \left[
+        \begin{matrix}
+          \frac{1}{2} &  \\
+          0 & \frac{1}{2}
+        \end{matrix}
+     \right]
+ \end{gather*}
+ Thus, this shows us that:
+ $$ H(A)_{\rho(p)} = 1 $$
+ Finally. combining the two results above gives the desired expression:
+ $$ H(B \vert A)_{\rho(p)} =  - 2(\frac{p}{4})\log_2{(\frac{p}{4})} - 2 (1 - \frac{3p}{4})\log_2{(1- \frac{3p}{4})} - 1$$
+ Directly solving for the threshold value allows us to observe that
+ $$ p_{th} = \frac{3}{10} $$
+ In other words, as long as $p \geq \frac{3}{10}$, the conditional quantum entropy $H(B \vert A)_{\rho(p)}$ will be non-negative. Furthermore, when $p =1$:
+ \begin{gather*}
+   - 2(\frac{1}{4})\log_2{(\frac{1}{4})} - 2 (\frac{1}{4})\log_2{( \frac{1}{4})} - 1 = 2 - 1 = 1
+ \end{gather*}
+ showing us that when $p=1$, we have positive conditional entropy.
+
+\section*{Problem 3}
+First, recall that:
+\begin{equation*}
+  I(A_1A_2; B_1B_2)_{\omega} = H(A_1A_2)_{\omega} + H(B_1B_2)_{\omega} - H(A_1A_2B_1B_2)_{\omega}
+\end{equation*}
+By subadditivity and the fact that $\omega_{A_1A_2B_1B_2} = \rho_{A_1B_1}\otimes \rho_{A_2B_2}$:
+$$H(A_1A_2B_1B_2)_{\omega} = H(A_1B_1)_{\omega} + H(A_2B_2)_{\omega} =
+H(A_1B_1)_{\rho} + H(A_2B_2)_{\sigma}
+$$
+However, pairs of states $A_1,A_2$ and $B_1,B_2$ are uncorrelated in the state $\omega_{ABCD}$, allowing us to see that:
+\begin{gather*}
+  H(A_1A_2)_{\omega} = H(A_1)_{\rho} + H(A_2)_{\sigma} \\
+  H(B_1B_2)_{\omega} = H(B_1)_{\rho} + H(B_2)_{\sigma}
+\end{gather*}
+Combining these inequalites gives us the desired result:
+
+\begin{gather*}
+  \begin{split}
+    H(A_1A_2)_{\omega} + H(B_1B_2)_{\omega} - H(A_1A_2B_1B_2)_{\omega} = & H(A_1)_{\rho} + H(A_2)_{\sigma} \\+ & H(B_1)_{\rho} + H(B_2)_{\sigma} \\ -
+    & H(A_1B_1)_{\rho} - H(A_2B_2)_{\sigma}
+  \end{split}\\
+  = [H(A_1)_{\rho} + H(B_1)_{\rho} - H(A_1B_1)_{\rho}] - [H(A_2)_{\rho} + H(B_2)_{\rho} - H(A_2B_2)_{\rho}] \\
+  = \boxed{I(A_1; B_1) + I(A_2; B_2)}
+\end{gather*}
+
+\section*{Problem 4}
+\begin{enumerate}
+  \item
+  \begin{enumerate}
+    \item
+      For $\rho_{ABC} = \frac{1}{2}(\ket{000}_{ABC} + \ket{111}_{ABC})$
+      \begin{gather*}
+        I(A;C)_{\rho} = H(A)_{\rho} + H(C)_{\rho} - H(AC)_{\rho} = 2 - 1 = \boxed{1} \\
+        I(A; C\vert B) = H(A \vert B)_{\rho} + H(C \vert B)_{\rho} - H(AC \vert B)_{\rho} \\
+        = [H(AB)_{\rho} - H(B)_{\rho}] + [H(BC)_{\rho} - H(B)_{\rho}] - [H(ABC)_{\rho} - H(B)_{\rho}] = 0 + 0 + 0 = \boxed{0}
+      \end{gather*}
+      \item
+      For $\rho_{ABC} = \frac{1}{2}(\ket{000}_{ABC} + \ket{111}_{ABC})(\bra{000}_{ABC} + \bra{111}_{ABC})$:
+      \begin{gather*}
+        I(A;C)_{\rho} = 2 - 1 = \boxed{1} \\
+        I(A; C\vert B) = 0 + 0 + 1 = \boxed{1}
+      \end{gather*}
+      \item
+      For $\rho_{ABC} = \frac{1}{4}\sum_{x,y \in \{0,1\}} \ket{x}\bra{x} \otimes \ket{y}\bra{y} \otimes \ket{x \oplus y}\bra{x \oplus y} $,
+      \begin{gather*}
+        I(A;C) = H(A)_{\rho} + H(C)_{\rho} - H(AC)_{\rho} = 2 - 2 = \boxed{0} \\
+        I(A; C\vert B) = \\ [H(AB)_{\rho} - H(B)_{\rho}] + [H(BC)_{\rho} - H(B)_{\rho}] - [H(ABC)_{\rho} - H(B)_{\rho}] \\
+        = [2-1] + [2-1] - [2-1] =\boxed{1}
+      \end{gather*}
+  \end{enumerate}
+  Comparing $I(A;C)$ with $I(A;C\vert B)$, we see that the first three obeys the expression $I(A;C) \geq I(A;C\vert B)$. However, the last one does not.
+  (I'm a bit confused by the last result to be honest).
+
+  \item The state $\omega_{BAC}$ is a generalization of the classical-quantum state except here Alice can prepare a bipartite state by picking local unitary operators to act on each respective state. If we let $\zeta_{AC}^{(k)} = \rho_A^{(k)} \otimes \sigma_C^{(k)}$, we can rephrase our state as
+  $$\omega_{BAC} = \sum_{k} p_k \ket{k}\bra{k} \otimes \zeta_{AC}^{(k)} $$\
+  Now we know that
+  $$ I(A;C\vert B)_{\omega} = \sum_k p_k I(A;C)_{\zeta^{(k)}} $$ This simply follows from the definition of classical conditional entropy. However, since $\zeta^{(k)}_{AB}$ is a product state for all $k$:
+  $$ I(A;C)_{\zeta^{(k)}} = 0 $$
+  Thus, we have that $I(A;C\vert B) = 0$.
+  \item
+  We will utilize the chain rule for quantum mutual informtion:
+  \begin{equation*}
+    I(A;BC)_{\rho} = I(A;B)_{\rho} + I(A;C\vert B)_\rho
+  \end{equation*}
+  From definitions:
+  \begin{gather*}
+    I(A;C\vert B_1B_2)_\omega = I(A;CB_1\vert B_2)_\omega - I(A;B_1 \vert B_2)_\omega \\
+    = I(CB_1,AB_2)_\omega - I(CB_1,B_2)_\omega - I(A;B_1\vert B_2)_\omega \\
+    = I(CB_1,AB_2)_\omega - I(CB_1,B_2)_\omega - I(AB_2;B_1) + I(B_1;B_2)_\omega \\
+    = I(CB_1,AB_2)_\omega - I(C,B_2)_{\rho_{B_2C}} - I(A;B_1)_{\rho_{AB_1}}
+  \end{gather*}
+  The last equality follows from the observation that $B_1,B_2$ are uncorrelated in state $\omega_{AB_1B_2C}$ (tracing over $A$ and $C$ will yield a the product state $\rho_{B_1} \otimes \rho_{B_2}$). For similar reasons, $B_1,C$, $B_2,A$ are also uncorrelated in $\omega_{AB_1B_2C}$.
+  Now by additivity of quantum mutual information:
+  \begin{equation*}
+    I(AB_2,CB_1)_{\omega} = I(A;B_1)_{\rho_{AB_1}} + I(B_2;C)_{\rho_{B_2C}}
+  \end{equation*}
+  the final equality vanishes, so $I(A;C \vert B_1B_2) = 0$.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,119 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\begin{document}
+
+\title{CS 630 HW 2}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+\subsection*{Problem 1}
+First, fix a processor $1 \leq i \leq m$, and let $X_i$ be the random varible for the number of steps required to finish its job queue. Then we can express $X_i$ as follows:
+$$X_i = Y_i + kZ_i $$ where $Y_i$ is the random variable giving the number of jobs requiring only one step and $Z_i$ is the random variable giving the number of jobs requiring $k$ steps. We utilize the Chernoff bound on both of these variables. First, for $Y_i$ we observe that it is a sum of $\ell = m/n$ independent Poisson trials with probability $p$. Thus, ${\bf E}[Y_i] = \ell p$ and using the Chernoff bound, we get:
+\begin{gather*}
+{\bf Pr}\left[|Y_i - \ell p| >  p \sqrt{\frac{3\ln{n}}{p}}\right] =
+{\bf Pr}\left[|Y_i - \ell p| >  \ell p \sqrt{\frac{3\ln{n}}{p\ell}}\right] \\
+\leq 2\exp\{-\frac{1}{3}{\ell}p\frac{3\ln{n}}{p\ell}\}= 2\exp\{-\ln{n}\} = \frac{2}{n}
+\end{gather*}
+
+Similarly, we derive the bound for $Z_i$:
+$${\bf Pr}\left[|Y_i - \ell(1-p)| >  (1-p) \sqrt{\frac{3\ln{n}}{1-p}}\right] \leq \frac{2}{n}$$
+
+Thus, for $X_i$, we have an upper/lower bound of:
+\begin{equation*}
+ \hspace*{-1.5cm} L_{X_i} \leq {\bf E}[X_i] \leq U_{X_i}
+\end{equation*}
+with probabilty $1 - \frac{2}{n}$. The bounds are defined as:
+$$L_{X_i} = \left[\ell p - p \sqrt{\frac{3\ln{n}}{p}}\right] + k \cdot\left[\ell(1-p) - (1-p) \sqrt{\frac{3\ln{n}}{1-p}})\right] $$
+$$U_{X_i} =  \left[\ell p + p \sqrt{\frac{3\ln{n}}{p}}\right] + k \cdot\left[\ell(1-p) +(1-p) \sqrt{\frac{3\ln{n}}{1-p}}\right]$$
+ \newline
+
+We now apply this bound to the $m$ processors through union bound to get the upper/lower bound for $X = \sum_{i=1}^m X_i$:
+$$ m \cdot L_{X_i} \leq {\bf E}[X] \leq m\cdot U_{X_i}$$ with probability:
+$1 - \frac{2m}{n}$.
+
+\subsection*{Problem 2}
+Define our permutation $\pi:\{0,1\}^n \rightarrow \{0,1\}^n$ on $n$-bit strings as follows: Let ${\bar x} = (x_1,...,x_n), x_i = 0,1$ be the bit representation for $n$-bit strinng $x$, then $\pi({\bar x}) = \neg {\bar x } = (\neg x_1,...\neg x_n)$. In other words, $\pi$ simply flips every bit in ${\bar x}$. $\pi$ is easily checked to be a valid permutation as bit string's inverse is unique. Now we interpret the nodes in our $n$-cube graph to send it's packet ${\bar x}$ to destination $\pi({\bar x})$. \newline
+
+We show that this instance has expected $2^{\Omega(n)}$ congestion. For simplicity of argument, here we show vertex congestion i.e the expected number paths which flow through a particular vertex. Fix node $v \in V$ with bit string ${\bar v} = (v_1,...,v_n)$. Note that every bit in all destinations $\pi({\bar x})$ differ from their packet sources ${\bar x}$. Thus, there exists at least one path for ${\bar x}$ induced by a specific bit-fixing order  which flows through our fixed node $v$. To see this, we can construct a such bit-fixing order by finding a shortest path from $v$ to $x$ and from $v$ to $\pi_V(x)$ where $\pi_V:V \rightarrow V$ is the mapping on the nodes induced by $\pi$. The nodes in these two paths will induce a one of the $n!$ bit-fixing orders from $x$ to $\pi_V(x)$. Furthermore, since we uniformly randomly choose such an order, this path is equally as likely as the other paths with probability $\frac{1}{n!}$. Thus, there exists at least one path equally likely path from $x$ to $\pi_V(x)$ flowing through our fixed $v$ for all such ${\bar x} \in \{0,1\}^n$. Finally, we note that this applies to all such $v \in V$, giving us our overall expected congestion of $2^{\Omega(n)}$ as every packet's path from its source to its destination is equally likely to pass through any such $v$.
+
+\subsection*{Problem 3}
+ We recall that $n$ is the number of bins given. We proceed by defining the events $\mathcal{E}_{i}$ to be the event that the $i^{th}$ ball lands in a distinct bin.  We first show that we can bound probability of $c\sqrt{n}$ balls all landing in distinct bins i.e $\bigcap_{i=1}^{c\sqrt{n}} \mathcal{E}_i$ for some constant $c$ as follows:
+ \begin{gather*}
+   {\bf Pr}[\bigcap_{i=1}^{c\sqrt{n}} \mathcal{E}_i] = \prod_{i=1}^{c\sqrt{n}} (1 - \frac{i}{n}) \leq \prod_{i=1}^{c\sqrt{n}} e^{-i/n} = e^{-\frac{ \sum_{i=1}^{c \sqrt{n}}i}{n}},
+ \end{gather*}
+
+ The inequality is given by the inequality $1 - x \leq e^{-x}$. Now from power series expansion $\ln{(1+x)} = x - \frac{x^2}{2} + \mathcal{O}(x^3)$,
+ we get the bound:
+ $$1-x \geq e^{-x - \frac{x^2}{2}}, \quad x \leq \frac{1}{2}$$
+and apply them as below
+\begin{gather*}
+  e^{-\frac{ \sum_{i=1}^{c \sqrt{n}}i}{n}} = e^{\frac{c\sqrt{n}(c\sqrt{n}+1)}{2n}} = (e^{\frac{-c^2\sqrt{n} - c}{2n}})^{\sqrt{n}} = (e^{-\frac{c^2}{2}(\frac{1}{\sqrt{n}}) - \frac{c}{2}(\frac{1}{\sqrt{n}})^2})^{\sqrt{n}} \leq (e^{-\frac{1}{\sqrt{n}} - \frac{1}{2}(\frac{1}{\sqrt{n}})^2})^{\sqrt{n}} \\
+  \leq (1 - \frac{1}{\sqrt{n}})^{\sqrt{n}} < 1/e
+\end{gather*}
+
+\subsection*{Problem 4}
+By our assumption, each of $X_i$ has mean $\mu = 2$. Thus, if $p_i$ represents our probability of success then $\frac{1}{p_i} = 2$. So each $p_i = \frac{1}{2}$. Since $X = \sum_{i=1}^n X_i$ and each $X_i$ is geometrically-distributed, we can interpret $X$ as random variable of the number of trials it takes to flip heads exactly $n$ times on a fair coin. If we denote
+$$Y = \sum_{i=1}^{(1+\delta)(2n)} Y_i$$ to be $(1+\delta)(2n)$ flips of a fair coin, then by Chernoff bound  on $Y$ parameters $\delta_y = 1$ and $\mu_Y = (1 + \delta)n$:
+$${\bf Pr}[Y \geq (1+1)(1+\delta)n] \leq e^{-(1+\delta)n/3}$$
+However, by our observation above:
+$${\bf Pr}[X \geq (1+\delta)(2n)] = {\bf Pr}[Y \geq 2(1+\delta)(n)]$$ giving us the bound:
+$${\bf Pr}[X \geq (1+\delta)(2n)] \leq e^{-(1+\delta)n/3} $$.
+
+\subsection*{Problem 5}
+We apply Chebyshev's Inequality to the random variable $\frac{X_1+...+ X_n}{n}$ first:
+$$ {\bf Pr}[|\frac{X_1+...+ X_n}{n} - \mu| > \epsilon] \leq \frac{{\bf Var}[\frac{X_1+...+ X_n}{n}]}{\epsilon^2} = \frac{1}{n^2}\frac{{\bf Var}[X_1+...+ X_n]}{\epsilon^2} $$
+We invoke independence of the random variables and the defintion of $\sigma$ to see that:
+$$\frac{1}{n^2}\frac{{\bf Var}[X_1+...+ X_n]}{\epsilon^2} = \frac{1}{n^2}\frac{{\bf Var}[X_1]+...+ {\bf Var}[X_n]}{\epsilon^2} = \frac{1}{n^2}\frac{\sigma_{X_1}^2 +...+ \sigma_{X_n}^2} {\epsilon^2}$$
+By our assumptions every random variable $X_i$ has standard deviation $\sigma$. Finally, we get the below inequality:
+$${\bf Pr}[|\frac{X_1+...+ X_n}{n} - \mu| > \epsilon] \leq  \frac{1}{n^2}\frac{n\sigma^2}{\epsilon^2} = \frac{\sigma}{\epsilon^2 n}$$
+As $\sigma,\epsilon$ are constants, it follows that as $n \rightarrow \infty$, $\frac{\sigma}{\epsilon^2 n} \rightarrow 0$ as required.
+
+\subsection*{Problem 6}
+\begin{enumerate}
+  \item Let $X$ be the random variable for the number of sets in our collection $\mathcal{C} \subseteq \{S_1,...,S_m\}$. We can express this variable as $X = \sum_{i=1}^m X_i$ where $X_i$ is the indicator random variable for if the $i^{th}$ set is contained in $\mathcal{C}$. Thus, the expected value is calculated as follows:
+  $${\bf E}[X] = \sum_{i=1}^{m}{\bf E}[X_i] = \sum_{i=1}^{m} x(i) $$
+  By our assumption, each $x(i)$ is the optimal fractional solution to the relaxed linear program where we relax the constraint $x(i) \in \{0,1\}$ to $x(i) \in [0,1]$ for all $1 \leq i \leq m$. Hence, the expected value of $X$ takes the optimal solution of the linear program. Now the solution the integer program would involve the sets in $OPT \subseteq \{S_1,...,S_m\}$ taking values of one and the rest zero where we denote $OPT$ as the optimal cover of $U$. More specifically, if $S_i \in OPT$, then $x(i) = 1$ and $x(j) = 0$ for $s_j \not\in OPT$. This fixing is contained in our solution space, and thus by the optimality of the expected value above:
+  $$\sum_{i=1}^{m} x(i) \leq \sum_{i \mid S_i \in OPT} x(i) = |OPT| $$
+
+  \item Fix $p \in U$. We give the expression by the law of total probability as follows: we know that the probability that none of the sets $S_i$ such that $p \in S_i$ are chosen is:
+  $$ \prod_{i \mid p \in S_i} (1-x(i))$$
+  Let $P = \{i \mid p \in S_i\}$, ${\hat P} = \{S_1,...,S_m\} - P$. We now have to sum over all possible combinations of $\mathcal{C}$. Letting $\ell = m - |P|$ and $\mathcal{E}$ be the event where none of the sets containing $p$ are chosen to be in $\mathcal{C}$, we get:
+  $${\bf Pr}[\mathcal{E}] = \sum_{j=1}^{\ell}\sum_{K \in [{\hat P}]^j}[\prod_{n \in K}x(n)\prod_{h \in {\hat P} - K} (1-x(h))] \cdot \prod_{i \in P} (1-x(i)) $$
+  where $[{\hat P}]^j$ denotes the $j$-subsets of ${\hat P}$.
+
+  \item Recall that $P = \{i \mid p \in S_i\}$. We claim that:
+  $$\prod_{i \in P} (1-x(i)) \leq (1 - \frac{1}{|P|})^{|P|} $$
+  To find this, we first note that $\sum_{i \in P} x(i) \geq 1$ by our constraints. We wish to maximize $\prod_{i \in P} (1-x(i))$ in respect to the above constraint. Observe that this means minimizing $\sum_{i \in P} x(i)$. Thus, we direct our efforts to case $\sum_{i \in P} x(i) = 1$. \newline
+
+  We first see through calculus that the function $f(x) = (1-x)^n$ takes its maximum value at $x = \frac{1}{n}$. Note that by our constraints we restrict our domain to $x \in [\frac{1}{n},1)$. Now using this fact for general $x(i)$ such that $\sum_{i \in P} x(i) = 1$, suppose that we had the following for simplicity of argument:
+  $$ (1-c_1) = \frac{1}{n} + \epsilon, (1-c_2) = \frac{1}{n} - \epsilon, (1-c_3) = \frac{1}{n},...,(1-c_{|P|}) = \frac{1}{n} $$
+  where the $c_i$ is an enumeration of the elements in the set $P$. We calculate that:
+  $$ (1-c_1)(1-c_2) = \frac{1}{n^2} - \epsilon^2 < \frac{1}{n^2} = (1 - \frac{1}{n})(1 -\frac{1}{n}) $$
+  We can generalize this argument as follows:
+  $$(1 - c_1) = \frac{1}{n} + \epsilon_1,..., (1-c_{|P|}) = \frac{1}{n} + \epsilon_{|P|}, \quad \sum_{i=1}^{|P|} \epsilon_{i} = 0  $$
+
+  A calculation then shows that indeed $c_i = \frac{1}{n}$ is the maximum of $\prod_{i \in P} (1-x(i))$.
+
+  Since $(1 - \frac{1}{|P|})^{|P|} < 1/e$, we have the bound:
+  $$\prod_{i \in P} (1-x(i)) < 1/e $$
+
+  as required.
+
+  \item We first bound the probablity that for fixed $p \in U$, none of the $2 \ln{n}$ trials covers $p$. Denote this event by $\mathcal{E}_p$
+  $$ {\bf Pr}[\mathcal{E}_p] = \prod_{i=1}^{2 \ln{n}} {\bf Pr}[C_i \text{ doesn't cover $p$}] \leq \frac{1}{e} = e^{-2 \ln{n}} = n^{-2}$$. We then take the union bound over all $p \in U$ to get:
+  $${\bf Pr}[\bigcup_{i=1}^{2 \ln{n}} C_i \text{ is not a valid set cover}] \leq \sum_{p \in U} {\bf Pr}[\mathcal{E}_p] \leq n \cdot n^{-2} = \frac{1}{n} $$
+  Thus, the probability that $\bigcup_{i=1}^{2 \ln{n}} C_i$ outputs a valid set cover is at least $1 - \frac{1}{n}$.
+
+  \item From part one above, we know that the expected size for each $\mathcal{C}_i \leq |OPT|$. By taking union bound over all $2 \ln{n}$ collections, we bound the expected size of the collection by:
+  $$ {\bf Pr}[\text{Size of $\bigcup_{i=1}^{2 \ln{n}} \mathcal{C}_i$} ] \leq 2 \ln{n} \cdot |OPT| $$ making the size of the output set collection to be at most a $\log{n}$ factor away from $|OPT|$.
+\end{enumerate}
+\end{document}

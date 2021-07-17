@@ -1,0 +1,168 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\begin{document}
+
+\title{Math 771 Homework 1}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+\subsection*{Problem 1 (Humphreys 1.4)}
+
+\begin{proof}
+  We claim that the subspace $S$ of $\mathfrak{sl}(2,K)$ over a field $K$ with basis elements:
+  $$y = \left[ \begin{array}{ccc}
+    -1 & 0 \\
+    0 & 1 \end{array} \right], x = \left[ \begin{array}{ccc}
+      0 & 1 \\
+      0 & 0 \end{array} \right] $$ is a linear Lie algebra isomorphic to the nonabelian two-dimensional Lie algebra. Computing the bracket $[xy]$ directly shows that $S$ is nonabelian. In fact,
+      $$ [xy] = xy - yx = \left[ \begin{array}{ccc} 0 & 1 \\ 0 & 0 \end{array} \right] - \left[ \begin{array}{ccc} 0 & -1 \\ 0 & 0 \end{array} \right] = 2x $$ Thus, replacing $y$ with $\frac{1}{2}y$ yields the desired form.
+\end{proof}
+
+\subsection*{Problem 2 (Humphreys 1.6)}
+  \begin{proof}
+    It suffices to find the $\lambda$ such that
+    $$ (\text{ad }(x))(y_{\lambda}) = \lambda y_{\lambda}$$ where $y_{\lambda} \in \mathfrak{gl}(n,V)$. Let $(\lambda_i, v_i)_i$ be distinct eigenvalue-eigenvector pairs for $1 \leq i \leq n$.
+    Expanding the adjoint representation above, we get the following steps:
+    \begin{gather}
+      xy_{\lambda} - y_{\lambda}x = \lambda y_{\lambda} \\
+      xy_{\lambda}v_i - y_{\lambda}xv_i = \lambda y_{\lambda}v_i \\
+      x(y_{\lambda}v_i) - \lambda_i(y_{\lambda}v_i) = \lambda (y_{\lambda}v_i) \\
+      x(y_{\lambda}v_i)  = (\lambda + \lambda_i) (y_{\lambda}v_i)
+    \end{gather}
+    The last equality shows that $y_{\lambda}v_i$ is also an eigenvector. This suggests that $\lambda = (\lambda_j - \lambda_i)$ where $v_j = y_{\lambda}v_i$. Furthermore, we can take $y_{\lambda}$ to take values in the set of $n \times n$ matrices which map the $v_i$ to each other, which gives us the $n^2$ eigenvalues as desired.
+  \end{proof}
+
+\subsection*{Problem 3 (Humphreys 1.8)}
+\begin{proof}
+  We note that any $x \in \mathfrak{o}(2\mathcal{L},F)$ for $\mathcal{L} \in \mathbb{N}$, $sx = -x^ts$ where $s$ is the non-degenerate symmetric bilinear form $s = \left[ \begin{array}{ccc} 0 & I_{\mathcal{L}} \\ I_{\mathcal{L}} & 0 \end{array} \right]$. Expanding both sides of this equality, we get the following equalities if $x = \left[ \begin{array}{ccc} m & n \\ p & q \end{array} \right]$
+
+  \begin{gather}
+    p^t = -p \\
+    n^t = -n \\
+    m^t = -q
+  \end{gather}
+
+  We construct a basis for $\mathfrak{o}(2\mathcal{L},F)$ as follows:
+  First, we add the diagonal matrices $e_{i,i} - e_{\mathcal{L}+i,\mathcal{L}+i}$ for $1 \leq i \leq \mathcal{L}$ to ensure that our trace is zero as (3) dictates. Then we add the matrices $e_{i,j} - e_{\mathcal{L} + j,\mathcal{L} + i}$ for $1 \leq i \neq j \leq \mathcal{L}$ to satisfy $(3)$. To account for conditions $(1),(2)$, we add the matrices $e_{i,\mathcal{L} +j} - e_{j,\mathcal{L} +i}$ as $1 \leq i < j \leq \mathcal{L}$ for condition (2) and the matrices $e_{\mathcal{L} +i,j} - e_{\mathcal{L} +j,i}$ as $1 \leq i < j \leq \mathcal{L}$ for condition (3). Note that the matrices for conditions (2),(3) follow from the observation that for a matrix to be skew-symmetric, the diagonal must be zeros and the mirror entries must have alternating signs. We count the number of matrices added by the above steps in order to get the following dimension for $\mathfrak{o}(2\mathcal{L},F)$
+  $$ \mathcal{L} + (\mathcal{L}^2 - \mathcal{L}) + 2\frac{\mathcal{L} (\mathcal{L} -1)}{2} = 2 \mathcal{L}^2 - \mathcal{L} $$ as desired
+  \end{proof}
+
+\subsection*{Problem 4 (Humphreys 1.9)}
+  \begin{proof}
+    We first observe that for any Lie algebra $L$, $[LL] \subseteq L$. Thus, it suffices to prove that $L \subseteq [LL]$ for the classical linear Lie algebras:
+      \begin{enumerate}
+        \item For $\mathfrak{sl}(n,F),n\geq 1$. We first state the following property which will allows us to "move" units into arbitrary cells using the bracket product:
+        $$ e_{i,j} = \pm [e_{i,m}e_{m,j}], 1 \leq i,m,j \leq n$$
+        This can easily be recovered by calculating the bracket explicitly. From this property, we see that the matrices $e_{i,j}, i \neq j$ are contained in $[\mathfrak{sl}(n,F),\mathfrak{sl}(n,F)]$. Also,
+        $$ e_{i.i} - e_{i+1,i+1} = \pm [e_{i,i+1}e_{i+1,i}], 1 \leq i \leq n-1 $$ showing that $[\mathfrak{sl}(n,F),\mathfrak{sl}(n,F)] = \mathfrak{sl}(n,F)$
+        \item For $\mathfrak{sp}(2 n,F),n\geq 0$, it suffices to show that the $e_{i,j}$ can be generated under the bracket. Observe below that if $i \neq j$:
+        \begin{gather}
+          [e_{i,i} - e_{n+i,n+i},e_{i,j} - e_{n+j,n+i}] = e_{i,j} - e_{n + j,n + i} \\
+          [e_{i,j} - e_{n+j,n+i},e_{i,n+j} + e_{j,n+i}] = e_{i,n+i} \\
+          [e_{j,n+j},e_{ij} - e_{n+j,n+i}] = e_{i,n+j} + e_{j,n+i} \\
+          [e_{i,j} - e_{n+j,n+i},e_{j,i} - e_{n+i,n+j}] = (e_{i,i} - e_{n+i,n+i}) + (e_{j,j} - e_{n+j,n+j})
+        \end{gather} The reduction follows from the property: $e_{l,m} = e_{l,h}e_{h,m}$ for $1 \leq l,h,m \leq n$
+
+        \item For $\mathfrak{o}(2n+1,F),n\geq 0$,
+        as we calculated the brackets for many of these bases above, it suffices to show that
+        \begin{gather}
+          [e_{1,n+j+1}-e_{j+1,1},e_{n+i+1,j+1} - e_{n+j+1,i+1}] = e_{1,i+1} - e_{n+i+1,1} \\
+          [e_{1,j+1} - e_{ n+ j+1,1},e_{i+1,n+j+1} - e_{j+1,n+i+1}] = e_{1,n+i+1} - e_{i+1,1}
+        \end{gather}
+
+        \item All of the relevant bases for $\mathfrak{o}(2n,F)$ have been calculated in the previous parts above.
+
+      \end{enumerate}
+
+  \end{proof}
+
+\subsection*{Problem 5 (Humphreys 2.3)}
+  \begin{proof}
+    By definition, any $y \in Z(\mathfrak{gl}(n,F))$ must satisfy
+    $$ xy = yx $$ for all $x \in \mathfrak{gl}(n,F)$ i.e $y$ must commute with all such $x$. We argue that $y = \lambda I_n$ since $I_n$ is the unique element in $\mathfrak{gl}(n,F)$ which fixes both the rows and columns of any such endomorphism $x$. Furthermore, any element which commutes with all elements in $\mathfrak{gl}(n,F)$ must satisfy this property. To see this, let $z \in \mathfrak{gl}(n,F)$ any matrix not a scalar multiple of $I_n$. We can decompose $z$ into elementary (basis) matrices i.e matrices $e_{i,j}$ with the unit $1$ in the $1 \leq i,j \leq n$ cell. By definition, $z$ must have $e_{p,q},p\neq q$ in its decomposition and/or missing an $e_{i,i}$ for some $1 \leq i \leq n$. \par
+
+      Let us first consider the former case. Let $x \in \mathfrak{gl}(n,F),x \neq \bold{0}$ and observe that $e_{p,q}x$ places the $q^{th}$ row in the $p^{th}$ row in $x$ and kills the other rows. On the other hand, $xe_{p,q}$ places the $p^{th}$ column in the $q^{th}$ column and kills the other columns. We can see that generally $e_{p,q}x \neq x e_{p,q}$. \par
+
+      For the latter case, we note that a missing diagonal entry $e_{i,i}$ will annilhate the $i^{th}$ row
+      as seen by the product $(I_n - e_{i,i})x$ and similarly it will annilhate the $i^{th}$ column in  $x(I_n - e_{i,i})$. Thus, any non-zero element in row $i$ or column $i$ not on the diagonal of $x$ will show that $ (I_n - e_{i,i})x \neq x(I_n - e_{i,i})$. This shows that the scalar matrices are exactly the matrices which commute with every member in $\mathfrak{gl}(n,F)$. \par
+
+      To show that $Z(\mathfrak{sl}(n,F))$ is trivial, we see that the matrices $e_{i,i}-e_{i+1,i+1}$ for $(1 \leq i \leq n)$ and $e_{i,j}$ for $i \neq j$ for the basis for $\mathfrak{sl}(n,F)$. By invoking the argument above for the $e_{i,j}$, we see that none of the scalar matrices have zero trace and hence none of them are contained in $\mathfrak{sl}(n,F)$. Hence, if $F$ has characteristic 0, then $Z(\mathfrak{sl}(n,F)) = 0$. If $(\text{char } F) \vert n$, then $Tr(\lambda I_n) = \lambda n = 0$. Thus, in the latter case, $Z(\mathfrak{sl}(n,F)) = \mathfrak{s}(n,F)$.  \end{proof}
+
+  \subsection*{Problem 6 (Humphreys 2.5)}
+    \begin{proof}
+
+      Let $\mathcal{L}$ be the Lie algebra with properties assumed in the problem. We first compute the basis of $[\mathcal{L}\mathcal{L}]$ which gives the elements: $[eh],[ef],[hf]$. Since $[\mathcal{L}\mathcal{L}] = \mathcal{L}$, it follows that each bracket element must be equal to a distinct basis element of $\mathcal{L}$. Closer inspection yields that the pairs must exactly be $[eh] = f,[ef] = h,[hf] = e$ as any other permutation contradicts the Jacobi Identity (assuming $\mathcal{L} \neq 0$). We now show that any non-trivial subspace is not closed under the bracket operation for an arbitrary element in $\mathcal{L}$. We present the following equalities for $[eh]$:
+
+      $$ [e[eh]] = [ef], [f[eh]] = 0, [h[eh]] = [hf] $$
+
+      This shows that the subspace spanned by $[eh]$ is not closed under the bracket operation with any of the basis elements. Repeating this for all bracket basis elements, we see that any proper subspace is not closed under the bracket operation. Thus, the only ideals are the trivial ones ($0,\mathcal{L}$), proving simplicity of $\mathcal{L}$.
+
+      By Problem 4 (Humphreys 1.9), $[\mathfrak{sl}(2,F),\mathfrak{sl}(2,F)] = \mathfrak{sl}(2,F)$ and $\text{dim }\mathfrak{sl}(2,F) = 3$. Thus, it must be simple.
+    \end{proof}
+
+  \subsection*{Problem 7 (Humphreys 2.6)}
+    \begin{proof}
+      Assume that $I \neq 0$ is a non-zero ideal in $\mathfrak{sl}(3,F)$. By definition, $\text{ad }(h_1)(I) \subseteq I$. This suggests that $I$ must contain the eigenvectors from $i_1 = \text{ad }(h_1)$ or $i_2 = \text{ad }(h_2)$. By calculating the $\text{ad }(h_1)(e_{i,j})$ where $i \neq j$, we see that all such $e_{i,j}$ are eigenvectors with non-zero eigenvalues in 1,-1,2,-2. Furthermore:
+      $$[e_{2,1}e_{1,2}] = \left[ \begin{array}{ccc} 1 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 0\end{array} \right], [e_{3,2}e_{2,3}] = \left[ \begin{array}{ccc} 0 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 1 \end{array} \right]$$ Combining these observations, we see that $I$ contains all of the basis elements of $\mathfrak{sl}(3,F)$. We execute a similar analysis for $\text{ad }(h_2)$ to yield the same conclusions, proving the simplicity of $\mathfrak{sl}(3,F)$.
+    \end{proof}
+
+  \subsection*{Problem 8 (Humphreys 3.2)}
+  \begin{proof}
+    Suppose that $\mathcal{L}$ is solvable. Then $$\mathcal{L}^{(k)} = 0 $$ for some $k \in \mathbb{N}$.
+    Now consider the chain of $\mathcal{L} \supseteq \mathcal{L}^{(1)} = [\mathcal{L}\mathcal{L}] \supseteq \mathcal{L}^{(2)} = [\mathcal{L}^{(1)}\mathcal{L}^{(1)}] \supseteq ... \supseteq \mathcal{L}^{(k)} = 0$. This is a chain of subalgebras where each $L^{(i+1)}$ is an ideal of $L^{(i)}$ (since we take the closure of $L^{(i)}$ under the bracket operation). We also see that $L^{(i)}/L^{(i+1)}$ is abelian as $[\overline{L^{(i)}},\overline{L^{(i)}}] \subseteq \overline{L^{(i+1)}} = \overline{0}$ as equivalence classes. Now assume that such a chain of subalgebras $L \supseteq L_1 \supseteq ... \supseteq L_k = 0$ with the above properties exists in $\mathcal{L}$. Since $L/L^{(1)}$ is abelian, $[\overline{\mathcal{L}},\overline{\mathcal{L}}] \subseteq \overline{0}$ and thus $[\mathcal{L}\mathcal{L}] \subseteq L_1$. We can repeat this process with the inclusion at step $i$ as $$ \mathcal{L}^{(i)} \subseteq L_{i+1} $$ Since $L_k = 0$ for some $k$, $\mathcal{L}$ is solvable as desired.
+  \end{proof}
+  \subsection*{Problem 9 (Humphreys 3.3)}
+  \begin{proof}
+    Set the basis elements of $\mathfrak{sl}(2,F)$ as
+    $$ e = \left[ \begin{array}{ccc}
+      0 & 1 \\
+      0 & 0 \end{array} \right], f = \left[ \begin{array}{ccc}
+      0 & 0 \\
+      1 & 0 \end{array} \right], h = \left[ \begin{array}{ccc}
+      -1 & 0 \\
+      0 & 1 \end{array} \right]  $$ Calculating the bracket product for pairs yields the following:
+      \begin{gather}
+        [e,f] = h \\
+        [h,f] = -2f \\
+        [h,e] = 2e
+      \end{gather} Since $\text{char } F = 2$, $[h,f] = [h,e] = 0$. Furthermore, $[(e+f+h,[e,f])] = [(e+f+h,h)]$. Expanding the bracket yields:
+
+      $$ [e,h] + [f,h] = (ef - fe) + (fh - hf) = \left[ \begin{array}{ccc} 0 & 0 \\ 0 & 0 \end{array} \right] + \left[ \begin{array}{ccc} 0 & 0 \\ -2 & 0 \end{array} \right] = 0 $$ This shows that $(\mathfrak{sl}(2,F))^2 = 0$
+  \end{proof}
+
+  \subsection*{Problem 10 (Humphreys 3.4)}
+    \begin{proof}
+      For solvability, if Lie algebra $\mathcal{L}$ is solvable, then $\text{ad } \mathcal{L}$ is also solvable as its homomorphic image. Conversely, if  $\text{ad } \mathcal{L}$ is solvable, the $\mathcal{L}/Z(\mathcal{L})$ is also solvable. Since  $Z(\mathcal{L})$ is also solvable ($[Z(\mathcal{L}),Z(\mathcal{L})] = 0$), it follows that $\mathcal{L}$ is also solvable. The argument for nilpotency executes similarly.
+    \end{proof}
+
+  \subsection*{Problem 11 (Humphreys 3.6)}
+    \begin{proof}
+        Let $I,J \subseteq \mathcal{L}$ be two nilpotent ideals in Lie algebra $\mathcal{L}$. We first note that for ideal $I$,
+        $$ [I_n[....[I_2[I_1,I_0]]...]] \subseteq I^n$$ where $I_i = I$ and $0 \leq i \leq n$. This holds for $J$ as well. Let $k_1,k_2 \in \mathbb{N}$ be such that $I^{k_1} = J^{k_2} = 0$. We claim that $(I+J)^{2(k_1 + k_2)} = 0$. To begin, we observe that if $(I + J)^n$ for some $n \in \mathbb{N}$, then the terms of the expanded form will look like the following:
+        $$ [k_n,[...[k_3[k_2,k_1]]...]$$ where the $k_1$ take values in either $I$ or $J$. Thus, if $n = 2(k_1 + k_2)$, then every term must have at least $k_1 + k_2$ $I$ terms and at least $k_1 + k_2$ $J$ terms. By our assumption above, this means all terms go to zero, and thus $I+J$ is nilpotent as required.
+    \end{proof}
+
+  \subsection*{Problem 12 (Humphreys 3.7)}
+      \begin{proof}
+        Let $\mathcal{L}$ be a finite-dimensional Lie algebra. By Engel's Theorem, we know that $\text{ad }(\mathfrak{L}) \subseteq \mathfrak{gl}(\mathcal{L})$ consists of nilpotent endomorphisms. By the isomorphism,
+        $$ \mathfrak{L} / Z(\mathfrak{L}) \rightarrow \text{ad }(\mathfrak{L})$$ We can identify the proper subalgebra $K \subset \mathfrak{L}$ with $\text{ad }(K) \subset \text{ad }(\mathfrak{L})$.
+        We then induct in the fashion of Theorem 3.3 to deduce that $\text{ad }(K)$ is properly included in the $N_{\text{ad }(L)}(\text{ad }(K))$. Identifying this with $\mathfrak{L} / Z(\mathfrak{L})$, a simple argument shows that if $\text{ad }(x) \in N_{\text{ad }(L)}(\text{ad }(K)) - \text{ad }(K)$, then $[\overline{x}{\overline{K}}] \subset \overline{K}$ in  $ \mathfrak{L} / Z(\mathfrak{L})$ with $\overline{x} \in N_{\mathfrak{L} / Z(\mathfrak{L})}(\overline{K}) - \overline{K}
+        $. Thus, $x \in N_L(K)$, but not in $K$.
+      \end{proof}
+
+    \subsection*{Problem 13 (Humphreys 3.8)}
+      \begin{proof}
+        Let $\mathcal{L}$ be a nilpotent finite-dimensional Lie algebra, and let $K$ be a maximal proper subalgebra of $\mathcal{L}$. We check that $N_{\mathcal{L}}(K)$ is a subalgebra of $\mathcal{L}$ by direct calculation. For $x,y \in N_{\mathcal{L}}(K)$, we see that $[x+y,N_{\mathcal{L}}(K)] \subseteq N_{\mathcal{L}}(K)$ by definition of the bracket, and that $[[xy],N_{\mathcal{L}}(K)] \subseteq N_{\mathcal{L}}(K)$ by the Jacobi Identity. \par
+
+        By Problem 13 above, we see that $N_{\mathcal{L}}(K) = \mathcal{L}$ which shows that $K$ is indeed an ideal. Also, if the dimension of the quotient algebra $\mathcal{L} / K$ is greater than one, we could take the trivial one-dimensional subalgera generated by one of the elements (where if $\overline{x}$ is the generator, then $[\overline{x},\overline{x}] = \overline{0} = K$) and its inverse image to get another subalgebra. We conclude that $x + K \subset \mathcal{L}$ is a subalgebra properly containing $K$, contradiction. Hence, it must have codimension one.
+      \end{proof}
+\end{document}

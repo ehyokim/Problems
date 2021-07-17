@@ -1,0 +1,94 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\begin{document}
+
+\title{CS 630 HW 4}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+\section*{Problem 1}
+Using the NetworkX/Scipy python packages, we compute second eigenvalue of our $N = D^{-1/2}AD^{-1/2}$ to be:
+$$\lambda_2 \approx 0.93386 $$
+We also apply the specteral clustering algorithm to get our minimum conductance to be:
+$$ \Phi \approx 0.12828$$
+This obeys Cheeger's inequality:
+$$ \frac{(0.12828)^2}{16} \leq 1 - 0.93386 \leq  0.12828$$
+$$ 0.001028 < 0.06613 < 0.12828$$
+Calculating the conductance for ten random cuts on the graph yields the following mean:
+$$ \Phi_{\text{Rand Avg}} \approx 0.52395$$
+We see that spectral clustering method yields cuts with conductances smaller by nearly a factor of 4.5.
+
+\section*{Problem 2}
+For the range space $(X,\mathcal{C}_k)$ such that $X = \{1,2,...,n\}$ and $\mathcal{C}_k$ is the set of all subsets of cardinality $k \in [0,n]$, we claim that that VC dimension of such $\mathcal{C}_k$ is:
+$$ \dim_{VC}(\mathcal{C}_i) = k \quad \text{ for } i = k, n-k $$ where
+$0 \leq i \leq \frac{n}{2}$. To see this, note that, by definition, for $\mathcal{C}_k$ to shatter a subset $S \subseteq X$:
+$$ \exists C_1 \in \mathcal{C}_k, \; C_1 \cap S = S \; \wedge \; \exists C_2 \in \mathcal{C}_k, \; C_2 \cap S = \emptyset $$
+Now suppose that $i = k, n-k$ for some $0 \leq i \leq \frac{n}{2}$.
+We first show that $C_i$ shatters some subset $S$ such that $|S| \leq i$. Indeed every element $H \in 2^S$ can be expressed by picking the required elements contained in $H$ and the rest in $X\backslash H$. \newline \newline
+Since $|X \backslash S| \geq i$ and $|S| \leq i$, we, in particular, can express $S$ by choosing an $i$-subset $C_1$ such that $S \subseteq C_1$ and $\emptyset$ by choosing an $i$-subset $C_2$ such that $C_2 \subseteq X \backslash S$. \newline \newline
+Thus every such element $H \in 2^S$ can be expressed as such, leading to $S$ becoming shattered by $\mathcal{C}_i$. On the other hand, we show that no $k+1$-subset of $X$ can be shattered by such $\mathcal{C}_i$. We take this by cases:
+\begin{enumerate}
+  \item Suppose that $i = k$ and our $S \subseteq X$ is a $k+1$-subset. Then there exists no $C \in C_{k}$ such that $C \cap S = S$ simply by cardinality.
+  \item Suppose that $i = n-k$ and once again our $S \subseteq X$ is a $k+1$-subset. Then there exists not $C \in C_{n-k}$ such that $C \cap S = \emptyset$ since every such $C$ must have non-trivial intersection with $S$ as we cannot have a $C$ which evades all $k+1$ elements in $S$.
+\end{enumerate}
+Hence our maximum cardinality of a shattered $S$ is $k$ for $\mathcal{C}_i$, giving us the claimed result.
+
+\section*{Problem 3}
+\begin{enumerate}
+  \item We first show that there exists four points on the plane which can be shattered by the range $\mathcal{R}$ of axis-aligned rectangles. Consider four vertices of a rhombus on a plane, $$(-x,0),(0,x), (0,y),(0,-y)$$ for some $x,y \in \mathbb{R}$. Evidently, these four points are shatterable by $\mathcal{R}$ as every 2-subset can be covered by axis-aligned rectanges covering each quadrant, and every 3-subset can be covered by considering the rectanges which cover the two half-planes divided by the x-axis and the two half-planes divided by the y-axis. \newline \newline
+  We now show that no set of five points on the plane is shatterable by $\mathcal{R}$. First, consider the case where at least three of the five points are colinear, say $p_1,p_2,p_3$. Then there exists no axis-aligned rectange which separates one of the points from the other two as any such rectange that contains say $p_1,p_3$ must contain the line segment $p_1,p_3$. Such a line segment must necessarily contain $p_2$. \newline \newline
+  Now we consider the more general case. For five points $P = \{p_1,p_2,p_3,p_4,p_5\}$ such that no three points are colinear. Let $x,y$ be the x-axis, y-axis projection maps. Let $(x_1,x_2)$ be two points which attain
+  $\max_{p_i,p_j \in P} |x(p_i) - x(p_j)|$. Similarly let $(y_1,y_2)$ be two points which attain
+  $\max_{p_i,p_j \in P} |y(p_i) - y(p_j)|$. Let $P_{\max} = \{x_1,x_2,y_1,y_2\}$ accounting for the fact that the points chosen may not all be unique. Then there exists no axis-aligned rectange which separates $P\backslash P_{\max}$ from $P_{\max}$. To see this, observe that by construction we chose points which generate a rectange immediately capturing all five points on the plane. For if $p \in P$ is a point which is not contained in this rectange, then either $\max_{p_i} |x(p) - x(p_i)|$ or  $\max_{p_i} |y(p) - y(p_i)|$ is greater than the points chosen above, contradicting maximality. \newline \newline
+  Thus, we see that $\dim_{VC}(\mathbb{R}^2,\mathcal{R}) = 4$ as we can repeat this argument for larger numbers of points.
+
+  \item First, any isosceles triangle based at the origin with vertices:
+  $$(-x,0),(x,0),(0,y)$$ for $x,y \in \mathbb{R}, y > x$ is shatterable by the range of axis-aligned squares $\mathcal{R}$. Two squares of the same dimensions can cover both $(-x,0),(0,y)$ and $(x,0),(0,y)$. Furthermore, one square of length $2x$ centered at the origin captures $(-x,0), (x,0)$. Thus, the VC dimension must be at least three. \newline \newline
+  To show equality, for any four points $P = \{p_1.p_2.p_3.p_4\}$ choose three points say $x_1,x_2,x_3$ such that $|x(x_1) - x(x_2)| \geq |x(x_3) - x(p)|$ or $|y(x_1) - y(x_2)| \geq |y(x_3) - y(p)|$ where $p$ is one of the remaning points left after choosing $x_1,x_2,x_3$. The main observation is that any square encompassing these three points will automatically encompass the fourth one by our choice above, giving us that $\dim_{VC}((\mathbb{R}^2,\mathcal{R})) = 3$.
+
+  \item Given the range space $(\mathbb{R}^{d},\mathcal{R})$ where $\mathcal{R}$ consists of all half-spaces determined by hyperplanes in $\mathbb{R}^{d}$. Note that the vertices of the unit simplex in $\mathbb{R}^{d}$
+  are the positive unit orthonormal vectors $e_i, \; 1 \leq i \leq d$ along side the origin $0 \in \mathbb{R}^d$. We claim that the set of these $d$ vertices $V$ are shatterable by our $\mathcal{R}$. Let $S \subseteq V $ be some subset of $V$ and
+  $$ v_S = \sum_{e_i \in S} e_i $$ define the normal vector to a hyperplane $\mathcal{H}$ defining two halfspaces. Let $e_j \in V \backslash S$, then
+  $$ e_j \cdot v_S = e_j \cdot \sum_{e_i \in S} e_i = \sum_{e_i \in S} e_j\cdot e_i  = 0$$ Hence, $X/S$ lie on the hyperplane but all vectors in $S$ lie on the postive side of $\mathcal{H}$. By negating the direction of the halfspace to not include any element in $S$, we see that this half-space contains $V\backslash S$, but not $S$. We can also translate the constructed normal vector to account for the addition or subtraction of the origin. As $S$ was chosen arbitrarily, we can express every $S \in 2^V$ as an intersection of $V$ with a half-space. This gives us that $V$ is shatterable as required and that the VC dimension is at least $d+1$. \newline \newline
+  Furthermore, we show equality as follows.
+  Suppose we had a set $P = \{x_1,...,x_{d+2}\}$ of $d+2$ points living in $\mathbb{R}^d$. Suppose that no $d+1$ points are coplanar as this case automatically shows that no half-space can shatter the $d+1$ points. Now consider the convex hull of $P$ denoted by $CH(P)$. Any $d$-subset of $P$ defines a hyperplane in $\mathbb{R}^d$ containing the $d$ vertices of $CH(P)$. Let $\mathcal{H}$ be a hyperplane defined by choosing a $d$-subset of non-neighboring vertices say $P_{\mathcal{H}}$. This gives two vertices of the convex hull which lie on different sides of $\mathcal{H}$. Indeed, there can be no half-space which separates $P_{\mathcal{H}}$ from the two remaining vertices as no matter the half-space orientation chosen, the projection on $P$ will always contain of the two vertices.
+
+  This finally shows that $\dim_{VC}(\mathcal{R}) = d+1$
+\end{enumerate}
+
+\section*{Problem 4}
+Suppose that for range spaces $S = (X,R)$ and $S' = (X,R')$, the VC dimension of $S'$ was greater than that of $S$. Then $R'$ must shatter some $F \subseteq X$ such that $|F| = \dim_{VC}(S)+1$. However, since $R'\subseteq R$, this immediately gives us that $R$ must shatter $F$ as well since:
+$$ 2^F = \{r' \cap F \mid r' \in R'\} \subseteq \{ r \cap F \mid r \in R\}$$
+This shows that $S$ shatters $F$ as well which contradicts the VC dimension of $S$. Hence, no subset of ranges can have higher VC dimension than its total set of ranges.
+
+\section*{Problem 5}
+We first show that for every isomorphism class of rooted tree $T$, the polynomial generated by our scheme is unique to the isomorphism class of $T$. Note that by our definition of isomorphisms between rooted trees, the map respects each node's children. This in turn preserves the height of the node as well. To see this, suppose that for node $v$ in a rooted tree $T$, there exists some isomorphism $f: T \rightarrow T$ such that $h(v) \neq h(f(v))$ where $h: T \rightarrow \mathbb{N}$ is the height function. Then if $v$ is a leaf node, we $f(v)$ must also be a leaf node. However, each of the ancestors of $f(v)$ must then respect the map $f$. This leads to contradiction as no such one-to-one mapping of the ancestors can exist between two branches of differing height. A similar argument follows for tree nodes with children where we consider that two such tree nodes with differing heights cannot induce a one-to-one mapping between its offspring. \newline \newline
+With the above in mind, we show that the polynomial is unique by inducting on the height of the rooted tree $T$. The polynomial is clearly unique for height one rooted trees. Suppose that the assumption holds up to some height $h$. Let $T$ have height $h+1$, where the root $v_1$ has children
+$c_1,...,c_n$ which subtrees of height at most $h$. By the induction hypothesis, the polynomials generated by subtrees $c_1,...,c_n$ are all unique to it their respective isomorphism classes. By our scheme, the total polynomial for $T$ will be:
+$$ P = (v_1 - P_{c_1}(x)) (v_1 - P_{c_2}(x))...(v_1 - P_{c_n}(x))$$ We reindex our varialbes in each of the $P_{c_i}$ polynomials to be consistent with the height indexing of the scheme.
+We see that the variable $v_1$ is not contained in any of the $P_{c_i}$ and $P$ is a product of unique terms, making $P$ unique to the isomorphism class of $T$ as desired. This shows that two rooted trees are isomorphic iff their polynomials are identical. We use Freivald's technique for polynomial identity testing on $Q(x) = P_1(x) - P_2(x)$ to give us our randomized algorithm where $P_1,P_2$ are the polynomials generated by two rooted trees $T_1,T_2$ respectively.
+
+\section*{Problem 6}
+For two multisets of integers $S_1,S_2$, construct the following polynomials:
+$$ P_{S_i} = \prod_{\ell \in S_i} (x - \ell) \quad i = 1,2 $$
+These polynomials are unique to $S_1,S_2$ as each polynomial is uniquely determined by its roots. Thus, we leverage Freivald's technique on $Q(x) = P_{S_1} - P_{S_2}$ to derive a randomized algorithm for testing equality of $S_1,S_2$. There are two properties of the multi-sets $S_1,S_2$ which affect the cost of evaluating their respective polynomials are the cardinality of the multisets and the size of the constituent integers. The degree of the respective polynomials increase linearly with the cardinality of the multisets. By the Schwartz-Zippel lemma, we must increase our candidate set $|\mathbb{S}|$ to ensure that the probability of a false positive remains reasonably low. This means sampling from a larger candidate set. Furthermore,
+evalulating the polynomials with enormous coefficients could be costly. For such cases, simply sorting the sets, which only involves comparisions between values, could be more efficient especially for sets of small cardinality.
+
+\section*{Problem 7}
+Suppose we want to test if a specific edge $e = (v_1,v_2) \in E$ is contained in some perfect matching. Construct a new graph $G_e$ with $e$ removed from the original graph $G$. Run the algorithm for the existence of a perfect matching on $G_e$. If the algorithm outputs no, then we keep the edge. If yes, we remove it entirely and start over with $G_e$ and the remaning edges. We do this for all $m$ edges and the output will be a perfect matching on $G$. \newline \newline
+Correctness simply follows from the observation that a perfect matching exists at every iteration, and the algorithm refines the graph until we consider all edges in $G$. Suppose that there exists exactly one perfect matching $M \subseteq E$ on $G$. Then by construction only the edges contained in $M$ will survive the course of the algorithm. If there is at least one other perfect matching available, say $N$, then the existence procedeure will output yes once an edge from $N$ is removed. The procedure will remove this edge from $N$ which will no longer make it a perfect matching. This will occur for all such perfect matchings in which case the analysis reduces to the first case above. \newline \newline
+We run the existence algorithm for all $m$ edges giving us the running time:
+$\mathcal{O}(mT(m,n))$.
+
+
+
+\end{document}

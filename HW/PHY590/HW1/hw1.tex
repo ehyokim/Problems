@@ -1,0 +1,311 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{physics}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\begin{document}
+
+\title{PHY 590 HW 1}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+\subsection*{Problem 1}
+We first consider the case where the initial state of qubit $E$ is $\ket{\psi_E} = \cos(\theta)\ket{0} + \sin(\theta)\ket{1}$. The state of system $S$ after sending the qubits through the $CNOT$ channel can found by the below expression:
+$$\sigma_{S} = Tr_E[CNOT\left(\rho_S \otimes \ket{\psi_E}\bra{\psi_E} \right)CNOT^{\dagger}] $$
+where $\rho_S = \ket{\phi_S}\bra{\phi_S}$ for some $\ket{\phi_S}= a\ket{0} + b\ket{1}, a,b \in \mathbb{C}$. We thus have the following equivalences:
+\begin{gather*}
+  CNOT\left(\rho_S \otimes \ket{\psi_E}\bra{\psi_E} \right)CNOT^{\dagger} = \\
+  \left[\begin{matrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & 0 & 0 & 1 \\
+    0 & 0 & 1 & 0 \\
+  \end{matrix}\right] \left(
+  \left[
+  \begin{matrix}
+    aa^* & ab^* \\
+    ba^* & bb^*
+  \end{matrix}
+  \right]
+  \otimes
+  \left[
+  \begin{matrix}
+    \cos^2(\theta) & \cos(\theta)\sin(\theta) \\
+    \sin(\theta)\cos(\theta) & \sin^2(\theta)
+  \end{matrix}
+  \right]
+  \right)
+  \left[
+  [\begin{matrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & 0 & 0 & 1 \\
+    0 & 0 & 1 & 0 \\
+  \end{matrix}
+  \right]
+\end{gather*}
+By multiplying and evaluating the partial trace over system $E$, we have the criteria for the Kraus operators $\{M_i\}$:
+\begin{gather*}
+  \sum_i M_i
+  \left[
+  \begin{matrix}
+    aa^* & ab^* \\
+    ba^* & bb^*
+  \end{matrix}
+  \right] M_i^* =   \left[\begin{matrix}
+      aa^* & 2ab^*\sin(\theta)\cos(\theta) \\
+      2ba^*\sin(\theta)\cos(\theta) & bb^*
+    \end{matrix}\right]
+\end{gather*}
+This gives us our Kraus operators as $$M_1 =   \left[\begin{matrix}
+    \cos(\theta) & 0 \\
+    0 & \sin(\theta)
+  \end{matrix} \right], \quad M_2 = \left[\begin{matrix}
+      \sin(\theta) & 0 \\
+      0 & \cos(\theta)
+    \end{matrix} \right] $$
+  since
+  \begin{gather*}
+    \sum_i M_i
+    \left[
+    \begin{matrix}
+      aa^* & ab^* \\
+      ba^* & bb^*
+    \end{matrix}
+    \right] M_i^* = \\
+    \left[\begin{matrix}
+        \sin(\theta) & 0 \\
+        0 & \cos(\theta)
+      \end{matrix} \right]
+    \left[
+        \begin{matrix}
+          aa^* & ab^* \\
+          ba^* & bb^*
+        \end{matrix}
+        \right]
+        \left[\begin{matrix}
+            \sin(\theta) & 0 \\
+            0 & \cos(\theta)
+          \end{matrix} \right] +
+          \left[\begin{matrix}
+              \cos(\theta) & 0 \\
+              0 & \sin(\theta)
+            \end{matrix} \right]
+          \left[
+              \begin{matrix}
+                aa^* & ab^* \\
+                ba^* & bb^*
+              \end{matrix}
+              \right]
+              \left[\begin{matrix}
+                  \cos(\theta) & 0 \\
+                  0 & \sin(\theta)
+                \end{matrix} \right] = \\
+                \left[
+                    \begin{matrix}
+                      aa^*(\cos^2(\theta)+\sin^2(\theta)) & 2ab^*\cos(\theta)\sin(\theta) \\
+                      ba^*\cos(\theta)\sin(\theta) & bb^*(\cos^2(\theta)+\sin^2(\theta))
+                    \end{matrix}
+                    \right] = \\ \left[\begin{matrix}
+                        aa^* & 2ab^*\sin(\theta)\cos(\theta) \\
+                        2ba^*\sin(\theta)\cos(\theta) & bb^*
+                      \end{matrix}\right]
+  \end{gather*}
+  Furthermore,
+  \begin{gather*}
+    \sum_i M_i^* M_i = \left[\begin{matrix}
+        \cos^2(\theta) + \sin^2(\theta) & 0 \\
+        0 & \sin^2(\theta) + \cos^2(\theta)
+      \end{matrix} \right] = I_S
+  \end{gather*} \newline
+Similarly for the case where $\ket{\psi_E} = \frac{\ket{0}\bra{0} + \ket{1}\bra{1}}{2} = \frac{I_E}{2}$, we compute the following:
+\begin{gather*}
+  CNOT\left(\rho_S \otimes \ket{\psi_E}\bra{\psi_E} \right)CNOT^{\dagger} = \\
+  \left[\begin{matrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & 0 & 0 & 1 \\
+    0 & 0 & 1 & 0 \\
+  \end{matrix}\right] \left(
+  \left[
+  \begin{matrix}
+    aa^* & ab^* \\
+    ba^* & bb^*
+  \end{matrix}
+  \right]
+  \otimes
+  \left[
+  \begin{matrix}
+    \frac{1}{2} & 0 \\
+    0 & \frac{1}{2}
+  \end{matrix}
+  \right]
+  \right)
+  \left[
+  [\begin{matrix}
+    1 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 \\
+    0 & 0 & 0 & 1 \\
+    0 & 0 & 1 & 0 \\
+  \end{matrix}
+  \right]
+\end{gather*}
+Once again, by tracing out system $E$, we have the following constraints for our Kraus operators $\{M_i\}$:
+\begin{gather*}
+  \sum_i M_i
+  \left[
+  \begin{matrix}
+    aa^* & ab^* \\
+    ba^* & bb^*
+  \end{matrix}
+  \right] M_i^* = \left[
+  \begin{matrix}
+    aa^* & 0\\
+    0 & bb^*
+  \end{matrix}
+  \right]
+\end{gather*}
+This leads us to the two operators:
+$$M_1 = \left[
+\begin{matrix}
+  1 & 0 \\
+  0 & 0
+\end{matrix}
+\right], \quad M_2 = \left[
+\begin{matrix}
+  0 & 0 \\
+  0 & 1
+\end{matrix}
+\right] $$
+A simple calculation shows that these operators fufill the constraints above and that $\sum_i M_i^*M_i = I_s$ as required.
+
+\subsection*{Problem 2}
+\begin{enumerate}
+  \item Recall that a state $\rho$ is pure iff $Tr(\rho^2) = 1$. Assuming the purity of state $\rho$:
+  $$ Tr(\mathcal{T}(\rho)^2) = Tr(\mathcal{T}(\rho^2)) = Tr(\rho^2) = 1$$
+  The second-to-last equality follows from the fact that the transpose leaves the trace invariant. By our equivalence above, we have shown that the transpose map $\mathcal{T}$ maps pure states to pure states.
+  \item Given two pure states $\ket{\psi},\ket{\phi}$, we observe the action of $\mathcal{T}$ on $\ket{\phi}
+  \bra{\phi}$, $\ket{\psi}
+  \bra{\psi}$ on fixed orthonormal basis $\{i\}, 1 \leq i \leq n$:
+    \begin{gather*}
+    \mathcal{T}(\ket{\psi}\bra{\psi}) = \mathcal{T}(\ell_0\ell_0^*\ket{0}\bra{0} + \ell_0\ell_1^*\ket{0}\bra{1} + \ell_0\ell_2^*\ket{0}\bra{2} + ... + \ell_{i}\ell_{j}^* \ket{i}\bra{j} + ... + \ell_{n}\ell_n^* \ket{n}\bra{n}) \\
+    = \ell_0\ell_0^*\ket{0}\bra{0} + \ell_0\ell_1^*\ket{1}\bra{0} + \ell_0\ell_2^*\ket{2}\bra{0} + ... + \ell_{i}\ell_{j}^* \ket{j}\bra{i} + ... + \ell_{n}\ell_n^* \ket{n}\bra{n} \\
+    = (\ell_0^*\ket{0} + \ell_1^* \ket{1} + ... + \ell_n^* \ket{n})(\ell_0 \bra{0} + \ell_1 \bra{1} + ... + \ell_n \bra{n})
+    \end{gather*}
+    Thus, if we let $\ket{\phi} = \sum_{i=0}^n c_i\ket{i}$ and $\ket{\psi} = \sum_{i = 0}^n \ell_i\ket{i}$,
+    we see that the inner product of the their output states after $\mathcal{T}$ is
+    $$ \sum_{i=1}^n c_i^*\ell_i^* = \sum_{i=1}^n (c_i\ell_i)^* = (\sum_{i=1}^n c_i\ell_i)^*$$
+    and by definition:
+    $$ |(\sum_{i=1}^n c_i\ell_i)^*| = |\sum_{i=1}^n c_i\ell_i| = |\bra{\phi}\ket{\psi}|$$ as required.
+  \item Pure states correspond to Bloch vectors on the surface of the Bloch  sphere. Thus, we can interpret the transpose map taking vectors on the Bloch sphere and transforming it to the Bloch vector on the surface corresponding to its complex conjugates.
+ \end{enumerate}
+ \subsection*{Problem 3}
+  For both 3-qubit systems, we trace on the system of the third qubit. First, for $\ket{GHZ}:$
+  \begin{gather*}
+    Tr_3(\ket{GHZ}\bra{GHZ}) = Tr_3(\frac{1}{2}[\ket{000}\bra{000} + \ket{111}\bra{000} + \ket{111}\bra{000} + \ket{111}\bra{111}] \\
+    =  \frac{1}{2} \bra{0}[\ket{000}\bra{000} + \ket{111}\bra{000} + \ket{111}\bra{000} + \ket{111}\bra{111}]\ket{0} + \\ \frac{1}{2}\bra{1}[\ket{000}\bra{000} + \ket{111}\bra{000} + \ket{111}\bra{000} + \ket{111}\bra{111}]\ket{1}
+    = \frac{1}{2}[(\ket{00}\bra{00} + \ket{11}\bra{11})] = \frac{I}{2}
+  \end{gather*}
+  which is exactly the maximally mixed state involving two qubits. Thus, the reduced state cannot be entangled.
+  Finally, for $\ket{W}$:
+  \begin{gather*}
+    Tr_3(\ket{W}\bra{W}) = \\
+    Tr_3(\frac{1}{3}[\ket{001}\bra{001} + \ket{001}\bra{010} + \ket{001}\bra{100}] + \\
+    \frac{1}{3} [\ket{010}\bra{001} + \ket{010}\bra{010} + \ket{010}\bra{100}] + \\
+    \frac{1}{3} [\ket{100}\bra{001} + \ket{100}\bra{010} + \ket{100}\bra{100}]) = \\
+    \frac{1}{3}[\ket{00}\bra{00} + \ket{01}\bra{01} + \ket{10}\bra{10}
+    + \ket{01}\bra{10} + \ket{10}\bra{01}]
+  \end{gather*}
+  This state is not separable, and is thus entangled.
+
+  \subsection*{Problem 4}
+  \begin{enumerate}
+    \item Let $\rho_{AB}$ be a separable state. We can then write this state as a convex combination of separable states as such:
+    $$\rho_{AB} = \sum_{i,j=1}^n p_{i,j} [\rho_{A}^i \otimes \rho_{B}^j] $$ where $\rho_A^i,\rho_B^j$  are density operators on systems $A,B$ respectively and $\sum_{i,j=1}^n p_{i,j} = 1$. This gives us the following series of equivalences:
+    \begin{gather*}
+        Tr(\rho_{AB}S_{AB}) = Tr(S_{AB}\rho_{AB}) = Tr(\sum_{i,j=1}^n p_{i,j} S_{AB}[\rho_{A}^i \otimes \rho_{B}^j]) = \\
+        \sum_{i,j=1}^n p_{i,j}Tr(S_{AB}[\rho_{A}^i \otimes \rho_{B}^j]) =
+        \sum_{i,j=1}^n p_{i,j}Tr(\rho_{A}^i \rho_{B}^j)
+    \end{gather*}
+    To see that $Tr(\rho_{A}^i \rho_{B}^j) \geq 0$, observe that since $\rho_A^i,\rho_B^j$ are density operators, they are in particular positive semi-definite operators. The diagonal entries in any positive semi-definite operator $P$ are real and non-negative since
+    $$ z^*Pz \geq 0 \text{ when } z = e_i $$ where $e_i$ is the $i^{th}$ standard basis vector in $\mathbb{C}^n$.
+    Hence, the multiplication of two positive semi-definite operaters will yield non-negative trace, showing that indeed:
+    $$Tr(\rho_{AB}S_{AB}) = \sum_{i,j=1}^n p_{i,j}Tr(\rho_{A}^i \rho_{B}^j) \geq 0 $$
+
+    \item We wish to determine the range of $p$ such that:
+    \begin{gather*}
+      Tr \left(S_{AB}\left[(1-p)\ket{\Psi}\bra{\Psi}_{AB} + p\frac{I_A}{2} \otimes\frac{I_B}{2}\right] \right) = \\
+      Tr \left[\frac{1-p}{2}
+      \left[\begin{matrix}
+      1 & 0 & 0 & 0 \\
+      0 & 0 & 1 & 0 \\
+      0 & 1 & 0 & 0 \\
+      0 & 0 & 0 & 1 \\
+      \end{matrix}\right]
+      \left[\begin{matrix}
+      0 & 0 & 0 & 0 \\
+      0 & 1 & -1 & 0 \\
+      0 & -1 & 1 & 0 \\
+      0 & 0 & 0 & 1 \\
+      \end{matrix}\right] +
+      \frac{p}{4}
+      \left[\begin{matrix}
+      1 & 0 & 0 & 0 \\
+      0 & 0 & 1 & 0 \\
+      0 & 1 & 0 & 0 \\
+      0 & 0 & 0 & 1 \\
+      \end{matrix}\right]
+      \left[\begin{matrix}
+      1 & 0 & 0 & 0 \\
+      0 & 1 & 0 & 0 \\
+      0 & 0 & 1 & 0 \\
+      0 & 0 & 0 & 1 \\
+      \end{matrix}\right]
+      \right] = \\
+      Tr \left[
+      \left[\begin{matrix}
+      0 & 0 & 0 & 0 \\
+      0 & -(1-p)/2 & (1-p)/2 & 0 \\
+      0 & (1-p)/2 & -(1-p)/2 & 0 \\
+      0 & 0 & 0 & 1 \\
+      \end{matrix}\right] +
+      \left[\begin{matrix}
+      p/4 & 0 & 0 & 0 \\
+      0 & 0 & p/4 & 0 \\
+      0 & p/4 & 0 & 0 \\
+      0 & 0 & 0 & p/4 \\
+      \end{matrix}\right]
+      \right] =
+      \frac{p}{4} + \frac{-2(1-p)}{2} +\frac{p}{4}
+    \end{gather*}
+    We conclude that if $$\frac{p}{2} - 1 + p = \frac{3p}{2} - 1\geq 0 $$
+    or $p \geq \frac{2}{3}$, the state is separable. Otherwise, it is entangled by part one above.
+  \end{enumerate}
+
+  \subsection*{Problem 5}
+  Let $\mathcal{H}$ be an $n$-dimensional complex Hibert space, and
+  let $\mathcal{F}_{ij}$ denote the $(i,j)^{th}$ component of the matrix-representation of $\mathcal{F}$. The idea is to emulate matrix multiplication by choosing an appropriate family of operators.
+  We claim that the operator family $\{L_{ij}\}$ where $L_{ij}$ is the $n\times n$ matrix which has a one in the $(i,j)^{th}$ coordinate and zero everywhere else. To illustrate why this family suffices, we first note that the $(1,1)^{th}$ cell of $\mathcal{F}(X)$ i.e the cell of $\ket{0}\bra{0}$ is:
+  $$\mathcal{F}(X)_{11} = \mathcal{F}_{11}{X_{11}} + \mathcal{F}_{12}X_{21} + ... + \mathcal{F}_{1n}X_{n1}$$ where $X_{ij}$ refers to the $(i,j)^{th}$ cell of the matrix representation of $X$. We can transform this expression into the following equality for:
+  $$\mathcal{F}(X)_{11}L_{11} = \mathcal{F}_{11}[L_{11}XL_{11}^{\dagger}] + \mathcal{F}_{12}[L_{12}XL_{11}^{\dagger}] + ... + \mathcal{F}_{1n}[L_{1n}XL_{11}^{\dagger}] $$
+  We can generalize this for $\mathcal{F}(X)_{ij}$:
+  $$ \mathcal{F}_{ij}(X)L_{ij} = \mathcal{F
+  }_{i1}[L_{i1}XL_{jj}^{\dagger}] + \mathcal{F
+  }_{i2}[L_{i2}XL_{jj}^{\dagger}] + ... +\mathcal{F
+  }_{in}[L_{in}XL_{jj}^{\dagger}]$$
+  Thus, by setting our constants $f_{(i1),(jj)} = \mathcal{F}_{ij}$ and the rest to be zero, we can emulate matrix multiplication.
+
+  \subsection*{Problem 6}
+  \begin{enumerate}
+    \item First, the unitary transformation governing this evolution between the two qubits is
+    $$ U = e^{iJH\Delta t}$$ where $H = X_A \otimes X_B + Y_A \otimes Y_B + Z_A \otimes Z_B$
+  \end{enumerate}
+
+\end{document}

@@ -1,0 +1,90 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{complexity}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\begin{document}
+
+\title{CS 590 HW 2}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+\section{Problem 1}
+\begin{enumerate}
+  \item To use Krapchenko's bound, matrix entries of $E \in \mathbb{R}^{\{0,1\}^n \times \{0,1\}^n}$ which contribute to the sum in the numerator will be indexed by bit strings of Hamming distance one which evaluate to different outputs. For $f=\text{THR}_{k,n}$, these will be strings of Hamming weight $k$ and $k-1$. For a string of weight $k-1$, there are $n-k+1$ strings of Hamming distance one with ${n \choose k-1}$ such strings in total. Completing this reasoning shows the following calculation:
+  \begin{align*}
+    \mathcal{L}(\text{THR}_{k,n})
+    & \geq \max_{\substack{A \subseteq f^{-1}(0) \\ B \subseteq f^{-1}(1)}} \frac{(\sum_{a \in A} \sum_{b \in B} E_{a,b})^2}{|A|\cdot |B|} = \frac{\left( {n \choose k  -1} (n-k + 1) \right)^2}{{n \choose k  -1}{n \choose k }} \\
+    & = \frac{k (n - k + 1)^2(n-k)!}{(n-k+1)!} = k(n -k + 1)
+  \end{align*}
+  %
+  \item We maximize the numerator in the bound by considering the case for any $x \in \{0,1\}^n$. There are at most $n$ strings of Hamming distance one from $x$.  We can ensure that all neighboring strings have a differing value from $f(x)$. We can then impose this condition on every string in $\{0,1\}^n$. This gives us the maximal bound:
+  $$ \mathcal{L}(f) \geq \frac{(2^n n)^2}{(2^n)^2} = n^2 $$ as required.
+\end{enumerate}
+
+\section{Problem 2}
+With access to a depth $d$, MAJ$_n$ function, we further gain access to the threshold functions THR$_{k,n}$ through a suitable fixing of variables. For a given even Hamming weight $2k$, we can check if  $x \in \{0,1\}^n$ has $|x| = 2k$ through a conjunction of threshold functions: $\text{THR}_{2k,n} \wedge \neg\text{THR}_{k+1,n}$. We only require $\mathcal{O}(n)$ number of gates to build conjunctions for all even parities of $n$. By considering the disjunction of these clauses, we have a depth $d+2$ circuit computing XOR$_n$, reducing parity to majority. H\aa stad's bound yields that:
+$$ \mathcal{C}_d(\text{MAJ}_{n}) = 2^{\Omega(n^{1/(d+2)-1)})} = 2^{\Omega(n^{1/(d+1)})} $$
+
+\section{Problem 3}
+The proof follows the argument behind Problem 2. Since $f:\{0,1\}^n \rightarrow \{0,1\}$ is symmetric, we can enumerate the Hamming weights $|x|$ which evaluate to $1$. Let $0 \leq m \leq n$ be such a weight. We can check if a string has weight $m$ through the conjuction of threshold functions $\text{THR}_{m,n} \wedge \neg \text{THR}_{m+1,n}$. However, we do not have access to an addition $\wedge$-layer as this would not give us a $\text{MAJ} \circ \text{MAJ}$ composition. Instead, we make the following observations. Suppose we wire all $\text{THR}_{k,n}, \neg \text{THR}_{k+1,n}$ outputs, for Hamming weights $k$ evaluating to true, into another THR$_{\ell,t}$ at the top where $\ell,t$ are parameters to be determined. Designate $H = \{i \mid f(x) = 1 \text{ if } |x| = i \}$ and, for $k \in H$, $Q_k = \text{THR}_{k,n}$ and $R_k = \neg \text{THR}_{k+1,n}$. We can interpret the functions $Q_k, R_k$ as testing if the Hamming weight of a string is at least $k$ and at most $k$ respectively. Now we claim that every string $x$ with $|x|$ must satisfy at least $|H|$ number of the $Q_k,R_k$. To see this, consider the ordering on $\{1,\cdots, n\}$ along with the definitions of $Q_k, R_k$. Every $|x| \in \{1,\cdots, n\}$, so either $Q_k = 1 $ or $R_k = 1$ for $k \in H$ but never both if $|x| \not\in H$. In fact, $|x| \in H$ iff $Q_{|x|} =  R_{|x|} = 1 $. This motivates the setting of $\ell = |H| + 1$ and $t = 2|H|$. Combining these arguments yields a poly-size MAJ $\circ$ MAJ for any symmetric $f$ as there are only $\mathcal{O}(n)$ number of threshold gates we must consider in the bottom layer.
+
+\section{Problem 4}
+\begin{enumerate}
+  \item We start with a $\Pi_3$ formula $P$ such that
+    \begin{itemize}
+      \item The AND output gate has fan-in size of $c$.
+      \item The middle OR gates have fan-in size of $b$.
+      \item The bottom AND gates are connected to $a$ input variables.
+    \end{itemize}
+    We wish to determine a mapping of the input variables to bit indices such that the formula computes $\delta$-approximate majority. Let $y_{i}, \; 1 \leq i \leq abc$ be input variables into $P$ and let $\pi: [abc] \rightarrow [n]$ be a uniformly-sampled map from $[abc]$ to $[n]$ such that $P^{\pi}(x_1,\cdots, x_n)$ is $P$ where $y_{i}$ is replaced with $x_{\pi(i)}$. We consider each gate in $P$ by layers, and we suppose that $x \in \{0,1\}^n$ such that $\frac{|x|}{n} \leq \frac{1}{2} - \delta$.
+    \begin{enumerate}
+      \item Let $g_3$ be an AND gate at the bottom layer of $P$ and denote $g^\pi_3(x)$ to be the value of $g_3$ computed with the input variables fixed by $\pi$. Then
+      $$ Pr[g_3^\pi(x) = 1] = \left( \frac{|x|}{n} \right)^a \leq \left( \frac{1}{2} - \delta \right)^a$$
+      \item Let $g_2$ be an OR gate at the second level of $P$ with $g_2^\pi$ similarly defined as above.
+      $$ Pr[g_2^\pi(x) = 0] = \left( 1 - \left( \frac{1}{2} - \delta \right)^a \right)^b $$\
+      \item Finally for $g_1$ the AND gate at the top:
+      $$ Pr[g_2^\pi(x) = 1] = \left(1 -  \left( 1 - \left( \frac{1}{2} - \delta \right)^a \right)^b \right)^c < 2^{-n} $$
+    \end{enumerate}
+    The last inequality follows from our assumption on $a,b,c \in \mathbb{Z}^+$. Combining the arguments above allows us to calculate that
+     $$ Pr_\pi[P^{\pi}(x) \neq \delta\text{MAJ}(x)] < 2^{-n}$$ for our fixed $x$ above. The case for $\frac{|x|}{n} \leq \frac{1}{2} + \delta$ follows from a symmetric argument. This culminates in
+     \begin{align*}
+       Pr_\pi[P^{\pi}\neq \delta\text{MAJ}] = Pr_\pi[(\exists x) P^{\pi}(x) \neq \delta\text{MAJ}(x)]
+       & \leq \sum_{x} Pr_\pi[ P^{\pi}(x) \neq \delta\text{MAJ}(x)] \\
+       < \sum_{x} 2^{-n} = 1
+     \end{align*}
+     Since $Pr_\pi[P^{\pi}\neq \delta\text{MAJ}] > 0$, the probabalistic method tells us that there must exist some $\pi_\delta$ such that $P^{\pi_\delta}(x) = \delta MAJ(x)$ for all input $x \in \{0,1\}^n$.
+     \item
+     We must find positive integers such that
+     $\left(1 -  \left( 1 - \left( \frac{1}{4} \right)^a \right)^b \right)^c < 2^{-n}$. We have the following bounds
+     $$ \left(1 -  \left( 1 - \left( \frac{1}{4} \right)^a \right)^b \right)^c \leq e^{-c(1 - (1/4)^a)^b}$$
+     Forcing the righthand side to be $< 2^{-n}$ gives
+     $$ c(1 - (1/4)^a)^b > n \log 2 $$
+     Set $a = b = 1$,
+     $$\frac{3}{4}c > n \log 2 $$
+     Setting $c$ to be polynomial of at least quadratic degree suffices, giving that our formula is of polynomial size overall.
+\end{enumerate}
+
+\section{Problem 6}
+We can compute MOD$_4$ given the $\AC^0[2]$ basis as follows: Let $x_{[k]}$ denote the first $\{1,\cdots, k\}$ bit indices. We claim that MOD$_4$ is computed by the circuit detailed below:
+Observe that $\text{MOD}_{2}(x_{[k]})$ checks the parity for the substring indexed by the first $k$ indices. Let $x_{MOD}$ be the $n$ string computed by
+$$x_{MOD} = z_1 z_2 \cdots z_n, \quad z_k = \text{MOD}_{2}(x_{[k]})$$
+$x_{MOD}$ changes values each time the parity of subsequent prefix substrings change. This amounts to $\text{MOD}_{2}(x_{[k]}) \neq \text{MOD}_{2}(x_{[k+1]})$ iff $x_{k+1} = 1$. Now define the next layer above which tracks the times $z_i = 1, z_{i+1} = 0$ i.e we have a new string:
+$$ y = y_1y_2, ..., y_{n-1}0, \quad y_{i} =  z_{i} \wedge  \neg z_{i+1} $$
+Assume that (w.l.o.g) we start with even parity, so $z_i = 1$. Suppose that two ones are encountered in the string $x$, at indices $i < j$ such that $z_{i} = 1, z_{i+1}= 0$ and $z_{j} = 0, z_{j+1} = 1$. Our new string $y$ has Hamming weight $\lceil \frac{|x|}{2} \rceil$ as the circuit only accounts for the change from $1$ to $0$. Finally, $4$ divides $|x|$ iff $2$ divides $\frac{|x|}{2}$. A final MOD$_{2}(y) \wedge \text{MOD}_2(x)$ at the top will compute MOD$_4$. Note that there must be a check that the input string $x$ is even as the scheme above fails with strings of odd Hamming weight. To see this, consider the simple string $x = 1101101$ of length $7$. Our $x_{MOD}$ will be:
+$$x_{MOD} = 0110110 \implies y = 0010010 $$ Our top gate without the check will be MOD$_{2}(y) = 1$, giving the incorrect answer. Finally, we port over this construction for higher powers of $2$ by taking our computed $y$ above to be the new input string. Repeating this scheme $k$ times yields the general case for $2^k$.
+
+\section{Problem 8}
+\begin{enumerate}
+  \item The containment $\NC^k \subseteq \AC^k, \; k \geq 1$ follows as $\NC^k$ has the Demorgan basis which is a subset of the unbounded fan-in basis. As for $\AC^{k} \subseteq \NC^{k+1}$, one can turn any $AND_n/OR_n$ gate into a tree of $\wedge,\vee$ gates respectively by adding $\mathcal{O}(\log n)$ depth for each gate.
+  \item For the separation $\NC^0 \neq \AC^{0}$, $n$-bit integer addition i.e the boolean function $+:\{0,1\}^n \times \{0,1\}^n \rightarrow \{0,1\}^{n+1}$ which adds two $n$-bit strings is in $\AC^0$ but not in $\NC^0$. As for $\AC^0 \neq \NC^1$, the parity function XOR$_n$ is contained in $\NC^1$ as a symmetric function but is not contained in $\AC^0$.
+  \item Suppose that $\NC^{k} = \NC^{k+1}$ for some $k \geq 1$. It suffices to show that $\NC^{k+2} \subseteq \NC^{k+1}$. Let $f \in \NC^{k+2}$. We can see this by observing that considering the $\mathcal{O}(\log n)$ paritions of $f$ into  polynomial-size subcircuits of depth $\mathcal{O}((\log n)^{k+1})$ in $f$.  By the equality we can replace this with a circuit from $\NC^k$, effectively reducing the depth by an exponent of one. Thus, this gives us an equivalent circuit of polynomial size and total depth $\mathcal{O}((\log n)^{k+1})$. This shows that $\NC^{k+2} = \NC^{k+1} = \NC^{k}$. Iterating this inductively yields the final equality $\NC^k = \NC$.
+\end{enumerate}
+\end{document}

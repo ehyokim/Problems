@@ -1,0 +1,143 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\begin{document}
+
+\title{CS 630 HW 3}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+\section*{Problem 1}
+We first prove that if $X_i$ is the random variable for the number of keys given to correct owners at round $i$,
+$$ {\bf E}[X_i \mid X_1,...,X_{i-1}] = 1$$
+By the scheme introduced, the attendent chooses a random permutation of the remaining $R_i = n - (X_1 + ... + X_{i-1})$ keys to distribute to the owners. Thus, let $F = \sum_{j=1}^{R_i} F_i$ be the random variable representing the number of points fixed by a permutation chosen uniformly at random, and let $F_j$ be the indictator variable taking the value of $1$ if the $j^{th}$ position is fixed (key is returned to its correct owner) and $0$ otherwise. Then:
+$$ {\bf E}[F] = \sum_{j=1}^{R_i} {\bf E}[F_j] = \sum_{j=1}^{R_i} \frac{1}{R_i} = 1 $$
+which gives us the result above. \newline \newline
+Now define the following sequence of random variables $Z_i$:
+$$ Z_i = \sum_{j=1}^i (X_j - {\bf E}[X_i \mid X_1,...,X_{i-1}])$$ To prove that this sequence is a martingale, we explicitly calculate the following:
+$$ {\bf E}[Z_i \mid X_1,...,X_{i-1}] = \sum_{j=1}^i {\bf E}[(X_j - {\bf E}[X_i \mid X_1,...,X_{i-1}])\mid X_1,...,X_{i-1}] = \sum_{j=1}^i {\bf E}[X_j \mid X_1,...,X_{i-1}] - i$$
+$$= \sum_{j=1}^{i-1} X_{j} + {\bf E}[X_i \mid X_1,...,X_{i-1}] - i = \sum_{j=1}^{i-1} (X_j - {\bf E}[X_{i-1} \mid X_1,...,X_{i-2}]) = Z_{i-1}$$
+showing that the sequence is indeed a martingale.\newline \newline
+By the martingale stopping theorem, if $T$ is a stopping time for when all the keys are distributed to their rightful owners,
+$$ {\bf E}[Z_T] = {\bf E}[Z_1]$$ By definition of our sequence $Z_i$, $Z_T = n - T$. Combining this with our stopping result above:
+$$ {\bf E}[n - T] = 0$$ which gives us:
+$${\bf E}[T] = n $$
+
+\section*{Problem 2}
+Let $X_1,...,X_n$ be a sequence of random variables where $X_i$ represents the indicator variable taking the value of $1$ in the $i^{th}$ sampling of the bin of balls and $0$ otherwise. Let $f(X_1,...,X_n) = \sum_{i=1}^n X_i$ count the number of red balls taken from the bin. Then
+$$ Z_i = {\bf E}[f(X_1,...,X_n)\mid X_1,...,X_i]$$ becomes a Doob martingale. If we can use Azuma's inequality under the condition $|Z_{i+1} - Z_{i}| \leq 1$, we naturally come to the below result:
+$${\bf Pr}(|f - {\bf E}f| \geq \lambda\sqrt{n}) \leq e^{-\lambda^2/2} $$
+where ${\bf E}f = \frac{nr}{r+g}$. \newline \newline
+For $|Z_{i+1} - Z_{i}| \leq 1$, we impose conditions on $n$ relative to $r,g$ given by the inequality below:
+\begin{gather*}
+  |Z_1 - Z_0| = \left| \left[\left(1 + \frac{(n-1)(r-1)}{r+g-1} \right)\left(\frac{r}{r+g}\right) + \left(\frac{(n-1)r}{r+g-1} \right)\left(\frac{g}{r+g}\right)\right] - \frac{nr}{r+g} \right| \leq 1
+\end{gather*}
+
+\section*{Problem 3}
+
+We define $X = \sum_{i = 1}^{n} X_i$ to be the random variable denoting the number of isolated vertices over all instances of our random graph, and we let our $X_i$ be indicator variables taking the value $1$ if vertex $i$ is isolated and $0$ otherwise. We first calculate:
+$$ {\bf E}[X_i] = \prod_{j=0}^{cn-1} 1 - \frac{n-1}{{n\choose2} - j} = \prod_{j=0}^{cn -1} \frac{(n^2 -n - 2i)-2(n-1)}{n^2 - n - 2i}$$
+
+By linearity of expection:
+$${\bf E}[X] = n \left[\prod_{j=0}^{cn -1} \frac{(n^2 -n - 2i)-2(n-1)}{n^2 - n - 2i}\right]$$
+
+Now consider $f(X_1,...,X_{cn})$ to be the finite graph-theoretic function which evaluates the number of isolated vertices given random edges $X_1,...,X
+_{cn}$ added. Define the edge exposure martingale:
+$$ Z_i = {\bf E}[f(X_1,...,X_{cn})\mid X_1,....,X_i] $$ for $0 \leq i \leq cn$. Since $|Z_{i+1} - Z_i| \leq 2$ as the exposure of one edge can remove at most $2$ vertices, we apply Azuma's inequality to get the following tail bound:
+$${\bf Pr}[|Z_{cn} - Z_0| \geq 2\lambda\sqrt{cn}] \leq e^{\frac{-(2\lambda\sqrt{cn})^2}{8cn}} $$ which immediately simplifies:
+$${\bf Pr}[|X - {\bf E}[X]| \geq 2\lambda\sqrt{cn}] \leq e^{\frac{-\lambda^2}{2}} $$
+
+\section*{Problem 4}
+We first define the sequence of random variables $Y_i$ as follows:
+$$ Y_i = \left(\sum_{j=0}^{i} X_i \right)^2 - i  $$
+We first prove that this sequence defines a martingale:
+$${\bf E}[Y_{i+1} \mid X_0,...,X_{i}]  =  {\bf E}[\left(\sum_{j=0}^{i+1} X_i \right)^2] - (i+1) = {\bf E}[\left(\sum_{j=0}^{i} X_i \right)^2 + 2X_{i+1}\left(\sum_{j=0}^{i} X_i \right) + X_{i+1}^2 \mid X_0,...,X_{i}] - (i+1)$$
+$$ = \left(\sum_{j=0}^{i} X_i \right)^2  + 1 - (i+1) = Y_i$$
+as required.
+Let $T$ be a stopping time for the sequence $Y_i$ which stops when the gambler has either won $\ell_1$ or lost $\ell_2$ dollars.
+Then
+$$ {\bf E}[Y_T] = (\ell_2^2 - {\bf E}[T])\left(\frac{\ell_1}{\ell_1 + \ell_2}\right) + (\ell_1^2 - {\bf E}[T])\left(\frac{\ell_2}{\ell_1 + \ell_2}\right) $$
+However, we know from the martingale stopping theorem that:
+$$
+(\ell_2^2 - {\bf E}[T])\left(\frac{\ell_1}{\ell_1 + \ell_2}\right) + (\ell_1^2 - {\bf E}[T])\left(\frac{\ell_2}{\ell_1 + \ell_2}\right) = 0$$
+Simplifying the above equivalence yields:
+$$ (\ell_1 + \ell_2){\bf E}[T] = \ell_1^2\ell_2 + \ell_2^2\ell_1 $$ which further yields that:
+$$ {\bf E}[T] = \ell_1\ell_2$$
+
+\section*{Problem 5}
+We claim that any Markov chain with both row and column sums of its transition matrix $P$ equaling $1$ converges to the uniform distribution as its stationary distribution. To prove this, it suffices to prove that the uniform distribution indeed is a stationary distribution of our Markov chain. We directly verify this as follows: let $\pi$ denote our uniform distribution over all states in our Markov chain, then
+$$ \pi_x P = \sum_{y} \pi_y P_{y,x} =\frac{1}{|\pi|}\sum_y P_{y,x} = \frac{1}{|\pi|} \cdot 1 =\pi_x$$
+As stationary distributions are unique, this proves that $\pi$ is indeed our stationary distribution.
+
+\section*{Problem 6}
+Consider the Markov chain with states $(v_1,v_2)$ where $v_1, v_2 \in V$ and edges $(v_1,v_2) \xrightarrow{e} (v_3,v_4)$ iff $v_1 \xrightarrow{e_1} v_3$ and $v_2 \xrightarrow{e_2} v_4$ in our chain, and our edge $e$ has probability $p_1p_2$ where $p_1 = \frac{1}{2d(v_1)}, p_2 = \frac{1}{2d(v_2)}$.
+First, we see that the expected number of steps to reach from state $ u = (v_1,\ell_1)$ to state $m = (v_2,\ell_2)$ is bounded by:
+
+$$ h_{u,m} = (h_{v_1,v_2})(h_{\ell_1,\ell_2}) \leq (2|E|)^2 = 4m^2 $$
+This follows from Lemma 7.15, and the fact that the random walks operate independently of each other. Furthermore, given a starting state $(c,m)$, there exists a $\mathcal{O}(n)$ path in the chain from $(c,m)$ to say $(m,m)$ given by the particular instance where cat taking its random walk to the mouse's position while the mouse simply stands still. By the bound above, each edge in the path can be traversed in $\mathcal{O}(m^2)$ number of steps, giving us the upper bound of $\mathcal{O}(m^2n)$.
+
+\section*{Problem 7}
+We claim that the following row matrix $\pi$ defines our stationary distribution for our Markov chain:
+
+\begin{gather*}
+\pi_{i} = {\left(\frac{1}{2}\right)^{i+1}} \quad 0 \leq i \leq n-1 \\
+\pi_{n} = \frac{1}{2^{n}}
+\end{gather*}
+We verify this explicitly as follows: First, we recall that the transition matrix $P$:
+
+\begin{gather*}
+P_{i,0} = \frac{1}{2} \quad 0 \leq i \leq n \\
+P_{i,i+1} = \frac{1}{2} \quad 0 \leq i \leq n-1 \\
+P_{n,n} = \frac{1}{2} \\
+\end{gather*}
+
+For $ 0 \leq i \leq n-1$:
+$$ \pi_0 P = \frac{1}{2}\left(\frac{1}{2} + \frac{1}{4} + ... + \frac{1}{2^n} + \frac{1}{2^n}\right) = \frac{1}{2}\left(\frac{1}{2}\left(\frac{1 - \frac{1}{2^n}}{1/2}\right) + \frac{1}{2^n}\right) = \frac{1}{2}\left(\left(1 - \frac{1}{2^n} \right) + \frac{1}{2^n}\right) = \frac{1}{2} = \pi_0 $$
+$$ \pi_{i} P = \frac{1}{2}\pi_{i-1} = \frac{1}{2}\left(\frac{1}{2}\right)^{i-1} =  \left(\frac{1}{2}\right)^{i} = \pi_i$$
+$$ \pi_n P = \frac{1}{2}\left(\pi_{n-1} + \pi_{n}\right) = \frac{1}{2}\left(\frac{1}{2^n} + \frac{1}{2^n}\right) = \frac{1}{2^n} = \pi_n $$
+Since $\pi P = \pi$, this directly shows that our row matrix $\pi$ above is indeed the stationary distribution for our Markov chain as desired.
+
+\section*{Problem 8}
+We compute the relevant transition matrix:
+\begin{gather*}
+  P_{i,i+1} = \frac{1}{2} \quad 0 \leq i \leq n-2 \\
+  P_{n-1,n-1} = \frac{1}{2} \\
+  P_{n-1,0} = \frac{1}{2}
+\end{gather*}
+
+By Problem 5 above, the stationary distribution $\pi$ for this Markov chain must be the uniform distribution over all states.
+We define the following coupling:
+\begin{enumerate}
+  \item With probability $\frac{1}{2}$, let $X_t$ stay in place and rotate $Y_t$ clockwise, and with probability $\frac{1}{2}$ do the vice-versa.
+  \item Once $X_t = Y_t$, synchronize their actions i.e both stay in place with probability $\frac{1}{2}$ abd both rotate clockwise $\frac{1}{2}$.
+\end{enumerate}
+ This does indeed define a valid coupling.
+
+
+\section*{Problem 9}
+We use Lemma 10.8 to construct our Markov chain as follows:
+\begin{enumerate}
+  \item Let $X_0$ be an arbitrary coloring on $G = (V,E)$.
+  \item We define $X_{i+1}$ as follows:
+  \begin{enumerate}
+    \item Pick $v \in V$ uniformly and pick a color $c \in\{1,2....,\Delta\}$ uniformly.
+    \item If current color is different from $c$, color $v$ in with $c$ to create coloring $X_{i+1}$ with probability $\min\{1,\lambda^{I(X_{i+1}) - I(X_i)} \}$.
+    \item Else $X_{i+1} = X_i$
+  \end{enumerate}
+\end{enumerate}
+
+We define our stationary distribution to be $\pi_C = \lambda_{I(C)}/D$ where $D = \sum_{\text{colorings } X} \lambda^{I(X)}$ where $I(C)$ denotes the number of improper edges in the coloring $C$. Now let define the following scheme dictating our transition probabilties between the states constructed above: from a coloring $C$, we choose a vertex to color and the color uniformly with probability $\frac{1}{\Delta |V|}$ which gives us coloring $D$. We then accept this move with probability $\min\{1,\lambda^{I(D) - I(C)}\}$, giving our total transition probability to be:
+$$ P_{C,D} = \frac{1}{\Delta |V|} \min\{1,\pi_D / \pi_C\}$$
+This chain is irreducible and aperiodic as we have allowed self-loops through the last condition above. Thus, we have our desired chain.
+
+\end{document}

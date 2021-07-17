@@ -1,0 +1,124 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{physics}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\begin{document}
+
+\title{PHY 590 HW 2}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+\section*{Problem 1}
+First suppose that $T_2 > 2T_1$. By Sylvester's criterion, it suffices to show that the $\det{\mathcal{E}_t(\rho)} < 0$ for some sufficiently large $t$ to derive our contradiction. \newline \newline
+We calculate the determinant as follows:
+$$ \det{\mathcal{E}_t(\rho)} = [\rho_{00} + (1 - e^{-t/T_1})\rho_{11}][\rho_{11} e^{-t/T_1}] - \rho_{01}\rho_{10}e^{-2t/T_2}$$
+$$\rho_{00}\rho_{11}e^{-t/T_1} + \rho_{11}^2(1-e^{-t/T_1})e^{-t/T_1}  - \rho_{01}\rho_{10}e^{-2t/T_2} $$
+Now consider the first two terms:
+$$\rho_{00}\rho_{11}e^{-t/T_1} + \rho_{11}^2(1-e^{-t/T_1})e^{-t/T_1} $$
+Suppose that $t > -T_1 \ln(\frac{\epsilon}{(m_\rho)^2})$ for some $0 < \epsilon < 1$ where $m_{\rho} = \max_{i,j = 0,1} |\rho_{ij}|$.
+This gives us that:
+$$\det{\mathcal{E}_t(\rho)} =  \epsilon + (1-\epsilon)\epsilon - \rho_{01}\rho_{10}e^{-2t/T_2} < \epsilon + (1-\epsilon)\epsilon - \rho_{01}\rho_{10}e^{-t/T_1}  \leq  \epsilon + (1- \epsilon)\epsilon - \epsilon = (1- \epsilon)\epsilon
+ $$
+Letting $(t_i,\epsilon_i)$ be a sequence of $\mathbb{R} \times \mathbb{R}$ such that $\epsilon = \frac{1}{2^i}, t_i > -T_1 \ln(\frac{\epsilon_i}{(m_\rho)^2})$ gives us the desired result.
+
+\section*{Problem 2}
+\begin{enumerate}
+  \item We note that $\mathcal{E}$ is another form of the depolarizing channel:
+  $$ \mathcal{E}(\rho) = p\frac{I}{2} + (1-p)\rho = p(\frac{\rho + X\rho X + Y \rho Y + Z \rho Z}{4}) + (1-p)\rho = \left(1 - \frac{3p}{4}\right)\rho + \frac{p}{4}(X \rho X + Y \rho Y + Z \rho Z) $$
+  Thus, $\mathcal{E}$ has the Kraus operators:
+  $(\sqrt{1 - 3p/4)})I,\sqrt{p}X/2, \sqrt{p}Y/2, \sqrt{p}Z/2$ and for $p \in [0,1]$, $\mathcal{E}$ is a valid channel.
+  \item By Theorem 4.6.1 of Wilde, $\mathcal{E}$ will be an entanglement-breaking channel iff its Kraus operators are of unit-rank. However, we see that for no $p \in [0,1]$ will $(\sqrt{1 - 3p/4})I$ be of unit rank scaling preserves the rank of $I$. Thus, the depolarizing channel is never entanglement-breaking.
+\end{enumerate}
+
+\section*{Problem 3}
+We first diagonalize our Choi matrix $J(\mathcal{E})$ to get the following representation:
+$$ (\text{id}_R \otimes \mathcal{N}_{A\rightarrow B})(\ket{\Gamma_{RB}}\bra{\Gamma_{RB}}) = \sum_{i=0}^1 \ket{\phi_i}\bra{\phi_i}$$ where
+$$\ket{\phi_0} = \frac{1}{\sqrt{2}}(\ket{0} \otimes \ket{0} + \ket{1} \otimes \ket{1}) $$
+$$\ket{\phi_1} = \frac{1}{\sqrt{2}}(\ket{0} \otimes \ket{1} - \ket{1} \otimes \ket{0}) $$
+Note that our Choi rank is two. We thus introduce our Kraus operators to be the following:
+$$ M_0 = \frac{1}{\sqrt{2}} \left[\begin{matrix} 1 & 0 \\ 0 & 1 \end{matrix}\right]$$
+$$ M_1 = \frac{1}{\sqrt{2}} \left[\begin{matrix} 0 & 1 \\ -1 & 0 \end{matrix}\right]$$
+
+We finally check that
+$\sum_{i=0}^1 M_i^\dagger M_i = \frac{1}{\sqrt{2}} \left[\begin{matrix} 1 & 0 \\ 0 & 1 \end{matrix}\right] + \frac{1}{\sqrt{2}} \left[\begin{matrix} 1 & 0 \\ 0 & 1 \end{matrix}\right] = I_A$ \newline \newline
+
+To find our isometric extension, we define the map
+\begin{gather*}
+\mathcal{V}_{A \rightarrow BE}^{\mathcal{N}} = \sum_{j=0}^1 M_j \otimes  \ket{j}_E = \\
+\left[ \begin{matrix} \frac{1}{\sqrt{2}} & 0 \\ 0 & 0 \\ \frac{1}{\sqrt{2}} & 0 \\ 0 & 0 \end{matrix}\right] + \left[ \begin{matrix} 0 & 0 \\ 0 & \frac{1}{\sqrt{2}} \\ 0 & 0 \\ -\frac{1}{\sqrt{2}} & 0 \end{matrix}\right] =
+\left[ \begin{matrix}  \frac{1}{\sqrt{2}} & 0 \\ 0 & \frac{1}{\sqrt{2}} \\  \frac{1}{\sqrt{2}} & 0 \\ -\frac{1}{\sqrt{2}} & 0 \end{matrix}\right]
+\end{gather*}
+
+
+\section*{Problem 4}
+\begin{enumerate}
+  \item We invoke Theorem 4.6.1 of Wilde and find the values of $p$ such that the Kraus operators $M_0 = \ket{0}\bra{0} + \sqrt{1 - \gamma}\ket{1}\bra{1}$ and $M_1 = \sqrt{\gamma}\ket{0}\bra{1}$ are both of unit rank. This only occurs when $\gamma = 1$ which gives us the operators $N_0 = \ket{0}\bra{0}$ and $N_1 = \ket{0}\bra{1}$.
+  \item We first compute the isometric extension of the amplitude-damping channel, say $\mathcal{N}$, with Kraus operators $N_0 = \sqrt{\gamma}\ket{0}\bra{1},N_1 = \ket{0}\bra{0} + \sqrt{1 - \gamma}\ket{1}\bra{1}$ as follows:
+  \begin{gather*}
+    \mathcal{V}_{A \rightarrow BE}^{\mathcal{N}} = \sum_{i=0}^1 N_i \otimes \ket{i} = N_0 \otimes \ket{0} + N_1 \otimes \ket{1} = \\
+    \left[\begin{matrix} 0 & \sqrt{\gamma} \\  0 & 0  \\ 0 & 0 \\ 0 & 0 \end{matrix}\right] + \left[\begin{matrix} 0 & 0 \\  1 & 0  \\ 0 & 0 \\ 0 & \sqrt{1-\gamma} \end{matrix}\right] = \left[\begin{matrix} 0 & \sqrt{\gamma} \\  1 & 0 \\ 0 &0 \\ 0 & \sqrt{1 - \gamma} \end{matrix}\right]
+  \end{gather*}
+  Now, we perform the necessary calculations to derive the complementary channel
+  \begin{gather*}
+    \mathcal{N}^c(\rho) = \text{Tr}_B(\mathcal{V}_{A \rightarrow BE}^{\mathcal{N}}\rho  (\mathcal{V}_{A \rightarrow BE}^{\mathcal{N}})^\dagger) = \\
+    \left[\begin{matrix} 0 & \sqrt{\gamma} \\  1 & 0 \\ 0 &0 \\ 0 & \sqrt{1 - \gamma} \end{matrix}\right]\left[\begin{matrix} \rho_{00} & \rho_{01} \\ \rho_{10} & \rho_{11} \end{matrix}\right]\left[\begin{matrix} 0 & 1 & 0 & 0 \\ \sqrt{\gamma} & 0 & 0 & \sqrt{1 - \gamma}\end{matrix}\right] = \\
+    \left[\begin{matrix} \gamma\rho_{11} & \sqrt{\gamma}\rho_{10} \\
+      \sqrt{\gamma}\rho_{01} & \rho_{00} + (1-\gamma)\rho_{11}
+     \end{matrix}\right]
+  \end{gather*}
+  Now consider the bit-flip of the following output of the an amplitude-damping channel with damping parameter $(1 - \gamma)$:
+  $$ X\left[\begin{matrix} \rho_{00} + (1 - \gamma)\rho_{11} & \sqrt{\gamma} \rho_{01} \\ \sqrt{\gamma} \rho_{10} & \gamma\rho_{11} \end{matrix}\right]X =  \left[\begin{matrix}  \gamma\rho_{11}& \sqrt{\gamma} \rho_{10} \\ \sqrt{\gamma} \rho_{01} & \rho_{00} + (1 - \gamma)\rho_{11} \end{matrix}\right]$$
+\end{enumerate}
+
+\section*{Problem 5}
+(Idea for Proof)
+Let $M_B = iP_i$ be the spectral decomposition of observable $M_B$. Since $\rho_{AB}$ commutes:
+$$(I_A \otimes M_B)\rho_{AB}(I_A \otimes M_B^\dagger) =  \rho_{AB}(I_A \otimes M_B)(I_A \otimes M_B^\dagger) = \rho_{AB}(I_A \otimes M_BM_B^\dagger) = \rho_{AB}(I_A \otimes M_B^\dagger M_B) = \rho_{AB}$$
+where the second-to-last equality is from the Hermaticity of $M_B$. \newline \newline
+My idea was to try to construct an entanglement-breaking channel $\mathcal{N}^{EB}$  such that $(\text{id}_A \otimes  \mathcal{N}^{EB})(\rho_{AB}) = \rho_{AB}$. One idea was to try to use  the classical-quantum channel to piece together post-measurement states.
+
+
+\section*{Problem 6}
+\begin{enumerate}
+  \item Suppose we have two pure states $\ket{\psi},\ket{\phi}$. As the trace distance is invariant under unitary maps, we can rotate our coordinate system such that $\ket{\psi} = \ket{0}$ and $\ket{\phi} = \cos\theta \ket{0} + \sin\theta \ket{1}$. our trace distance is then as follows:
+  \begin{gather*}
+    ||\ket{\psi}\bra{\psi} - \ket{\phi}\bra{\phi}||_1 = \left[ \begin{matrix} 1 - \cos^2\theta & -\sin\theta\cos\theta \\ -\sin\theta\cos\theta & -\sin^2\theta \end{matrix}\right]
+  \end{gather*}
+  The eigenvalues for this matrix can be easily solved:
+  \begin{gather*}
+    \det\left[ \begin{matrix} 1 - \cos^2\theta -\lambda & -\sin\theta\cos\theta \\ -\sin\theta\cos\theta & -\sin^2\theta -\lambda \end{matrix}\right] =  0 \\
+    \lambda^2 - \sin^2 \theta = 0
+  \end{gather*}
+  showing us that our eigenvalues are $\sin\theta, -\sin\theta$. Thus, our trace distance will be the sum of the absolute value of these two eigenvalues which will be:
+  $$ ||\ket{\psi}\bra{\psi} - \ket{\phi}\bra{\phi}||_1 = 2|\sin\theta| = \sqrt{1 -
+  \cos^2(\theta)} = \sqrt{1 - \bra{\phi}\ket{\psi}^2}$$
+  giving us our formula.
+\end{enumerate}
+
+\section*{Problem 7}
+Let $A: \mathcal{H} \rightarrow \mathcal{H}$ be the operator in question. By the polar decomposition, we know that $A$ admits a composition of the following:
+$$ A = UM $$
+where $M$ is a unitary and $M$ is a unique positive matrix.
+The following relations must hold:
+\begin{gather*}
+||A||_1 = \text{Tr}(\sqrt{(UM)^\dagger(UM)}) = \text{Tr}(\sqrt{M^\dagger U^\dagger U M}) = \text{Tr}(\sqrt{U}\sqrt{M U^\dagger  M}) \\ \leq \sqrt{\text{Tr}(\sqrt{U^\dagger U})\text{Tr}(\sqrt{(MU^\dagger M)^\dagger(MU^\dagger M)})}= \sqrt{d}\sqrt{\text{Tr}(\sqrt{(M^\dagger M)(M^\dagger M)})} = \sqrt{d} \sqrt{\text{Tr}(M^\dagger M)} = \\ \sqrt{d} \sqrt{\text{Tr}(A^\dagger A)}
+\end{gather*}
+where the inequality of the second line is an application of the Cauchy-Schwartz inequality for the Hilbert-Schmidt inner product.
+
+\section*{Problem 8}
+(Partial Proof): One way is simple. If $\mathcal{E}$ is unitary, then it must be reversible. Conversely, suppose that $\mathcal{E}$ is not unitary, then it must map a pure state say $\rho$ to a mixed state $\mathcal{E}(\rho)$. The trace criterion says that
+$\text{Tr}(\rho^2) = 1$ while $\text{Tr}(\mathcal{E}(\rho)^2) < 1$ necessarily. To give a contradiction, it suffices to prove that for $\mathcal{F}$ CPTP such that $\mathcal{F} \circ \mathcal{E}(\rho) = \rho$:
+$$ \text{Tr}(\mathcal{F}(\mathcal{E}(\rho))^2) \leq \text{Tr}(\mathcal{F}(\mathcal{E}(\rho)^2)) $$
+To see this: note that since $\mathcal{F}$ is trace-preserving and $\mathcal{E}(\rho)$ is mixed:
+$$\text{Tr}(\mathcal{F}(\mathcal{E}(\rho)^2)) < 1$$ However, by the same criterion:
+$$\text{Tr}(\mathcal{F}(\mathcal{E}(\rho))^2) = \text{Tr}(\rho^2) = 1 $$
+which gives us our contradiction. (Not sure how to prove inequality above using Cauchy-Schwartz.)
+\end{document}

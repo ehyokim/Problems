@@ -1,0 +1,220 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\newtheorem{lemma}{Lemma}
+
+\begin{document}
+
+\title{CS 630 HW 1}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+\subsection*{Problem 1}
+We calculate the expected values of the following:
+\begin{enumerate}
+  \item We begin by invoking the linearity of expectation on $X = X_1 + X_2$:
+  $${\bf E}[X | X_1 \text{ is even}] = {\bf E}[X_1|X_1 \text{ is even}] + {\bf E}[X_2 | X_1 \text{ is even} ] $$
+  As $X_2$ is independent of $X_1$, we calculate the expectation as:
+  $${\bf E}[X_2 | X_1 \text{ is even}] = {\bf E}[X_2] = 3.5 $$ and:
+  $${\bf E}[X_1|X_1 \text{ is even}] = 2(\frac{1}{3}) +  4(\frac{1}{3}) + 6(\frac{1}{3}) = 4 $$
+  Giving us our expectation: ${\bf E}[X | X_1 \text{ is even}] = 7.5$
+  \item Invoking linearity of expectation, we yield:
+  $${\bf E}[X | X_1 = X_2] = {\bf E}[X_1 | X_1 = X_2] + {\bf E}[X_2 | X_1 = X_2]$$
+  By independence and the definition of conditional probability:
+  $${\bf E}[X_1 | X_1 = X_2] =\frac{(1+2+3+4+5+6)\frac{1}{36}}{\frac{1}{6}} = 3.5$$
+  This follows similarly for ${\bf E}[X_2 | X_1 = X_2] = 3.5$, giving our conditional expectation:
+  $${\bf E}[X | X_1 = X_2] = 7$$
+  \item We note that by independence: $$ {\bf E}[X_1 | X = 9] =  {\bf E}[X_2 | X = 9]$$
+  Furthermore, by the remark above and linearity of expectation: $$ {\bf E}[X| X= 9] = 2{\bf E}[X_1|X=9]$$ Thus,
+  $$ {\bf E}[X_1|X=9] = \frac{9}{2} = 4.5$$
+  \item ${\bf E}[X_1 - X_2 | X = k] = 0$ for $k \in \{2,3,...,12\}$. This follows from the observation that if $1 \leq a,b \leq 6 $ such that $a+b = k$ for any $k$ specified, $X_1 - X_2 = a-b,b-a$ with equal probability.
+\end{enumerate}
+
+\subsection*{Problem 2}
+\begin{enumerate}
+  \item We argue through the canonical analysis of the Coupon Collector's problem:
+  Let $X_i,1 \leq i \leq n$ denote the random variable representing the number of trials starting from the trial following the successful trial where we find the $i^{th}$ unique coupon from one of the $n$ disjoint sets and ending on the trial where we find the $(i+1)^{th}$ unique coupon. If we denote $X$ to be the random variable representing the total number of trials performed to collect at least one coupon from each of the $n$ disjoint sets then:
+  $$ X = \sum_{i=0}^{n-1} X_i$$
+  Thus, by the linearity of expectation:
+  $${\bf E}[X] = {\bf E}[\sum_{i=0}^{n-1} X_i] = \sum_{i=0}^{n-1} {\bf E}[X_i]$$
+  and it suffices to find the expectation for each $X_i$.
+
+  Since we are sampling with replacement, given we have collected coupons from $i$ unique classes, the probability we will draw a coupon from one of the remaining $n-i$ classes will be:
+  $$p_i = \frac{k(n - i)}{kn} = \frac{n - i}{n} $$
+  We recognize $X_i$ to follow the geometric distribution with probability $p_i = \frac{n-i}{n}$.
+  Thus, ${\bf E}[X_i] = \frac{n}{n-i}$
+  and $${\bf E}[X] = \sum_{i=0}^{n-1} {\bf E}[X_i] = \sum_{i=0}^{n-1} \frac{n}{n-i} = n \sum_{i=0}^{n-1}\frac{1}{n-i} = n \sum_{i=1}^n \frac{1}{i} = n H_n$$
+\item As above, we seek to compute $X = \sum_{i=0}^{n-1} X_i$ where $X_i$ is the random variable indicating the number of trials required to acquire the $(i+1)^{th}$ unique coupon after we've acquired the $i^{th}$ coupon. Note that since we sample without replacement, ${\bf E}[X_i]$ depends on the outcome of $X_r$ for $0 \leq r \leq i-1$. Suppose that event $$\mathcal{E}_{\ell_0,...,\ell_{i-1}} = [(X_0=\ell_0) \wedge (X_1=\ell_1) \wedge ... \wedge (X_{i-1} = \ell_{i-1})]$$ where $1 \leq \ell_1,...,\ell_{i-1} \leq k$. Let $h = (k - \ell_0) + (k - \ell_1) + ... + (k - \ell_{i-1}) + (k-1)$ which represents the number of coupons from duplicate classes in the total set of coupons on event $\mathcal{E}_{\ell_0,...,\ell_{i-1}}$.
+  $$ {\bf E}[X_i \mid \mathcal{E}_{\ell_0,...,\ell_{i-1}}] = \sum_{m=1}^{h+1} m \cdot \phi_{i,m} \cdot [1 - \frac{h - (m-1)}{kn - (\ell_0 + ... + \ell_{i-1})-(m-1)})]$$
+  where:
+  $$\phi_{i,m} =  \prod_{j=0}^{m-1}\frac{h-j}{kn-(\ell_1 + ... + \ell_{i-1})-j}$$
+  We understand $\phi_{i,m}$ to be the probability that we choose from the remaining coupons in the $i$ classes we already have $m-1$ times. Note that $h \leq i(k-1)$ as this is the case where we choose a coupon on the first trial for $X_0,...,X_{i-1}$. Thus:
+  $$ {\bf E}[X] = \sum_{i=0}^{n-1}{\bf E}[X_i] = \sum_{i=0}^{n-1}\sum_{\substack{(\ell_0,...,\ell_{i-1}) \\ 0 \leq \ell_j \leq k}} {\bf E}[X_i \mid \mathcal{E}_{\ell_0,...,\ell_{i-1}}] {\bf Pr}(\mathcal{E}_{\ell_0,...,\ell_{i-1}})$$
+  where:
+  \begin{gather*}
+  {\bf Pr}(\mathcal{E}_{\ell_0,...,\ell_{g}}) = \prod_{s = 0}^{g}\prod_{f = 0}^{\ell_{s}-1} \frac{h_s-f}{kn - (\ell_0 + ... + \ell_{s-1})-f} [1 -\frac{h_s - (\ell_{s} -1)}{kn - (\ell_0 + ... + \ell_{s-1}) - (\ell_s - 1)}] \\ \\
+  h_s = (k - \ell_0) + (k - \ell_1) + ... + (k - \ell_{s-1}) + (k-1)
+\end{gather*}
+\end{enumerate}
+
+\subsection*{Problem 3}
+\begin{enumerate}
+  \item We claim that the following procedure computes a permutation of $n$-elements in linear time:
+  \begin{algorithm}
+    \begin{algorithmic}[1]
+        \Procedure{OutputPerm}{$n$}
+          \State $arr \gets \{1,...,n\}$
+          \For{$j=n$ \text{ \bf to } $j=1$}
+            \State $i \gets Rand(\{1,...,j\})$
+            \State \Call{Swap}{$arr[i],arr[j]$}
+          \EndFor
+        \EndProcedure
+    \end{algorithmic}
+  \end{algorithm}
+
+  Given permutation $a_1...a_n$, the probability that this procedure will yield $a_1,...,a_n$ is calculated as follows:
+  $$ {\bf Pr}(OutputPerm(n) = a_1,..., a_n) = {\bf Pr}(\mathcal{E}_{n}){\bf Pr}(\mathcal{E}_{n-1})...{\bf Pr}(\mathcal{E}_{1})$$
+  where $\mathcal{E}_{n-m}$ is the event that the $m^{th}$ iteration of $OutputPerm$ fixes $a_{n-m}$ to the $(n-m)$-index for all $1 \leq i \leq n$.
+  Observe that once the algorithm swaps the corresponding $i,j$, the $j^{th}$ index is fixed. Furthermore, $Rand(\{1,...,j\})$ can pick $j$ in which case the Swap procedure does not change the array.
+
+  First, we note that ${\bf Pr}(\mathcal{E}_n) = \frac{1}{n}$ as any of the $n$ elements are candidates. Once we swap one of the $n$ candidates, $arr[i]$ with $arr[j] = n$, $\{arr[1],arr[2],...,arr[j-1]\}$ contain the remaining candidates. By repeating the same argument, we see that
+  ${\bf Pr}(\mathcal{E}_{n-1}) = \frac{1}{n-1}$. Inductively, we conclude that
+  $${\bf Pr}(OutputPerm(n) = a_1,..., a_n) = \frac{1}{n!} $$ This shows that indeed this algorithm outputs a permutation uniformly at rando. Furthermore, $OutputPerm$ takes $\mathcal{O}(n)$ time as required.
+  \item We first define random variables $X_i, 1 \leq i \leq n$ to be the distance required for integer $i$ to move to its sorted position from its current position in the permutation. Thus, $${\bf E}[\sum_{i=1}^n |a_i - i|] = \sum_{i=1}^n {\bf E}[X_i]$$ by linearity. We calculate ${\bf E}[X_i]$ by cases:
+  Since $1$ falls at the far left of the sorted order, we calculate:
+  \begin{gather*}
+   {\bf E}[X_1] = 0\cdot(\frac{1}{n}) + 1 \cdot (\frac{1}{n}) + ... + (n-1) \cdot (\frac{1}{n})
+ \end{gather*}
+ For two, there are two places, namely the $1^{st}$ and $3^{rd}$ indices, where two must move one place:
+ \begin{gather*}
+  {\bf E}[X_2] = 0\cdot\frac{1}{n}) + 1 \cdot (\frac{2}{n}) + 2 \cdot (\frac{1}{n}) + ... + (n-2) \cdot (\frac{1}{n})
+\end{gather*}
+We present the final calculations below. For the ease of calculation, we assume that $n$ is even:
+
+\begin{gather*}
+  {\bf E}[X_1] = 0\cdot(\frac{1}{n}) + 1 \cdot (\frac{1}{n}) + ... + (n-1) \cdot (\frac{1}{n}) \\
+  {\bf E}[X_2] = 0\cdot(\frac{1}{n}) + 1 \cdot (\frac{2}{n}) + 2 \cdot (\frac{1}{n}) + ... + (n-2) \cdot (\frac{1}{n}) \\
+  {\bf E}[X_3] = 0\cdot(\frac{1}{n}) + 1 \cdot (\frac{2}{n}) + 2 \cdot (\frac{2}{n}) + ... + (n-3) \cdot (\frac{1}{n}) \\
+  ... \\
+  {\bf E}[X_{n/2}] = 0\cdot(\frac{1}{n}) + 1 \cdot (\frac{2}{n}) + 2 \cdot (\frac{2}{n}) + ... + \frac{n}{2} \cdot (\frac{2}{n}) \\
+  ... \\
+  {\bf E}[X_{n-3}] = 0\cdot(\frac{1}{n}) + 1 \cdot (\frac{2}{n}) + 2 \cdot (\frac{2}{n}) + ... + (n-3) \cdot (\frac{1}{n}) \\
+  {\bf E}[X_{n-1}] = 0\cdot(\frac{1}{n}) + 1 \cdot (\frac{2}{n}) + 2 \cdot (\frac{1}{n}) + ... + (n-2) \cdot (\frac{1}{n}) \\
+    {\bf E}[X_n] = 0\cdot(\frac{1}{n}) + 1 \cdot (\frac{1}{n}) + ... + (n-1) \cdot (\frac{1}{n})
+\end{gather*}
+This gives us the sum:
+$${\bf E}[\sum_{i=1}^n |a_i - i|] = \sum_{i=0}^{n/2-1} i\cdot(\frac{2i}{n} + \frac{2(n-2i)}{n}) + \sum_{j = n/2+1}^{n-1} j \cdot \frac{2(n-j)}{n} + \frac{n+2}{4}$$
+\item From the expression above, we see that the numerators are of order $\mathcal{O}(n^2)$. Combining this with the denominator gives us order $\mathcal{O}(n)$. Furthermore, summing over $n$ gives us that the expected total distance for all elements in the permutation is of order $\mathcal{O}(n^2)$. For each step of the Bubble sort, the procedure swaps two slots if they are inverted in the sorting order. Thus, for each step, Bubble sort moves elements at most a constant distance. This gives us that the expected running time of Bubble sort to be order $\mathcal{O}(n^2)$.
+\end{enumerate}
+
+\subsection*{Problem 4}
+\begin{enumerate}
+  \item We calculate the expected value as follows: Fix some $n,p,k$. Let $X$ random variable denoting the number of total trials we must perform and let
+  $$X = \sum_{m=1}^{s = \frac{n}{k}} X_m $$
+  We set $X_m$ to be the number of trials required to test group $m$ consisting of $k$ people. Now:
+  $${\bf E}[X_m] = 1\cdot (1-p)^k + (k+1)(1 - (1-p)^k) $$
+  Thus:
+  $${\bf E}[X] = \frac{n}{k}[(1-p)^k + (k+1)(1 - (1-p)^k)] $$
+  \item
+  \begin{itemize}
+    \item If $p \geq \frac{1}{2}$, then $k = n$ is optimal.
+    \item If $p < \frac{1}{2}$, then $k = r$ where $r$ is the least divisor not equal to $1$.
+  \end{itemize}
+  \item We will show that the value $p = \frac{1}{6}$ gives us an expected number of total trials less than $n$. Without loss of generality, assume that $n$ is even and $k=2$.
+  $$ {\bf E}[X] =  \frac{n}{2}((\frac{5}{6})^2 + 3(1-(\frac{5}{6})^2)) = \frac{29n}{36}$$.
+\end{enumerate}
+
+\subsection*{Problem 5}
+We modify the Karger contraction algorithm by making it stop at $r$ vertices rather than two vertices. After the algorithm halts, we output the edges between the $r$ contracted vertices as our potential min cut.
+
+To analyze this procedure, we mimic the analysis of the 2-way min cut contraction algorithm. We first show the following lemma:
+\begin{lemma}
+Suppose for graph $G=(V,E)$, there exists a r-way min cut of size $k$. Then each vertex must have degree at least $\frac{k}{r-1}$.
+\end{lemma}
+\iffalse
+\begin{proof}
+  We prove this first for $3$-way cuts. Suppose there exists a vertex $v \in V$ with degree less than $\frac{k}{2}$. As the there exists a 3-way min-cut $C$, let $C_1,C_2,C_3$ denote the components of the graph partitioned by cut $C$. Now $v$ must be contained in one of these three components say $ c \in C_1$. Choose $r \in C_2$ or $r \in C_3$ such that such that $v,e$ are connected by an edge. We can always find such a vertex as the case where the graph is exactly partitioned into $3$ components with no edges in between them is trivial. Now take partitons $C'_1 = \{v\}$ and $C'_2 = C_2$ and $C'_3 = C_1/\{v\} \cup C_3$
+  Let $E(C_i,C_j)$ denote the set of edges connecting vertices in components $C_i,C_j$. Then $$|E(C'_1,C'_3)| < \frac{k}{2} - 1, \quad |E(C'_2,C'_3)| \leq \frac{k}{2} - 1, \quad |E(C'_1,C'_2)| = 1$$
+  To guarentee the second condition, we can use our $C'2 = \{r\}$ judiciously such that
+  This gives us a 3-cut of $k-1$, contradicting the minimality of $C$.
+\end{proof}
+\fi
+
+Thus, we have the following probability:
+\begin{gather*}
+{\bf Pr}[\cap_{i=1}^{n-r}\mathcal{E}_i] = \prod_{i=1}^{n-r} (1 - \frac{2(r-1)}{n-i+1}) = \\
+(\frac{n-2(r-1)}{n})(\frac{n-2(r-1)-1}{n-1})(\frac{n-2(r-1)-2}{n-2})...(\frac{n-2(r-1)-(n-r+1)}{r+1}) = \frac{\binom{n-2(r-1)}{n-r}}{ \binom{n}{n-r}}
+\end{gather*}
+(Not sure how to simplify this at the moment).
+
+\subsection*{Problem 6}
+\begin{enumerate}
+  \item To see that the value of the optimal solution of the linear program in question is an upper bound of the density of the densest graph, consider the following weighting of the edge and vertex variables for any subgraph $G' = (V',E')$:
+  \begin{gather*}
+    x(v) = \frac{1}{n}, \quad \forall v \in V' \\
+    y(e) = \frac{1}{n}, \quad \forall v \in E' \\
+    x(v) = 0 \quad \forall v \in V -V' \\
+    y(e) = 0 \quad \forall e \in  E - E'
+  \end{gather*}
+  Observe that these weightings obey the constraints of the linear program. Now:
+  $$\sum_{e \in E} y(e) = \frac{1}{n}|E| = \frac{|E|}{|V|} $$ which gives exactly the density of subgraph $G'$.
+   Hence, the optimal solution to this linear program must be at least the density of the densest subgraph of $G$.
+   \item Suppose that $e \in E_r$ as defined in part 2. Then $e = (u,v)$ for some $u,v \in V$. But $y(e) \leq \min\{x(u),x(v)\}$ by our constraints. Thus, $x(u),x(v) \geq r$ and $x(u),x(v) \in V_r$ as desired.
+   \item We focus on $\int_{0}^1|E_r| dr$.
+
+   First, we notice that the function $|E_r|:[0,1] \rightarrow \mathbb{N}$ can be written in a particular form as follows: Let $\Gamma = \{(r_i,k_i)\}$ denote the finite set of tuples describing the $(r_i,|S_{r_i}|)$ whre $S_{r_i} = \{e \in E \mid y(e) = r_i\}$. Note that $\sum_{r \in [0,1]} |S_{r}| = |E|$. Then we can write $|E_r|$ as:
+
+   \begin{gather*}
+     |E_r| = \begin{cases}
+                |E| \quad \text{if }r = 0 \\
+                |E| - k_1 \quad \text{if }r = r_1 \\
+                ... \\
+                (|E| - \sum_{i=1}^m k_i) \quad \text{if } r = r_m \\
+                ... \\
+                0 \quad \text{if } r = 1
+             \end{cases}
+   \end{gather*}
+
+   We can explicity write the area as follows:
+   \begin{gather*}
+     \int_0^1 |E_r| dr = \sum_{m=0}^{ |\Gamma|-1}(|E|-\sum_{i=1}^mk_i)(r_{m+1}-r_m)
+   \end{gather*}
+
+   We show  that this sum is exactly $\sum_{e \in E} y(e)$.
+   Assume that $|\Gamma| = m+1$. Let us expand this sum for indices, $m-1,m$:
+   \begin{gather*}
+   (|E|-\sum_{i=1}^{m-1}k_i)(r_{m}-r_{m-1}) + (|E|-\sum_{i=1}^mk_i)(r_{m+1}-r_m) \\
+   (|E|r_{m+1} - \sum_{i=1}^m k_ir_{m+1} - |E|r_m + \sum_{i=1}^mk_ir_m) +  (|E|r_{m} - \sum_{i=1}^{m-1} k_ir_{m} - |E|r_{m-1} + \sum_{i=1}^{m-1}k_ir_{m-1})
+ \end{gather*}
+Notice that $|E|r_m$ cancel. $|E|r_{m-1},\sum_{i=1}^{m-1}k_ir_{m-1}$ also disappears by an induction argument. Furthermore:
+\begin{gather*}
+\sum_{i=1}^mk_ir_m - \sum_{i=1}^{m-1} k_ir_{m} = r_mk_m \\
+\sum_{i=1}^m k_ir_{m+1} = |E|r_{m+1}
+\end{gather*}
+Thus, we are simply left with $k_mr_m$. We can combine these observations with an induction argument on $|\Gamma|$ to yield our required result:
+$$\int_0^1 |E_r| dr=  \sum_{e \in E} y(e) $$
+
+   A similar argument follows for $\int_{0}^1 |V_r| dr = \sum_{v \in V} x(v) = 1$.
+   \item To show that there exists $r \in [0,1]$ such that $\frac{|E_r|}{|V_r|} \geq \frac{\sum_{e \in E} y(e)}{\sum_{v \in V} x(v)}$, we argue by contradiction. Suppose that $\forall r \in [0,1]$, $\frac{|E_r|}{|V_r|} < \frac{\sum_{e \in E} y(e)}{\sum_{v \in V} x(v)}$, then we see the following assertions:
+   \begin{gather*}
+     \frac{|E_r|}{|V_r|} < \frac{\sum_{e \in E} y(e)}{\sum_{v \in V} x(v)} \\
+     \frac{|E_r|}{|V_r|} < \int_0^1 |E_r| dr \\
+     |E_r| < |V_r|\int_0^1 |E_r| dr \\
+     \int_0^1 |E_r| dr < \int_0^1 |E_r| dr \int_0^1 |V_r| dr \\
+     \int_0^1 |E_r| dr < \int_0^1 |E_r| dr
+   \end{gather*}
+   This yields a contradiction, proving the proposition. Now by part two of this problem, we see that $E_r \subseteq V_r \times V_r $. Hence,
+   $\frac{|E_r|}{|V_r|}$ is the density of some subgraph in $G$. Combining this with our observation in part one, we have the equivalence between the optimal solution to the linear program and the density of the densest subgraph in $G$. This gives us a polynomial-time algorithm for the densest subgraph problem as desired. One way, we can find $r$ is find all the distinct sets $V_m$ where $m \neq x(v)$. We can get these distinct sets of vertices by testing values between the $x(v)$. Iterating through all of these distinct sets means that we can construct the graph $G_m = (V_m,E_m)$ and test if this gives us the densest graph. If it does, set $r = m$. I believe this also shows that $r$ we can use is not unique.
+\end{enumerate}
+
+\end{document}
