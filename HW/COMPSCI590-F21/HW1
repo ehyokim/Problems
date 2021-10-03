@@ -1,0 +1,226 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+\newcommand{\Ex}{\underset{x \sim \{-1,1\}^n}{\mathbb{E}}}
+\newcommand{\Ey}{\underset{x \sim \{-1,1\}^n}{\mathbb{E}}}
+
+
+\begin{document}
+
+\title{COMPSCI 590 HW 1}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+\section{Problem 1}
+\begin{enumerate}
+
+  \item
+  Stating the intermediate steps, we deduce the following for $S \subseteq [n]$
+  \begin{align*}
+    \hat{g}(S) & = \underset{x \sim \{-1,1\}^n}{\mathbb{E}}[\frac{1}{2}(f(x) - f(-x))\chi_S(x)] \\
+    & = \frac{1}{2} \left( \Ex [f(x)\chi_S(x)] - \Ex[f(-x)\chi_S(x)] \right)\\
+    & = \frac{1}{2}\left( \hat{f}(S) - \Ex [f(x) \prod_{i \in S} (-x_i)] \right)
+  \end{align*}
+  If $|S|$ is odd, then product in the second expectation will be negative, giving us:
+  \[ \hat{g}(S) = \frac{1}{2}(\hat{f}(S) - (-\hat{f}(S)))  = \hat{f}(S)\]
+  Else $|S|$ is even, so $\hat{g}(S) = 0 $.
+  \item
+  Write out the Fourier expansion of $f:\{-1,1\}^n \rightarrow \{-1, 1\}$ as $f = \sum_{S \subseteq [n]} \hat{f}(S)\chi_S$, then $g$ can be written as
+  \[ g(x_1,\cdots, x_{n-1}) =  \sum_{S \subseteq [n]} \hat{f}(S)\chi_S(x_1, \cdots, x_{n-1}, 1) \]
+  For $R \subseteq [n-1]$, we see from the equality above that the Fourier coefficient $\hat{g}(R)$ will be:
+  \[ \hat{g}(R) = \hat{f}(R) + \hat{f}(R \cup \{n\})\]
+  since for $x \in \{-1, 1\}^{n-1}$
+  \[ \chi_R(x_1, \cdots, x_{n-1}) = \prod_{i \in R} x_i =  \chi_{S \cup \{n\}}(x_1, \cdots, x_{n-1}, 1) \]
+  where we interpret the last expression as a character of $f$.
+  \item
+  Let $S \subseteq [n+1]$, then
+  \begin{align*}
+    \hat{g}(S) & = \underset{x \sim \{-1,1\}^{n+1}}{\mathbb{E}} [f(x_1, \cdots, x_{n})\frac{1 - x_n}{2}\chi_S(x))] \\
+    & = \frac{1}{2} \left( \underset{x \sim \{-1,1\}^{n+1}}{\mathbb{E}}  [f(x_1, \cdots, x_n)\chi_{S}(x)] - \underset{x \sim \{-1,1\}^{n+1}}{\mathbb{E}} [f(x_1, \cdots, x_n)x_{n+1}\chi_S(x)]\right) \\
+  \end{align*}
+  First suppose that $n+1 \in S$, then
+  the first term will simplify to
+  \begin{align*}
+    & \underset{x \sim \{-1,1\}^{n+1}}{\mathbb{E}}  [f(x_1, \cdots, x_n)\chi_{S}(x)] = \\
+    & \underset{x \sim \{-1,1\}^{n}}{\mathbb{E}}  [f(x_1, \cdots, x_n)\chi_{S / \{n+1\}}(x)]\cdot \mathbb{P}[x_{n+1} = 1] \; - \\
+    & \underset{x \sim \{-1,1\}^{n}}{\mathbb{E}}  [f(x_1, \cdots, x_n)\chi_{S / \{n+1\}}(x)]\cdot \mathbb{P}[x_{n+1} = -1] = \\
+    & \underset{x \sim \{-1,1\}^{n}}{\mathbb{E}}  [f(x_1, \cdots, x_n)\chi_{S / \{n+1\}}(x)]\cdot \frac{1}{2}\; - \\
+    & \underset{x \sim \{-1,1\}^{n}}{\mathbb{E}}  [f(x_1, \cdots, x_n)\chi_{S / \{n+1\}}(x)]\cdot \frac{1}{2} \\
+    & = 0
+  \end{align*}
+  The remaining values will further simplify:
+  \begin{align*}
+    & - \frac{1}{2} \left(\underset{x \sim \{-1,1\}^{n+1}}{\mathbb{E}} [f(x_1, \cdots, x_n)x_{n+1}\chi_S(x)] \right) = \\
+    & - \frac{1}{2^{n+2}} \sum_{x \in \{-1,1\}^{n+1}} f(x_1,\cdots, x_n) \cdot \chi_{S / \{n+1\}}(x) = \\
+    &  -\frac{1}{2^{n+1}} \sum_{x \in \{-1,1\}^n} f(x_1, \cdots, x_n) \cdot \chi_{S / \{n+1\}}(x) = - \hat{f}(S / \{n+1\})
+  \end{align*}
+  On the other hand, if $n+1 \not\in S$,
+  then we have the opposite effect:
+  \begin{align*}
+    \underset{x \sim \{-1,1\}^{n+1}}{\mathbb{E}} [f(x_1, \cdots, x_n)x_{n+1}\chi_S(x)] = 0
+  \end{align*}
+  then,
+  \begin{align*}
+    \frac{1}{2}\left(\underset{x \sim \{-1,1\}^{n+1}}{\mathbb{E}}  [f(x_1, \cdots, x_n)\chi_{S}(x)]  \right) = \hat{f}(S) = \hat{f}(S/\{n+1\})
+  \end{align*}
+  \item
+  Let $S \subseteq [2n]$, then we can partition into disjoint sets $S = R \cup G$ where $R \subseteq \{1,\cdots n\}$ and \newline $G \subseteq \{n+1, \cdots, 2n\}$, so
+  \begin{align*}
+    \widehat{g}(S) & =  \frac{1}{2^{2n}}\left(\sum_{x \in \{-1,1\}^{2n}} f(x_1,\cdots, x_{n})\chi_S(x) + \sum_{x \in \{-1,1\}^{2n}} f(x_{n+1},\cdots, x_{2n})\chi_S(x) \right) \\
+     & = \frac{1}{2^{n}} \sum_{y \in \{-1,1\}^{n}} \frac{1}{2^{n}} \left(\sum_{y \in \{-1,1\}^{n}} f(x_1,\cdots, x_{n})\chi_R(x) \right) \chi_G(y) \\
+     & + \frac{1}{2^{n}} \sum_{y \in \{-1,1\}^{n}} \frac{1}{2^{n}} \left (\sum_{x \in \{-1,1\}^{n}} f(x_{n+1},\cdots, x_{2n})\chi_G(x) \right) \chi_R(y) \\
+     & = \frac{1}{2^{n}}\left(\sum_{y \in \{-1,1\}^n} \hat{f}(R) \chi_G(y) + \sum_{y \in \{-1,1\}^n} \widehat{f}(G) \chi_R(y)\right) \\
+     &  =  \widehat{f}(R) \langle \chi_G, \chi_{\emptyset} \rangle + \hat{f}(G) \langle \chi_R, \chi_{\emptyset} \rangle
+  \end{align*}
+  In particular, $\hat{g}(S) = 0$ if $S$ has non-trivial intersection with both $\{1, \cdots, n\}$ and $\{n+1,\cdots, 2n\}$
+  \item
+  Again, if $S \subseteq [2n]$, we can we can partition into disjoint sets $S = R \cup G$ where $R \subseteq \{1,\cdots n\}$ and \newline $G \subseteq \{n+1, \cdots, 2n\}$, so that we calculate
+  \begin{align*}
+    \widehat{g}(S) & = \frac{1}{2^{2n}} \left( \sum_{x \in \{-1,1\}^{2n}} f(x_1,\cdots, x_n) \chi_R(x)f(x_{n+1},\cdots, x_{2n})\chi_G(x)\right) \\
+    & = \frac{1}{2^n}\left(\sum_{y \in \{-1,1\}^n} \frac{1}{2^n}\left(\sum_{x \in \{-1,1\}^n}  f(x_1,\cdots, x_n)\chi_{R}(x)\right)f(y_1,\cdots, y_{n})\chi_{G}(y) \right) \\
+    & = \widehat{f}(R)\left(\frac{1}{2^n} \sum_{y \in \{-1,1\}^n}  f(y_1, \cdots, y_{n}) \chi_G(y)\right) \\
+    & = \widehat{f}(R)\widehat{f}(G) \\
+  \end{align*}
+  \item
+  \item
+  First, partition $[2n]$ into its even and odd components, that is
+  let $E = \{2, \cdots, 2n\}$ and $O = \{1,\cdots, 2n-1\}$. Since $|E| = |O| = n$, there is are unique bijective order-preserving set maps $M_E,M_0:  E, O \rightarrow [n] $. Now for every $S \subseteq [2n]$, let $S_E = M_E(S \cap \{2, \cdots, 2n\}) \subseteq [n]$ and $S_O = M_O(S \cap \{1,\cdots, 2n-1\})\subseteq [n]$.
+  We then perform the following:
+  \begin{align*}
+    \hat{g}(S) & = \frac{1}{2^{2n}}\sum_{x \in \{-1,1\}^{2n}} f(x_1x_2,\cdots,x_{2n-1}x_{2n})\chi_S(x) \\
+    & = \frac{1}{2^{n}} \sum_{x \in \{-1,1\}^{n}} \frac{1}{2^n}\left( \sum_{y \in \{-1,1\}^{n}} f(x_1y_1,\cdots, x_ny_n)\chi_{S_E}(y)\right)\chi_{S_O}(x) \\
+    & = \frac{1}{2^n} \sum_{x \in \{-1,1\}^{n}} f * \chi_{S_E}(x)\chi_{S_O}(x) \\
+    & = \widehat{f * \chi_{S_E}}(S_O) \\
+    & = \widehat{f}(S_O)\widehat{\chi_{S_E}}(S_O) \\
+    & = \widehat{f}(S_O) \langle \chi_{S_E}, \chi_{S_O} \rangle
+  \end{align*}
+  Hence, $\widehat{g}(S) = \widehat{f}(S_O)$ iff $S_E = S_O$. Else $\widehat{g}(S) = 0$.
+\end{enumerate}
+
+\section{Problem 2}
+First, observe that the conversion map $1 - 2x$ takes truth values encoded in $\{0,1\}$ to those encoded in $\{-1,1\}$. Let $r:\mathbb{F}^n_2 \rightarrow \mathbb{F}_2$ be the $\mathbb{F}_2$- polynomial describing $f:\mathbb{F}^n_2 \rightarrow \mathbb{F}_2$ defined as below:
+\[ r(x) = \frac{1}{2} - \frac{1}{2}k(1-2x_1,\cdots, 1-2x_n) \]
+where $k: \{-1,1\}^n \rightarrow \{-1,1\}$ is the multilinear polynomial described by the Fourier expansion of $f$. We easily check that $r$ simply converts the inputs into truth values into ones compatible with the Fourier expansion of $f$ and the output back into values in $\mathbb{F}_2$. Furthermore, we check the degree of $\mathbb{F}_2-polynomial$, $r$:
+\begin{align*}
+  r(x) & =  \frac{1}{2} - \frac{1}{2}\sum_{S \subseteq [n]} \widehat{f}(S)\chi_S(1-2x_1,\cdots, 1-2x_n) \\
+  & = \frac{1}{2} - \frac{1}{2}\sum_{S \subseteq [n]} \widehat{f}(S) \prod_{i \in S} (1-2x_i) \\
+  & = \frac{1}{2} - \frac{1}{2}\sum_{S \subseteq [n]} \widehat{f}(S) \left( (-1)^{|S|}2^{|S|} \prod_{i \in S} x_i  + E_S \right)
+\end{align*}
+where $E_S$ describes the lower degree terms of the expanded polynomial. We note that the conversion map does not change the degree of each parity function $\chi_S$. Furthermore, any $\mathbb{F}_2$ polynomial describing $f$ must be unique as any two $\mathbb{F}_2$-polynomials $r_1,r_2$ agree on all $x \in \mathbb{F}_2^n$. Thus, $\text{deg}(r) = \text{deg}_{\mathbb{F}_2}(f)$. From our note above, we conclude that $\text{deg}_{\mathbb{F}_2}(f) \leq \text{deg}(f)$.
+
+\section*{Problem 3}
+\begin{enumerate}
+  \item We argue through an induction on the number of argumnts $n$:
+  For $n = 0$, the only character we have is $\chi_{\emptyset}$. Since $\chi_{\emptyset} = 1$, the claim holds for $H_1 = [1]$. Now assume that the claim holds for some $n$, where
+  \[ H_{2^{n+1}} = \left[ \begin{matrix} H_{2^n} &  H_{2^n} \\  H_{2^n} & - H_{2^n}  \end{matrix}\right] \]
+  For $S \subseteq [n+1], x \in \{-1,1\}^{n+1}$, define
+  \begin{align*}
+    S\restriction_n &= S \cap \{1,\cdots,n\} \\
+    x \restriction_n &= (x_1,\cdots,x_n) \in \{-1,1\}^n
+  \end{align*}
+  then
+  \[ \chi_S(x) = (-1)^{s\cdot x} = (-1)^{S\restriction_n \cdot x \restriction_n}(-1)^{s_{n+1}x_{n+1}}\]
+  If $n+1 \not\in S$,
+  \begin{equation} \label{zerocase}
+    \chi_S(x) = \chi_{S\restriction_n}( x \restriction_n) = (H_{2^n})_{S\restriction_n,x \restriction_n}
+  \end{equation}
+  where we invoke the induction hypothesis in the last equality. We see that for both $x_{n+1} = 0,1$, the first two blocks of $H_{2^{n+1}}$ are exactly $H_{2^n}$. Hence,
+  $\chi_S(x) = (H_{2^{n+1}})_{S,x}$
+
+  On other hand, if $n+1 \in S$ and $x_{n+1} = 1$, then
+  \[\chi_S(x) = -\chi_{S\restriction_n}( x \restriction_n) = -H_{2^n}\]
+  otherwise, the same equality as Equation (\ref{zerocase}) holds. The $n+1 \in S, x_{n+1} = 1$ case is handled by the bottom right block $-H_{2^n}$ and the $n+1 \in S, x_{n+1} = 0$ case is handled by the bottom left block $H_{2^n}$. This shows our claim as desired.
+  \item
+  Recall that for $S \subseteq [n]$
+  \begin{equation} \label{fhat}
+      \widehat{f}(S) = \frac{1}{2^n}\sum_{x \in \mathbb{F}_2^n} f(x)\chi_S(x)
+  \end{equation}
+
+  We interpret both $f, \widehat{f} \in \mathbb{R}^{2^n}$ as real-valued vectors. By the observations made in part one above, the sum in Equation (\ref{fhat}) can be interpreted as adding all of the values in the row indiced by $S$ of $H_{2^n}$ with each column $x \in \mathbb{F}_2^n$ scaled by corresponding $f(x)$. This is precisly the row $S$ of column vector $H_{2^n}f$. By scaling all values of $H_{2^n}f$ by $2^{-n}$, we see that, by Equation (\ref{fhat}), the element indiced by $S$ in resulting column vector must be $\widehat{f}(S)$. Thus,
+  \[ 2^{-n} H_{2^n}f = \widehat{f}\]
+  as claimed.
+  \item
+  The key observation here stems from the recursive nature of the Hadamard matrices $H_{2^n}$. To see the conseequences of this, let $f \in \mathbb{R}^{2^n}$ be the column vector representing the function $f$, and let $f_{\ell} = [f(0) \cdots f(2^{n-1})]^T$ and $f_u = [f(2^{n-1} +1), \cdots. f(2^n-1)]^T$ represent $f$ divided into its lower and upper halves respectively then,
+  \[ H_{2^{n}} = \left[ \begin{matrix} H_{2^{n-1}} & H_{2^{n-1}} \\ H_{2^{n-1}} & -H_{2^{n-1}} \end{matrix}\right]f  =  \left[ \begin{matrix} H_{2^{n-1}} f_\ell + H_{2^{n-1}}f_u \\ H_{2^{n-1}}f_{\ell} -H_{2^{n-1}}f_u \end{matrix} \right] \]
+Through an induction argument, we can argue that only $H_{2^{n-1}}f_\ell$ and $H_{2^{n-1}}f_u$ have to be computed. To compute the total colimn vector, each would take $(n-1)2^{n-1}$. Furthermore, another $2\cdot2^{n-1}$ would be need to add and substract each row according to the formula above. This yields in total $2(n-1)2^{n-1} + 2^n = n2^n$ as required.
+\item
+By part two above, $2^{-n}H_{2^n}f = \widehat{f}$. Therefore,
+\begin{align*}
+  2^{-n}H_{2^n} \widehat{f} =  \widehat{\widehat{f}} \\
+    2^{-2n}H_{2^n}H_{2^n}f = \widehat{\widehat{f}}
+\end{align*}
+However, the Hadamard matrix $H_{2^n}$ is its own inverse up to a constant factor of $2^n$. Hence,
+\[2^{-n}f = \widehat{\widehat{f}}\]
+
+\section*{Problem 4}
+\begin{enumerate}
+  \item Assuming the inequality
+  \begin{equation}
+    \mathbb{P}[f(x) = \chi_T(x)] \leq \mathbb{P}[f(x) \neq \chi_S(x)] + \mathbb{P}[\chi_S(x) = \chi_T(x)]
+  \end{equation}
+  we arrive at the following inequalities
+  \begin{align*}
+    1 - \mathbb{P}[f(x) \neq \chi_T(x)] & \leq \delta + \mathbb{P}[\chi_S(x) = \chi_T(x)] \\
+    |\widehat{f}(T)| & \leq \delta + \mathbb{P}[\chi_S(x) = \chi_T(x)] - \mathbb{P}[f(x) \neq \chi_T(x)] \\
+    |\widehat{f}(T)| & \leq \delta + \mathbb{P}[f(x) \neq \chi_S(x)] \\
+    |\widehat{f}(T)| & \leq 2\delta
+  \end{align*}
+  \item From the BLR analysis, we know that
+  \begin{equation}
+    \mathbb{P}[\text{BLR accepts}] = \frac{1}{2} + \frac{1}{2}\sum_{S \subseteq [n]} f(S)^3
+  \end{equation}
+  From here, we calculute the bound on the reject probability:
+  \begin{align*}
+    1 - \mathbb{P}[\text{BLR accepts}] & = \frac{1}{2} - \frac{1}{2}\sum_{S \subseteq [n]} \widehat{f}(S)^3 \\
+      & = \frac{1}{2} - \frac{1}{2}\left(\widehat{f}(S)^3 + \sum_{T \subseteq [n], T \neq S} \widehat{f}(T)^3 \right) \\
+      & = \frac{1}{2} - \frac{1}{2}\left((1-2\delta)^3 + \sum_{T \subseteq [n], T \neq S} \widehat{f}(T)^3 \right) \\
+      & = 3\delta + 12\delta^2 - 8\delta^3 - \frac{1}{2}\sum_{T \subseteq [n], T \neq S} \widehat{f}(T)^3 \\
+      & \geq 3\delta - 12\delta^2 + 8\delta^3  - \sum_{T \subseteq [n], T \neq S} 4\delta^3\\
+      & = 3\delta - \mathcal{O}(\delta^2)
+  \end{align*}
+\end{enumerate}
+\section*{Problem 5}
+\begin{enumerate}
+  \item For point functions $1_{x = a}$, we calculate both its fractional and Fourier sparsity:
+  \begin{align*}
+    ||f||_0 = \frac{1}{2^n} \\
+    ||\widehat{f}||_0 = 2^n
+  \end{align*}
+  The Fourier sparsity can be seen through the Fourier coefficients of the point function viewed as an affine subspace of the form $1_{x=a} = {\bf 0} + a$ where ${\bf 0}$ is the trivial subspace. Hence,
+  \[ \widehat{1_{x = a}}(\gamma) = \chi_{\gamma}2^{-n} \] for all $\gamma \in \mathbb{F}_2^n$ since all $\gamma \in {\bf 0}^\perp$. Thus, we arrive at the result for point functions:
+  \[ ||f||_0||\widehat{f}||_0 = 1 \]
+  \item
+  Viewing $f_b:{-1,1}^{n-1} \rightarrow \mathbb{R}$ as an $(n-1)$-ary function, we can calculate the fractional sparsity for the full function $f$ as follows:
+  \begin{align*}
+    ||f||_0 = \underset{x \sim \{-1,1\}^n}{\mathbb{P}}[f(x) \neq 0]
+    & = \underset{x \sim \{-1,1\}^{n-1}}{\mathbb{P}}[f_{-1}(x_1, \cdots, x_{n-1})\neq 0]\cdot \mathbb{P}[b = -1] \\
+    & + \underset{x \sim \{-1,1\}^{n-1}}{\mathbb{P}}[f_{1}(x_1, \cdots, x_{n-1})\neq 0]\cdot \mathbb{P}[b = 1] \\
+    %& = \frac{\#\{x \in \{-1,1\}^{n-1} \mid f_{-1}(x_1, \cdots, x_{n-1})\neq 0\}}{2^{n-1}}\cdot \frac{1}{2} \\
+    %& + \frac{\#\{x \in \{-1,1\}^{n-1} \mid f_{1}(x_1, \cdots, x_{n-1})\neq 0\}}{2^{n-1}}\cdot \frac{1}{2}
+    & = \frac{1}{2}(||f_{-1}||_0 + ||f_{1}||_0)
+  \end{align*}
+  Thus, $||f_{-1}||_0 + ||f_{1}||_0 = 2 ||f||_0$ and thus, both $||f_{1}||_0, ||f_{-1}||_0$ cannot be larger than $||f||_0$. This must mean that there exists some $b \in {-1,1}$ such that $||f_b||_0 \leq ||f||_0$.
+  \item We can extend the result from Problem 1 Part 2 to show that for $x \in \{-1,1\}^{n-1}$ :
+  \begin{equation}
+    f_b(x) = \sum_{R \subseteq [n-1]} \left(\hat{f}(R) + b\hat{f}(R \cup \{n\})\right)\chi_R(x_1,\cdots, x_{n-1})
+  \end{equation}
+  Hence, $\widehat{f_b}(R) = \hat{f}(R) + b\hat{f}(R \cup \{n\})$. In particular, note that for $R \subseteq [n-1]$, if $\widehat{f}(R) \neq 0$, then $\widehat{f_b}(R) \neq 0$ unless $ \hat{f}(R) + b\hat{f}(R \cup \{n\}) = 0$. This shows that $||\widehat{f_b}||_0 \leq ||\widehat{f}||_0$ as required.
+  \item We induct on the length of the input strings $n$. For the case where $n = 0$, the only function which is not identically equal to zero would be the constant function $f = 1$. However, we can easily calculate the sparsity values as $||f||_0 = 1, \; ||\widehat{f}||_0 = 1$. Thus, $||f||_0 ||\widehat{f}||_0 = 1$. Now assuming the induction hypothesis holds for some $n$, consider a function $\{-1,1\}^{n+1} \rightarrow \mathbb{R}$ not identically equal to zero. By part two, there must exist some $b \in \{-1,1\}$ such that $||f_b||_0 \leq ||f||_0$. Now, if $f_b$ is also not identically equal to zero, then using part three and the fact that all spasity values are non-negative,
+  \[ ||f_b||_0||\widehat{f_b}||_0 \leq  ||f||_0||\widehat{f}||_0\]
+  By the induction hypothesis, $1 \leq ||f_b||_0||\widehat{f_b}||_0$, so
+  $$ 1 \leq ||f||_0||\widehat{f}||_0 $$
+  Note: This argument only works if the $f_b$ chosen above is not identically equal to zero. I'm not certain how to handle the case where the $f_b$ chosen above is identically equal to zero.
+\end{enumerate}
+
+
+
+\end{enumerate}
+
+\end{document}
