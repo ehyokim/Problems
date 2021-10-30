@@ -1,0 +1,253 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\bx}{{\bf x}}
+\newcommand{\Fn}{\mathbb{F}_2^n}
+\newcommand{\Exp}[1]{\mathbb{E}_{#1}}
+\renewcommand{\phi}{\varphi}
+
+
+\begin{document}
+
+\title{COMPSCI 590 HW 2}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+\section*{Problem 1}
+By interpolating on points in $\F_2^n$, the $\F_2$-polynomial representation of $\mathsf{Equal}_n: \{0,1\}^n \rightarrow \{0,1\}$ will be:
+%
+\[ \mathsf{Equal}_n(x_1,\cdots, x_n) = \prod_{i \in [n]} (1-x_i) + \prod_{i \in [n]} x_i\]
+%
+Expanding this form yields that:
+%
+\[ \mathsf{Equal}_n(x_1,\cdots, x_n) = \sum_{S \subseteq [n]} (-1)^{|S|}\prod_{i \in S} x_i  + \prod_{i \in [n]} x_i \]
+
+\section*{Problem 2}
+We argue through induction on $d$. For $d = 1$, the claim follows from $\phi$ assumed as an $\epsilon$-biased density. Now for $d > 1$ and $\gamma \in \widehat{\F_{2}^n}$, we compute as below:
+\begin{align*}
+  \Exp{x \sim \phi^{*d}}[\chi_{\gamma}(x)] & =   \Exp{x \sim \F_2^n}[\phi * \phi^{*(d-1)}(x)\chi_{\gamma}(x)] \\
+  & = \Exp{x \sim \F_2^n}[\Exp{z \sim \Fn}[\phi(z)\phi^{*(d-1)}(x-z)]\chi_\gamma(x)] \\
+  & = \Exp{z \sim \F_2^n}[\Exp{x \sim \Fn}[\phi(z)\phi^{*(d-1)}(x-z)\chi_\gamma(x)]] \\
+  & = \Exp{y,z \sim \Fn} [\phi(z)\chi_\gamma(y+z)\phi^{*(d-1)}(y)] \quad \text{(uniformity of $x,z$)} \\
+  & = \Exp{y,z \sim \Fn} [\phi(z)\chi_\gamma(z)\phi^{*(d-1)}(y)\chi_\gamma(y)] \\
+  & = \Exp{z \sim \Fn} [\phi(z)\chi_\gamma(z)]\Exp{y \sim \Fn} [\phi^{*(d-1)}(y)\chi_\gamma(y)] \\
+  & \leq \epsilon \cdot \epsilon^{d-1} = \epsilon^d \quad \text{(Independence of ${\bf y}, {\bf z}$)}
+\end{align*}
+where we used the induction hypothesis to derive the inequality.
+
+\section*{Problem 3}
+\begin{enumerate}
+  \item First, we sample a random vector $\bx \sim \Fn$ using $n$ random bits and check if $C'\bx = AB\bx$. Note that performing a linear transformation in respect to $A \in \F_2^{n \times n}$ and $b \in \Fn$  will take $O(n^2)$ time. Hence, computing the column vectors $C'\bx, AB\bx$ and checking for equality will take $O(n^2)$ time overall.
+
+  Correctness follows simply from equality, so it suffices to bound the acceptance probability of the test when $C' \neq AB$. Indeed, if equality does not hold, then the matrix  $D = C' - AB \neq {\bf 0}$ where ${\bf 0}$ is the $n \times n$ matrix whose entries are all zero. Thus, there must exist at least one entry $D_{i,j} \neq 0$. Let $y \in \Fn$ be such that $y_j = 0$. A direct calculation shows that $(Dy)_i = 0$, and so $Dy = 0$. By observing that the equality test accepts a vector $z \in \Fn$ iff $Dz = 0$, the vector $y$ must be accepted.
+
+  To generalize, let $\mathcal{R}$ be the indices of columns with at least one non-zero entry i.e $\mathcal{R} = |\{g \in [n] \mid \exists \ell \in [n], \; D_{\ell g} = 1\}|$. Observe that a vector $z$ such that $\sum_{i \in \mathcal{R}} z_i = 0$ is also accepted by the equality test. This amounts to the number of even parity, $|\mathcal{R}|$-bit strings which is $2^{|R|-1}$ in all. Now there are $2^{n  - |\mathcal{R}|}$ number of strings to set the rest of the bits which gives us $2^{n - |\mathcal{R}|} \cdot 2^{|R|-1} = 2^{n - 1}$ strings accepted by the equality test.
+
+  %By leveraging a similar argument, any additional error occuring in a different column would half the vectors accepted by the equality test.
+
+  This shows that the equality test will have acceptance probability of at most $\frac{1}{2}$ when $C' \neq AB$.
+
+  \item
+  By invoking the construction of a $1/6$-biased density of Theorem 6.30. We can use $O(\log{n})$ bits and keep the running time as $O(n^2)$. This follows from the assumption that sampling from the $1/6$-biased density will take $n \cdot \mathsf{polylog}(\log{n})$.
+
+\end{enumerate}
+
+\section*{Problem 4}
+We first show the inequality for all $J \subseteq [n]$:
+\begin{equation} \label{eq:dtieq}
+  \mathsf{DTsize}(f) \leq 2^{|J|} \sum_{z \in \{0,1\}^{\bar{J}}} \mathsf{DTsize}(f_{J\mid z})
+\end{equation}
+%
+This can be argued first by concatenating the decision trees of $f_{J\mid z}$. More specifically, create a decision tree enumerate all strings $z \in \{0,1\}^{\bar{J}}$. At each leaf of this constructed tree accepting a string $k \in \{0,1\}^{\bar{J}}$, replace it with the root of the corresponding decision tree of $f_{J\mid k}$. This will yield the inequality:
+\[ \mathsf{DTsize}(f) \leq \sum_{z \in \{0,1\}^{\bar{J}}} \mathsf{DTsize}(f_{J\mid z})\]
+Multiply the rightside by $ 2^{|J|}$ to derive (\ref{eq:dtieq}). This brings us to:
+\begin{align*}
+  \mathsf{DTsize}(f) & \leq 2^{|J|} \sum_{z \in \{0,1\}^{\bar{J}}} \mathsf{DTsize}(f_{J\mid z}) \\
+  & = 2^{n} \cdot \Exp{z \in \{0,1\}^{\bar{J}}} \left[ \mathsf{DTsize}(f_{J\mid z}) \right]
+\end{align*}
+%
+Taking the expectation over the $p$-random subsets of $[n]$ on both sides:
+
+\begin{align*}
+  \mathsf{DTsize}(f) \leq 2^n \cdot \Exp{J\mid z \sim \mathcal{R}_p} \left[ \mathsf{DTsize}(f_{J\mid z}) \right]
+\end{align*}
+
+(I wasn't exactly sure what the appropriate constant would be.)
+
+\section*{Problem 5}
+\begin{enumerate}
+  \item We induct on the width $w$ of the CNF $C$. For width one CNF $C$, it would just contain a logical AND of single-literal clauses of the form $x_j, \overline{x_j}$. This CNF is satisfable iff it doesn't contain \emph{both} single-literal clauses $x_j, \overline{x_j}$. Hence, the algorithm would output correctly for this case as single-literal clauses are always forced to be true. Now assume that the claim holds for some $w > 1$. Choose a width $w$ clause in $C$ say $\mathcal{T}$. Assume that the computation completes without error. During the course of the computation, there must exist some $\ell_{\mathcal{T}} \in [n]$ such that for steps $i > \ell$, the clause becomes, at most, a width $w-1$ clause. Taking the maximum $\ell_{\mathcal{T}}$ over all width $w$ clauses shows that, at some point, $C$ turns into a width $w-1$ CNF. Since the computation proceeds without error and the random permutation ${\bf \pi} \sim S_n$ restricted to the remaining variables is a valid random permutation, we can invoke the induction hypothesis on this reduced CNF to output an assignment on the remaining free variables such that total output is a satisying assignment ${\bf x}$.
+
+  \item
+  Argue as follows:
+  \begin{align*}
+    p(x) & = \mathbb{P}_{\pi \sim S_n}[{\bf x} = x] \\
+    & =  \frac{1}{n!} \sum_{\pi \in S_n}  \mathbb{P}[{\bf x}_{\pi(1)} = x_{\pi(1)}] \prod_{i = 2}^n \mathbb{P}[{\bf x}_{\pi(i)} = x_{\pi(i)} \mid {\bf x}_{\pi(i-1)} = x_{\pi(i-1)}, \cdots, {\bf x}_{\pi(1)} = x_{\pi(1)}] \\
+    & = \frac{1}{n!} \sum_{\pi \in S_n}  \prod_{i=1}^n (1/2)^{1 - {\bf I}_{\pi(i)}} \\
+    & = \mathbb{E}_{\pi \sim S_n} \left[ \prod_{i=1}^n (1/2)^{1 - {\bf I}_{i}} \right]
+  \end{align*}
+
+
+
+  \item
+  We begin by deriving:
+  \begin{align*}
+    2^np(x) & = 2^n \mathbb{E}\left[ \prod_{i=1}^n (1/2)^{1 - {\bf I}_{i}} \right] \\
+            & = \mathbb{E}\left[ \prod_{i=1}^n 2^{{\bf I}_{i}} \right] \\
+            & = \mathbb{E}\left[ 2^{\sum_{i = 1}^n {\bf I}_i} \right]
+  \end{align*}
+  By Jensen's Inequality:
+  \begin{align*}
+    \mathbb{E}[\log{2^{\sum_{i = 1}^n {\bf I}_i}}] \leq \log{\mathbb{E}\left[ 2^{\sum_{i = 1}^n {\bf I}_i} \right]}
+  \end{align*}
+  The right side can be simplified to:
+  \begin{align*}
+    \mathbb{E}[\log{2^{\sum_{i = 1}^n {\bf I}_i}}] & = \mathbb{E}\left[\sum_{i = 1}^n {\bf I}_i \right] \\
+    & = \sum_{i = 1}^n \mathbb{E}[{\bf I}_i ]
+  \end{align*}
+  which yields the final inequality:
+  \begin{align*}
+    \sum_{i = 1}^n \mathbb{E}[{\bf I}_i ] \leq 2^np(x)
+  \end{align*}
+
+  \item
+  Suppose $x$ is pivotal in $j$ i.e $f(x) = \mathsf{True}$, $f(x^{\oplus j}) = \mathsf{False}$. In the context of $f$ being a CNF, let $\mathcal{C}$ be the clause containing $x_j$ such that all other terms are set to $\mathsf{False}$ by $x$ and $x_j = \mathsf{True}$. In order for ${\bf I}_j = 1$ for a $\pi \sim S_n$, during the course of the computation according to $\pi$, all the other terms $\mathcal{C} / \{x_j\}$  must be set to $\mathsf{False}$ before $x_j$ is forced to become $\mathsf{True}$. Thus, we can reason that:
+
+  \begin{align*}
+    \Exp{\pi \sim S_n}[I_j \mid {\bf x} = x] \geq \mathbb{P}_{\pi \sim S_n}\left[\bigwedge_{x_c \in \mathcal{C} / \{x_j\}} \pi(c) < \pi(j) \right]
+  \end{align*}
+
+  The right quantity be calculated through an argument on the permutations of the $w$ terms and the uniform distribution over all $\pi \sim S_n$. Namely, given a width $w$ clause $\mathcal{C}_w$, there are ${n \choose w}$ different subsets of indices designated as $\{\pi(x)\}_{x \in \mathcal{C}_w}$. Once a subset $R \subset [n]$ of size $w$ is chosen, there are $(n-w)!$ ways to permute the elements of $[n]/\mathcal{R}$. Furthermore, once we set $\pi(j) =  \max_{i \in R} i$, there are $(w-1)!$ ways to set the rest of the elements. This shows that:
+
+  $$ \mathbb{P}_{\pi \sim S_n}\left[\bigwedge_{x_c \in \mathcal{C} / \{x_j\}} \pi(c) < \pi(j) \right] = \frac{ {n \choose w} (w-1)! (n-w)!}{n!} = 1/w $$
+  Hence, $\Exp{\pi \sim S_n}[I_j \mid {\bf x} = x] \geq 1/w$ as desired.
+
+  \item
+
+  From the inequality of part three, we can derive the following:
+  \begin{align*}
+    2^n p(x) & \geq \sum_{j =1}^n \mathbb{E}[ {\bf I}_j] \\
+             & \geq \sum_{j = 1}^n \mathbb{E}[ {\bf I}_j \mid {\bf x} = x, x \; \mathsf{pivitol}] \cdot \mathsf{Inf}_j[f] \\
+             & \geq  \sum_{j = 1}^n (1/w) \cdot \mathsf{Inf}_j[f] \\
+             & = (1/w) \cdot  \mathsf{Inf}[f]
+  \end{align*}
+  Now sum both sides over all $x \in \{\mathsf{False}, \mathsf{True}\}^n$:
+  \begin{align*}
+    \sum_{x \in \{\mathsf{False}, \mathsf{True}\}^n}2^n p(x) & \geq  \sum_{x \in \{\mathsf{False}, \mathsf{True}\}^n}(1/w)  \cdot  \mathsf{Inf}[f] \\
+    2^n & \geq 2^n (1/w)\cdot \mathsf{Inf}[f]
+  \end{align*}
+
+  which finally reveals that
+  $$ \mathsf{Inf}[f] \leq w $$
+
+\end{enumerate}
+
+\section*{Problem 7}
+\begin{enumerate}
+  \item We directly compute as below:
+  \begin{align*}
+    \langle f_0, f_1 \rangle_{U^1} & = \Exp{x, y_1 \sim \Fn}\left[ \prod_{s \in \{0,1\}} f_s(x + \sum_{i: s_i = 1} y_s) \right ] \\
+    & = \Exp{x, y_1 \sim \Fn}\left[ f_0(x)f_1(x + y_1) \right] \\
+    & = \Exp{x \sim \Fn} \left[f_0(x) \Exp{y_1 \sim \Fn} \left[f_1(x + y_1) \right]\right] \\
+    & = \Exp{x \sim \Fn} \left[f_0(x) \right] \Exp{z \sim \Fn} \left[ f_1(z) \right]
+  \end{align*}
+  Hence, $||f||_{U_1}^2 = \mathbb{E}[f]^2$
+  %
+  \item We once again directly compute as below:
+  \begin{align*}
+    \langle f_{00}, f_{01}, f_{10}, f_{11} \rangle_{U_2} & = \Exp{x, y_1, y_2 \sim \Fn}[f_{00}(x)f_{01}(x + y_2)f_{10}(x + y_1)f_{11}(x + y_1 + y_2)] \\
+    & = \Exp{x \sim \Fn} \left[ f_{00}(x) \Exp{y_1 \sim \Fn} \left[ f_{10}(x + y_1) \Exp{y_2 \sim \Fn}\left[ f_{01}(x + y_2)f_{11}(x + y_1 + y_2)\right] \right] \right] \\
+    & = \Exp{x \sim \Fn} \left[ f_{00}(x) \Exp{y_1 \sim \Fn} \left[ f_{10}(x + y_1) \Exp{z \sim \Fn}\left[ f_{01}(z)f_{11}(z + y_1)\right] \right] \right] \\
+    & = \Exp{x \sim \Fn} \left[ f_{00}(x) \Exp{y_1 \sim \Fn} \left[ f_{01}(x + y_1) f_{10}*f_{11}(y_1) \right]\right] \\
+    & = \Exp{x \sim \Fn} \left[ f_{00}(x)  f_{01} * f_{10}*f_{11}(x) \right] \\
+    & = \sum_{\gamma \in \hat{\Fn}} \widehat{f_{00}}(\gamma)\widehat{f_{01}}(\gamma)\widehat{f_{10}}(\gamma)\widehat{f_{11}}(\gamma)
+  \end{align*}
+  This shows that $||f||_{U_2}^4 = \sum_{\gamma \in \hat{\Fn}} \widehat{f}(\gamma)^4 = ||f||_4^4 $ as desired.
+  %
+  \item
+  The equality follows from expanding the outer expectation and reparametrizing a product:
+  \begin{align*}
+    \langle (f_s)_s \rangle_{U_k} & = \Exp{x, y_1, \cdots, y_k} \left[ \left(\prod_{s: s_k = 0} f_s(x + \sum_{i: s_i = 1} y_i)\right) \left(\prod_{s: s_k = 1} f_s(x + \sum_{i: s_i = 1} y_i)\right) \right] \\
+    & =  \Exp{y_1, \cdots, y_{k-1} \sim \Fn} \left[ \Exp{x \sim \Fn} \left[ \prod_{s: s_k = 0} f_s(x + \sum_{i: s_i = 1} y_i) \cdot \Exp{y_1 \sim \Fn} \left[ \prod_{s: s_k = 1} f_s((x + y_k)+  \sum_{i: s_i = 1} y_i) \right] \right] \right] \\
+    & = \Exp{y_1, \cdots, y_{k-1} \sim \Fn} \left[ \Exp{x \sim \Fn} \left[ \prod_{s: s_k = 0} f_s(x + \sum_{i: s_i = 1} y_i)  \cdot \Exp{z \sim \Fn} \left[ \prod_{s: s_k = 1} f_s(z +  \sum_{i: s_i = 1} y_i) \right] \right] \right] \\
+    & = \Exp{y_1, \cdots, y_{k-1} \sim \Fn} \left[ \Exp{x \sim \Fn} \left[ \prod_{s: s_k = 0} f_s(x + \sum_{i: s_i = 1} y_i) \right] \cdot  \Exp{z \sim \Fn} \left[ \prod_{s: s_k = 1} f_s(z +  \sum_{i: s_i = 1} y_i) \right] \right]
+  \end{align*}
+  as required.
+
+  \item We argue through induction. By part one above, $||f||_{U_1}^2 = \mathbb{E}[f]^2 \geq 0$. Now assuming that the claim holds for some $k > 1$, from part three,
+  \begin{align*}
+      \langle (f, \cdots, f) \rangle_{U_k} = \Exp{x, y_1, \cdots, y_{k-1} \sim \Fn} \left[ \prod_{s: s_k = 0} f(x + \sum_{i: s_i = 1} y_i) \right] \Exp{z, y_1, \cdots, y_{k-1} \sim \Fn} \left[ \prod_{s: s_k = 1} f(z +  \sum_{i: s_i = 1} y_i) \right]
+  \end{align*}
+  From the induction hypothesis, $\langle (f, \cdots, f) \rangle_{U_k}$ is the product of two non-negative values, showing that it is also non-negative.
+
+  \item
+  We perform Cauchy-Schwarz inequality on the equality shown in part three:
+  \begin{align*}
+    & \langle (f_s)_s \rangle_{U_k}  = \Exp{y_1, \cdots, y_{k-1} \sim \Fn} \left[ \Exp{x \sim \Fn} \left[ \prod_{s: s_k = 0} f_s(x + \sum_{i: s_i = 1} y_i) \right] \cdot  \Exp{z \sim \Fn} \left[ \prod_{s: s_k = 1} f_s(z +  \sum_{i: s_i = 1} y_i) \right] \right] \\
+    & = \sqrt{\Exp{y_1, \cdots, y_{k-1} \sim \Fn} \left[ \Exp{x \sim \Fn} \left[ \prod_{s: s_k = 0} f_s(x + \sum_{i: s_i = 1} y_i) \right]^2 \right]} \sqrt{\Exp{y_1, \cdots, y_{k-1} \sim \Fn} \left[ \Exp{x \sim \Fn} \left[ \prod_{s: s_k = 1} f_s(x + \sum_{i: s_i = 1} y_i) \right]^2 \right]} \\
+    & = \sqrt{ \langle(f_{(s_1,\cdots, s_{k-1}, 0)})_s\rangle}_{U_k}\sqrt{ \langle(f_{(s_1,\cdots, s_{k-1}, 1)})_s\rangle}_{U_k}
+  \end{align*}
+  Note that the inner products within the square roots are of $k^{th}$ order, not $(k-1)^{th}$ order.
+
+  \item
+  The inequality can be shown through applying the inequality of part five above $k$ times:
+  \begin{align*}
+    \langle (f_s)_s \rangle_{U_k} & \leq \sqrt{ \langle(f_{(s_1,\cdots, s_{k-1}, 0)})_s\rangle}_{U_k}\sqrt{ \langle(f_{(s_1,\cdots, s_{k-1}, 1)})_s\rangle}_{U_k} \\
+      & \leq \langle(f_{(s_1,\cdots, 0, 0)})_s\rangle_{U_k}^{1/4} \langle(f_{(s_1,\cdots, 0, 1)})_s\rangle_{U_k}^{1/4} \langle(f_{(s_1,\cdots, 1, 0)})_s\rangle_{U_k}^{1/4} \langle(f_{(s_1,\cdots, 1, 1)})_s\rangle_{U_k}^{1/4} \\
+      & \cdots \\
+      & \leq \prod_{s \in \{0,1\}^k} \langle (f_s, \cdots, f_s) \rangle_{U_k}^{1/2^k} = \prod_{s \in \{0,1\}^k} ||f_s||_{U_k}
+  \end{align*}
+
+  \item
+  Let $(f_s)_{s \in \{0,1\}^{k+1}}$ be defined such that
+  \begin{equation*}
+      f_s = \begin{cases}
+              f \text{ if } s_{k+1} = 0 \\
+              1 \text{ if } s_{k+1} = 1
+            \end{cases}
+  \end{equation*}
+  then
+  \begin{align*}
+    \langle (f_s)_s \rangle_{U_{k+1}} \leq  \prod_{s \in \{0,1\}^k} ||f_s||_{U_{k+1}} = \prod_{s: s_{k+1} = 0} ||f_s||_{U_{k+1}} = ||f||_{U_{k+1}}^{2^k}
+  \end{align*}
+  On the other hand,
+  \begin{align*}
+        \langle (f_s)_s \rangle_{U_{k+1}} & = \Exp{y_1, \cdots, y_{k-1}, y_k \sim \Fn} \left[ \Exp{x \sim \Fn} \left[ \prod_{s: s_{k+1} = 0} f_s(x + \sum_{i: s_i = 1} y_i) \right] \right] \\
+        & = \langle (f, \cdots, f)_s \rangle_{U_k}
+  \end{align*}
+  Hence,
+  $$ \langle (f, \cdots, f)_s \rangle_{U_k}^{1/2^k} \leq  ||f||_{U_{k+1}}$$
+  and thus, $||f||_{U_{k}}\leq ||f||_{U_{k+1}}$
+
+  \item
+  We first present the following derivation for $||f_0 + f_1||_{U_k}^{2^k}$:
+  \begin{align*}
+    ||f_0 + f_1||_{U_k}^{2^k} & = \Exp{x, y_1, \cdots, y_k} \left[ \prod_{s \in \{0,1\}^k} \left(f_0(x + \sum_{i: s_i = 1} y_i)+ f_1(x + \sum_{i: s_i = 1} y_i)\right)\right] \\
+    & = \sum_{S \subseteq \{0,1\}^k} \Exp{x, y_1, \cdots, y_k} \left[ \prod_{s \in \{0,1\}^k} f_{\mathbb{I}[s \in S]}(x + \sum_{i: s_i = 1} y_i)\right] \\
+    & = \sum_{S \subseteq \{0,1\}^k} \langle (f_{\mathbb{I}[s \in S]})_{s \in \{0,1\}^k} \rangle_{U_k} \\
+    & \leq \sum_{S \subseteq \{0,1\}^k} \prod_{s \in \{0,1\}^k}||f_{\mathbb{I}[s \in S]}||_{U_k} \\
+    & = \sum_{S \subseteq \{0,1\}^k} ||f_0||^{2^k - |S|} ||f_1||^{|S|} \\
+    & = (||f_0|| + ||f_1||)^{2^k}
+  \end{align*}
+  where in the last equality, we invoked the binomial theorem. Taking the inverse exponent in both sides gives us the triangle equality as required.
+
+  \item
+  We proceed through induction. For $k=2$, since $||f||_{U_2}^4 = ||f||_4^4$, the claim holds. Now for $k > 2$, we invoke the inequality from part seven to yield:
+  \begin{align*}
+    ||f||_{U_{k+1}} & = 0 \\
+    \implies  ||f||_{U_k}  & = 0 \\
+    \implies f & = 0
+  \end{align*}
+  where in the second implication, we use the non-negativity of the norms shown in part four.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,99 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+\newcommand{\chal}{\mathcal{C}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\M}{\mathcal{M}}
+
+
+\begin{document}
+
+\title{COMP 790 HW 2}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+\begin{enumerate}
+  \item First, assume that we have an adversary $\A$ attacking the DDH assumption fora
+  cyclic group $\mathbb{G}$ of prime order $q$. Consider the following security game between a challenger $\chal$ and an elementary wrapper $\B$ around adversary $\A$:
+  %
+  \begin{enumerate}
+    \item Challenger $\chal$ samples $b \xleftarrow{R} \{0,1\}$ and $\alpha, \beta, \gamma \xleftarrow{R} \mathbb{Z}_q$
+    \item Let $g$ be a generator for $\mathbb{G}$. The challenger $\chal$ computes: $$ u \leftarrow g^\alpha, \; v \leftarrow g^\beta , \; w_0 \leftarrow g^{\alpha\beta}, \; w_1 \leftarrow g^\gamma$$
+    and sends $(u,v,w_b)$ to $\B$.
+    \item Wrapper $\B$ sends the triple $(u,v,w_b)$ to adversary $\A$
+    \item Adversary $\A$ outputs some bit $\hat{b} \in \{0,1\}$. Wrapper $\B$ outputs the same $\hat{b}$ and stops.
+  \end{enumerate}
+  It is immediate that $\B$ plays the challenger for the bit-guessing game of the decisional Diffie-Hellman game. Furthermore, the challenger $\chal$ effectively plays a pseudorandom generator attack game with $\B$. To see this, it suffices to observe that $(u,v,w_1)$ is a uniformly-generated string over $\mathbb{G}^3$ and that $(u,v,w_0)$ is the output of our PRG. Hence, it follows that:
+  $$\mathtt{DDHadv}^*[\A, \mathbb{G}] = \mathtt{PRGadv}^*[\B, G]$$
+  %
+  %
+  \item
+    \begin{enumerate}
+      \item Non-binding signatures would cause issues for sensitive data, such as legal documents or contracts, where the verifier must be certain that the signature reflects some concordance on the \emph{current state} of the data. If Alice could change the message but keep the signature, she could change the contracts contents to whatever she wants after Bob verifies it.
+      \item Non-binding signatures would not cause issues for cases where proof-of-identity is concerned. In other words, if Alice wanted to prove to Bob that she had access to her secret key, then she would just have to sign a message which Bob could easily check. In this case, it wouldn't matter what the message was, as long as the signature verified correctly.
+    \end{enumerate}
+  %
+  %
+  \item The following scheme forges a signature for new message: consider the messages $m_1, m_2, m_3 \in \M$ such that $H(m_1)\cdot H(m_2) = H(m_3)$. An adversary would first query the signatures $\sigma_1 \leftarrow H(m_1)^{1/e}$ and $\sigma_2 \leftarrow H(m_2)^{1/e}$. She would then output the pair $(m_3, \sigma_1 \cdot \sigma_2)$. The forged signature is correct since:
+  $$ \sigma_1 \cdot \sigma_2 = H(m_1)^{1/e} \cdot H(m_2)^{1/e} = (H(m_1)\cdot H(m_2))^{1/e} = H(m_3)^{1/e} = \sigma_3 $$
+  %
+  %
+  \item
+    \begin{enumerate}
+      \item From the RSA key generation procedure, Bob knows that $e_b \cdot d_b - 1 = 0  \mod{\phi(N)}$. Thus, he knows that $e_b \cdot d_b - 1$ will be some integer multiple of $\phi(N)$.
+      \item First, suppose that Alice's public key $e_a$ is relatively prime to $V$. Bob can the compute some integer $d$ such that $e_a \cdot d = 1 \mod{V}$. This shows that:
+      \begin{align*}
+        e_a \cdot d & = 1 + kV \quad  k \in \mathbb{Z} \\
+        \implies e_a \cdot d & = 1 + km\phi(N) \quad m \in \mathbb{Z} \\
+        \implies e_a \cdot d & = 1 \mod{\phi(N)}
+      \end{align*}
+      where we invoked the fact that
+      Bob can then forge Alice's signatures on an arbitrary message $m$ by computing $H(m)^d$.
+
+      \item
+    \end{enumerate}
+    %
+    %
+    \item
+    \begin{enumerate}
+      \item $\hat{f}$ is one-way by a simple reduction to the one-way hardness for $f$:
+      \begin{enumerate}
+        \item Challenger $\chal$ samples $x \xleftarrow{R} \mathcal{X}$ and sends our wrapper $\B$ the image $f(x)$.
+        \item $\B$ then sends the adversary $\A$ the tuple $(f(x), 0)$
+        \item The adversary $\A$ outputs a candidate pre-image element $(\hat{x},y) \in \mathcal{X}^2$.
+        \item $\B$ outputs $\hat{x}$.
+      \end{enumerate}
+      showing that
+      %
+      $$ \mathtt{OWadv}[\A, \hat{f}] = \mathtt{OWadv}[\B, f] $$
+      %
+      Otherwise, a direct calculation yields that $\hat{f}^{(2)} = 0$. The adversary picking any element in $\mathcal{X}^2$ will win the one-way function game for $\hat{f}^{(2)}$.
+      %
+      \item We play a similar game as above in respect to the one-way permutation $f$:
+      \begin{enumerate}
+        \item Challenger $\chal$ samples $x \xleftarrow{R} \mathcal{X}$ and sends wrapper $\B$ the image $f(x)$.
+        \item $\B$ computes $f(f(x))$ and sends this value to an adversary $\A$ attacking the one-way security game for $f^{2}$.
+        \item $\A$ outputs some candidate pre-image value $\hat{x}$.
+        \item $\B$ outputs $\hat{x}$.
+      \end{enumerate}
+
+      The correctness of this game arises from the injective property of permutations. Specifically, if $\hat{x}$ is the correct inversion for $f(f(x))$ above, then $f(f(\hat{x})) = f(f(x))$. By injectivity, $f(\hat{x}) = f(x)$. This shows that
+      %
+      $$ \mathtt{OWadv}[\A, f^{(2)}] \leq \mathtt{OWadv}[\B, f]$$
+      %
+      \item
+      For general one-way functions, the proof fails where we invoke injectivity to show that
+      $$ f(f(\hat{x})) = f(f(x))  \implies f(\hat{x}) = f(x)$$
+      In other words, since $f(\hat{x}) \neq f(x)$, the outputted pre-image candidate for $\hat{x}$ may not be a pre-image candidate for $f(x)$.
+    \end{enumerate}
+\end{enumerate}
+
+\end{document}
