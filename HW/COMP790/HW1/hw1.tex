@@ -1,0 +1,176 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=0.75in]{geometry}
+\input{latexdefs}
+
+\begin{document}
+
+\newlength{\boxwidth}
+\setlength{\boxwidth}{\textwidth}
+\addtolength{\boxwidth}{-2cm}
+\noindent\framebox[\textwidth]{
+\begin{minipage}[t]{\boxwidth}
+  {\bf CS 590/790: Introduction to Cryptography \hfill Fall 2021}  \\ [-0.3cm]
+  \begin{center} 
+    {\Large Problem Set 1}
+  \end{center}
+\end{minipage}}
+\vspace{0.7cm}
+
+\noindent \textbf{Instructions:} You {\bf must} typeset your
+solution in LaTeX using the provided template. Please submit your problem set via Gradescope
+
+\medskip
+
+\noindent \textbf{Bugs:} If it looks like there might be a mistake
+in the statement of a problem, please ask a clarifying question on Piazza.
+
+\medskip
+
+\noindent \textbf{Acknowledgment:} Several of the problems in this problem set come from the Boneh-Shoup textbook.
+
+\hrule
+
+
+
+\paragraph{Problem 1: Self-Referential Encryption [10 points].}
+
+Let us show that encrypting a key under itself can be dangerous. Let $\calE$ be a (one-time) semantically secure cipher defined over $(\calK, \calM, \calC)$, where $\calK\subseteq\calM$, and let $k\getsr\calK$. A ciphertext $c_* := \ms{Enc}(k,k)$ that encrypts $k$ using $k$ is called a \emph{self referential encryption}.
+
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+    \item Construct a cipher $\calE'=(\ms{Enc}',\ms{Dec}')$ derived from $\calE$ such that $\calE'$ is semantically secure, but becomes insecure if the adversary is given $\ms{Enc}'(k,k)$ at the beginning of the semantic security game. Please provide the cipher, the attack, and a 1-2 sentence explanation for why it remains semantically secure if the adversary is not given $\ms{Enc}'(k,k)$.
+
+    \item Construct a cipher $\calE'=(\ms{Enc}',\ms{Dec}')$ derived from $\calE$ such that $\calE'$ is semantically secure and remains semantically secure (provably) even when the adversary is given $\ms{Enc}'(k,k)$ at the beginning of the semantic security game. To prove that $\calE'$ is semantically secure, you should show the following: for every adversary $\calA$ that attacks $\calE'$, there exists an adversary $\calB$ that attacks $\calE$ such that (i) the running time of $\calB$ is about the same as that of $\calA$, and (ii) $\ms{SSAdv}[\calA, \calE']\leq \ms{SSAdv}[\calB, \calE] + \ms{negl}.$
+
+\end{enumerate}
+
+\paragraph{Problem 2: Exercising the PRG definition [15 points].}
+
+Suppose $G$ is a secure PRG that outputs bit strings in $\zo^n$. Which of the following generators derived from $G$ are secure? For each one, either state ``secure'' or ``insecure'' followed by a short (1-2 sentence) justification. If it's insecure, your justification should state an attack on PRG security.
+
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+    \item $G'(s) = (G(s), G(s))$
+
+    \item $G'(s) = G(s) \oplus 1^n$
+
+    \item $G'(s_1 || s_2) = G(s_1) \oplus G(s_2)$
+
+    \item $G'(s_1 || s_2) = G(s_1) \wedge G(s_2)$ where $\wedge$ denotes bitwise AND
+
+    \item $G'(s_1 || s_2) = (s_1, G(s_2))$
+
+\end{enumerate}
+
+
+\paragraph{Problem 3: Key Leakage in PRFs [15 points].}
+Let $F$ be a secure PRF defined over $\big( \calK, \calX, \calY \big)$, where
+$\calK = \calX = \calY = \zo^n$. 
+Let $\calK' = \zo^{n+1}$. Construct a new PRF $F'$, defined over
+$\big(\calK', \calX, \calY \big)$, with the following properties: (i) the PRF
+$F'$ is secure, but (ii) if the adversary learns the last bit of the key
+then the PRF is no longer secure.
+
+
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+\item Describe your construction for $F'$, and show that it is insecure against an adversary who learns the last bit of the key, i.e., the challenger gives the adversary the last bit of the key at the beginning of the PRF security game. Please give a complete description of the PRF security adversary and state its advantage $\ms{PRFAdv}[\calA, F'].$ This shows that leaking even a \emph{single} bit of the secret key can completely destroy the PRF security
+property.
+\newline[\textbf{Hint:} Try changing the value of $F$ at a single point.]
+
+
+\item Show that if $F$ is a secure PRF, then $F'$ is a secure PRF.
+
+\item Show how to use $F$ to construct a PRF $F''$ that remains secure against an adversary who learns any single bit of the secret key, i.e., at the beginning of the PRF security game, the adversary sends the challenger a bit $i$, and the challenger responds with the $i$th bit of the key. Your solution should not assume any property about $F$ beyond the fact that it is a secure PRF. You do not need to give a full security proof for $F''$, just a short description of why it is secure and the general approach for the proof.
+\newline[\textbf{Hint:} Consider using a larger key space.]
+
+\end{enumerate}
+
+
+\paragraph{Problem 4: CRHF Combiners [10 points].}
+We want to build a CRHF $H$ using two CRHFs $H_1$ and $H_2$ such that if at some future time one of $H_1$ or $H_2$ is broken (but not both), then $H$ is still secure.
+
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+\item Show that $H'(x) = H_1(H_2(x))$ may not be secure if one of $H_1$ or $H_2$ is broken.
+
+\item Suppose $H_1$ and $H_2$ are defined over $(\calM, \calT)$. Let $H(m):=(H_1(m),H_2(m))$. Show that $H$ is a secure CRHF if either $H_1$ or $H_2$ is secure.
+
+\end{enumerate}
+
+\paragraph{Problem 5: The 802.11b Insecure MAC [5 points]. }
+
+Consider the following MAC (a variant of which was used for WiFi encryption in 802.11b WEP). Let $F:\calK\times\calR\to\calY$ be a PRF where $\calY=\zo^{32}$. Let the function $\ms{CRC32}:\zo^{\leq\ell}\to\zo^{32}$ be the simple and popular error-detecting code by that name, which is designed to detect random errors. Show that this attempted MAC scheme is insecure by describing an attack on existential unforgeability.
+\begin{denseitemize}
+\item[] $\ms{Sign}(k,m):= r\getsr\calR$
+\item[] \hspace{6em} $t\gets F(k,r)\oplus \ms{CRC32}(m)$
+\item[] \hspace{6em} Output $(r,t)$
+
+\item[] $\ms{Verify}(k, m, (r,t)):$ \ms{if}  $t = F(k,r)\oplus \ms{CRC32}(m)$: \ms{output} ``\ms{accept}''
+\item[] \hspace{8.5em} \ms{else}: \ms{output} ``\ms{reject}''
+\end{denseitemize}
+
+
+\paragraph{Problem 6: Pseudorandomness and collision-resistance [10 points].} In class we saw that collision-resistance does not imply pseudorandomness. In this problem we will show that pseudorandomness doesn't imply collision-resistance either. Suppose that $G:\zo^\lambda\to\zo^n$ is a secure PRG. Use $G$ to construct a new PRG $G'$ such that (i) $G'$ is still a PRG, and (ii) $G'$ is not collision-resistant.
+
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+\item State your PRG $G'$ and show that it is not collision-resistant.
+
+\item Prove that $G'$ is a secure PRG assuming $G$ is.
+
+\end{enumerate}
+
+\paragraph{Problem 7: AE Practice [20 points].} For this problem, assume that the cipher $(\ms{Enc}, \ms{Dec})$ provides authenticated encryption, that $(\ms{Enc}_\ms{CPA}, \ms{Dec}_\ms{CPA})$ provides CPA security, and that $H$ is a collision resistant hash function. For each proposed cipher, state whether it provides AE, provides CPA security only, or provides neither AE nor CPA security. In each case, provide an attack on AE/CPA security and/or a proof sketch (in at most a few sentences each). Note that if you say a cipher provides CPA security, you will need to both show an attack on AE (ciphertext integrity) and a proof sketch for CPA security.
+
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+\item $\ms{Enc}'(k,m) := (\ms{Enc}(k,m), \ms{Enc}(k,m))$
+
+\item[] $\ms{Dec}'(k, (c_1,c_2)):= \ms{Dec}(k,c_1)$ if $\ms{Dec}(k,c_1) = \ms{Dec}(k,c_2)$; $\bot$ otherwise
+
+
+\item $\ms{Enc}'(k,m) := (\ms{Enc}(k,m), \ms{Enc}(k,m))$
+
+\item[] $\ms{Dec}'(k, (c_1,c_2)):= \ms{Dec}(k,c_1)$ if $c_1 = c_2$; $\bot$ otherwise
+
+
+\item $\ms{Enc}'(k,m) := (\ms{Enc}_\ms{CPA}(k,m), H(m))$
+
+\item[] $\ms{Dec}'(k, (c_1,c_2)):= \ms{Dec}_\ms{CPA}(k,c_1)$ if $H(\ms{Dec}_\ms{CPA}(k,c_1))=c_2$; $\bot$ otherwise
+
+\item $\ms{Enc}'(k,m) := (\ms{Enc}_\ms{CPA}(k,m), H(\ms{Enc}_\ms{CPA}(k,m)))$
+
+\item[] $\ms{Dec}'(k, (c_1,c_2)):= \ms{Dec}_\ms{CPA}(k,c_1)$ if $H(c_1)=c_2$; $\bot$ otherwise
+\end{enumerate}
+
+\paragraph{Problem 8: An Attack on Android KeyStore [10 points].} Let $(E,D)$ be a secure block cipher (PRP) defined over $(\calK,\calX)$, and let $(E_\ms{cbc}, D_\ms{cbc})$ be the cipher derived from $(E,D)$ using randomized CBC mode. Let $H:\calX^{\leq L}\to\calX$ be a collision resistant hash function. Consider the following attempt to build an AE-secure cipher over $(\calK, \calX^{\leq L}, \calX^{\leq L+2})$:
+
+\begin{denseitemize}
+\item[] $E'(k,m):=E_\ms{cbc}(k, (H(m),m))$
+
+\item[] $D'(k,c): (t,m)\gets D_\ms{cbc}(k,c,)$
+\item[] \hspace{4em} \ms{if}  $t=H(m)$: \ms{output} $m$
+\item[] \hspace{4em} \ms{else}: \ms{output} $\bot$
+\end{denseitemize}
+
+\noindent Note that, under this scheme, the encryption of a one-block message $m\in\calX$ is a three-block ciphertext: the IV, a ciphertext block corresponding to $H(m)$, and a ciphertext block corresponding to $m$. Show that $(E',D')$ is not AE-secure by giving a chosen ciphertext attack on it. That is, show that it does not satisfy CCA security.
+
+This construction was once used to protect secret keys in Android KeyStore. The chosen ciphertext attack resulted in a compromise of the key store, and this scheme is no longer in use.
+\newline[\textbf{Hint:} The attack only needs a single decryption query.]
+
+
+
+\paragraph{Optional Feedback [5 points].} Please answer the following questions to
+help design future problem sets. You are not required to answer these questions (the points are free),
+and if you would prefer to answer anonymously, please use Piazza's anonymous private post feature.
+However, we do encourage you to provide feedback on how to improve the course experience.
+\begin{enumerate}[label=(\alph*), leftmargin=*]
+  \item Roughly how long did you spend on this problem set?
+
+  \item What was your favorite problem on this problem set?
+
+  \item What was your least favorite problem on this problem set?
+
+  \item Any other feedback for this problem set? Was it too easy/difficult?
+
+  \item Any other feedback on the course so far?
+
+\end{enumerate}
+
+\end{document}

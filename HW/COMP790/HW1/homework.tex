@@ -1,0 +1,181 @@
+\documentclass[11pt]{article}
+
+\usepackage{enumitem,amsmath,amssymb,graphicx,fancyhdr,framed}
+\usepackage[margin=1in,headsep=0.2in]{geometry}
+\pagestyle{fancy}
+
+%%% TODO: Fill in the following fields
+\newcommand{\psetnumber}{1}
+\newcommand{\name}{Edward Kim}
+\newcommand{\sunetid}{730355687}
+\newcommand{\collaborators}{list of people you discussed the problem set with}
+
+\begin{document}
+
+\lhead{COMP 590/790 Problem Set \psetnumber}
+\rhead{\name \ (\sunetid)}
+
+\begin{center}
+{\Large COMP 590/790 Problem Set \psetnumber}
+\medskip
+
+\begin{tabular}{rl}
+Name: & \name \\
+% Collaborators: & \collaborators
+\end{tabular}
+\end{center}
+
+\begin{framed}
+\noindent \small By turning in this assignment, I agree by the UNC honor code and declare
+that all of this is my own work.
+\end{framed}
+
+\section*{Problem 1}
+  Consider key space $\mathcal{K}$, message space $\mathcal{M}$, and ciphertext space $\mathcal{C}$ such that $\mathcal{K} \subseteq \mathcal{M}$. For the sake of simplicity, assume that $\mathcal{M} = \mathcal{C} = \{0,1\}^n$. Let $\xi = (Enc, Dec)$ be a semantically secure cipher over these spaces.
+\begin{enumerate}
+  \item  We construct the following cipher $\xi' = (Enc', Dec')$:
+  \begin{itemize}
+    \item For $k \in \mathcal{K}, m \in \mathcal{M}$
+    \begin{align*}
+      & Enc'(k, m) = \begin{cases}
+                      Enc(k,m) \text{ if } m \neq k \\
+                      k \text{ if } m = k
+                   \end{cases} \\
+      & Dec'(k, c) = Dec(k, c)
+    \end{align*}
+  \end{itemize}
+
+  The adversary $\mathcal{A}$ sends $m_0, m_1 \in \mathcal{M}$ to the challenger to receive $c = Enc(k,m_i)$ in Experiment $i$. As $Enc'(k,k) = k$, $\mathcal{A}$ has access to the encrpytion key. Thus, the adversary can win the semantic security game with probability one.
+
+  Suppose that $\mathcal{A}$ does not have access to $Enc(k,k)$ at the beginning of the game. We claim that $\xi'$ remains a semantically secure cipher under this condition.
+
+  %To see this, observe that inner argument $m \oplus k$ is a one-time pad of message $m$, injectively mapping $\{0,1\}^n$ onto itself. If there is an adversary winning the attack game against $\xi'$ with messages $m_0, m_1 \in \mathcal{M}$ with non-negligible probability under some key $k \in \mathcal{K}$, we can modify the messages to be $m_0 \oplus k, m_1 \oplus k$ to attack $\xi$ under key $k$ with non-negligible probability. This would generally underline the security proof of $\xi'$ based on the semantic security of $\xi$.
+  \item Let $\mathcal{C}' = \{0,1\}^{n+1}$. Consider the cipher $\xi' = (Enc', Dec')$ defined as below over spaces $(K, M, C')$. Now for $k \in \mathcal{K}$ sampled uniformly at random,
+  \begin{enumerate}
+    \item If $m \neq k$, $Enc'(k, m) = 0 || Enc(k, m)$
+    \item If $m = k$, $Enc'(k, m) = 1 || 0^n$
+  \end{enumerate}
+  The corresponding decryption map $Dec'$ is defined naturally to extend $Enc$ according to the changes above. The security for $\xi'$ is as follows for deterministic adversaries:
+  Let $\mathcal{B}$ be an elementary wrapper around $\xi'$ adversary $\mathcal{A}$. The wrapper simply does the following:
+  \begin{enumerate}
+    \item When $\mathcal{A}$ sends its pair of messages $(m_0, m_1)$, it relays this pair to its own $\xi$-challenger.
+    \item Once the $\xi$-challenger sends its response $r$ according to Experiment $i = 0,1$, $\mathcal{B}$ sends response to $0||r$ to $\mathcal{A}$.
+    \item $\mathcal{B}$ outputs whatever $\mathcal{A}$ outputs.
+  \end{enumerate}
+  We see that the transcript of this game follows like an attack game between adversary $\mathcal{A}$ and the challenge for pairs of messages $m_0, m_1 \neq k$. As $\mathcal{A}$ is deterministic, the probability that either message is equal to uniformly-chosen key $k$ is at most $\frac{2}{2^n} = \frac{1}{2^{n-1}}$. Thus,
+  $$ |SSAdv[\mathcal{A}, \xi'] - SSAdv[\mathcal{B}, \xi]| \leq \frac{1}{2^{n-1}}$$
+  (Note: I couldn't find a convincing way of generalizing this proof and the proof for Problem 3b to probabalisitic adversaries within the due date)
+\end{enumerate}
+
+\section*{Problem 2}
+
+\begin{enumerate}[label=(\alph*)]
+  \item The generator $G'(s) = (G(s), G(s))$ is not secure. The adversary would just have to examine the two halfs of the output string. It will identify the output of $G'(s)$ during the attack game with probability one.
+  \item The generator $G'(s) = G(s) \oplus 1^n$ is secure. The map $\oplus 1^n$ flips all of the bits of $G(s)$, and in particular, it is injective. If we were to replace the output $G(s)$ with a uniformly random source over $\{0,1\}^n$, applying the map does not change the distribution over $\{0,1\}^n$.
+  \item The generator $G'(s_1||s_2) = G(s_1) \oplus G(s_2)$ is secure. If we replace both $G(s_1), G(s_2)$ with two truly random sources say ${\bf X}_1 \oplus {\bf X}_2$ for ${\bf X}_i$ random variables uniformly-distributed over $\{0,1\}^n$, we see that this also results in another random variable uniformly distributed over the $n$-bit strings.
+
+  \item The generator $G'(s_1||s_2) = G(s_1) \wedge G(s_2)$ is not secure. Once again, if we substitute the two puts with truly random strings, we would expect each bit to be biased to zero with $\frac{3}{4}$ probability in constrast to the $\frac{1}{2}$ probability it should be from a truly random source.
+  \item The generator $G'(s_1||s_2) = (s_1, G(s_2))$ is secure. Replacing the output with a truly random string will sample another longer string subject with uniform distribution. The probabilities for distinguishing between $G'(s_1||s_2)$ and a truly random source woudl be negligible by the security of $G$.
+\end{enumerate}
+
+\section*{Problem 3}
+\begin{enumerate}
+  \item   Let $F$ be the PRF defined over $(\mathcal{K}m \mathcal{X}, \mathcal{Y})$. Define function $F': (\mathcal{K} \times \{0,1\}) \times \mathcal{X} \rightarrow \mathcal{Y}$:
+  \begin{itemize}
+    \item If $x \neq 0^n$, $F'(k||b, x) = F(k, x)$
+    \item If $x = 0^n$, $F'(k || b, x) = x \oplus b^n $
+  \end{itemize}
+  Now suppose that in an attack game against $F'$, the challenger gives the adversary $\mathcal{A}$ the last bit of the key. Then adversary simply queries the challenger the value of $F'$ at value $x = 0^n$. If $F'(k || b, x) = b^n$, then output 1. Otherwise, output 0. We can then calculate the PRF advantage of $\mathcal{A}$ as
+  \[ PRFadv[\mathcal{A}, F'] = 1 - \frac{1}{2^n}\]
+  showing that $PRFadv[\mathcal{A}, F']$ is non-negligible, and thus not secure.
+  \item In the case where a $Q$-query adversary does not have access to the last bit of the key, we can show its secure PRF property as follows:
+  We employ the technique found in the Boneh-Shoup textbook in the spirit of namely the ``forgetful" gnome idea. Define Game 0 and Game 1 through the logic of the challenger for each respective game:
+
+  \begin{description}
+    \item[Game 0:]
+          Sample $z_1, \cdots, z_Q \xleftarrow{R} \mathcal{X}$ \newline
+          When challenger recevies $i^{th}$ query $x_i$ from adversary $\mathcal{A}$, then \newline
+          if $x_i = x_k$ for some $k < j$, set $y_i \leftarrow y_j $ \newline
+          else set $y_i \leftarrow z_i$
+          send $y_i$ to adversary $\mathcal{A}$
+    \item[Game 1:]
+      Sample $z_1, \cdots, z_Q \xleftarrow{R} \mathcal{X}$ \newline
+      When challenger recevies $i^{th}$ query $x_i$ from adversary $\mathcal{A}$, then \newline
+      if $x_i = 0^n$, then $y_i \leftarrow b^n$ \newline
+      else if $x_i = x_k$ for some $k < j$, set $y_i \leftarrow y_j $ \newline
+      else set $y_i \leftarrow z_i$
+      send $y_i$ to adversary $\mathcal{A}$
+  \end{description}
+  Let $Z$ be the event that adversary $\mathcal{A}$ queries with $x_i = 0^n$ for some $1 \leq i \leq Q$ in Game 0. Observe that if the event $Z$ does not occur during both games, then both will proceed identically while interacting with fixed $\mathcal{A}$. Furthermore, define $W_b$ to be the event that adversary $\mathcal{A}$ outputs 1 in Game $b$. By the Difference Lemma (Theorem 4.7),
+  \[ |Pr[W_0] - Pr[W_1]| \leq Pr[Z]\]
+  For deterministic adversaries, we can use union bound to see that $Pr[Z] \leq \frac{Q}{2^n}$. So by defintion of PRF security:
+  \[ PRFadv[\mathcal{A}, F'] - PRFadv[\mathcal{A}, F]  \leq |Pr[W_0] - Pr[W_1]| \leq \frac{Q}{2^n} \]
+
+  \item Construct a map $F'': (\mathcal{K} \times \mathcal{K}) \times \mathcal{X} \rightarrow \mathcal{Y}$ defined as such:
+  \[ F(k_1||k_2, x) =  F(k_1, x) \oplus F(k_2, x)\]
+  Note that if a single bit of $k_1 || k_2$ is compromised, then the bit must fall in either $k_1$ or $k_2$. However, even if we assume that either $F(k_1, x)$ or $F(k_2, x)$ is compromised, the security of the other, shows that $F''$ is still a secure PRF. The general idea of the proof would involve assuming that one of the two terms in the addition operation is compromised. We would substitute that with some fixed value known by the $F''$-adversary $\mathcal{A}$. Then, we can define an elementary wrapper $\mathcal{B}$ around the adversary $\mathcal{A}$ such that $\mathcal{B}$ substitutes the fixed value in the compromised term and sends the pair containing the queried value and the compromised term to $\mathcal{A}$. This would reduce the security of $F''$ to the security of $F$.
+\end{enumerate}
+
+\section*{Problem 4}
+\begin{enumerate}
+  \item If an adversary finds a collision for $H_2$ efficiently, it can find a collison for $H_1 \circ H_2$ as well. If the adversary can find a collision for $H_1$ efficiently, say $n_0, n_1$ such that $H_1(n_0) = H_1(n_1)$, then all it must do is find two messages $m_0, m_1$ such that $n_0 = H(m_0)$ and $n_1 = H(m_1)$.
+  \item We shall prove the contrapositive. Suppose that $H(m) = (H_1(m), H_2(m))$ is not a secure CRHF. Then there exists an efficient adversary $\mathcal{A}$ such that $\mathcal{A}$ outputs two $m_0, m_1 \in \mathcal{M}$ such that $H(m_0) = H(m_1)$. By definition, $H_1(m_0) = H_1(m_1)$ and $H_2(m_0) = H_2(m_1)$. By employing elementary wrappers $\mathcal{B}_1, \mathcal{B}_2$ around $\mathcal{A}$ which simply echo $m_0,m_1$ for attacks against $H_1,H_2$. Hence, $H_1, H_2$ are not secure CRHF as well.
+\end{enumerate}
+
+\section*{Problem 5}
+For the attack, the adversary does the following steps by intercepting $(m, (r,t))$:
+\begin{enumerate}
+  \item Set $\tilde{m} = m \oplus m_0$ for some $m_0 \in \mathcal{M}$
+  \item Set $\tilde{t} = t \oplus CRC32(m) \oplus CRC32(\tilde{m})$
+ \end{enumerate}
+
+ The end result with be $(\tilde{m}, (r, \tilde{t}))$. The verification algorithm will verify that
+ \[ \tilde{t} = F(k,r) \oplus CRC(\tilde{m}) \] and output an accept status.
+
+
+\section*{Problem 6}
+\begin{enumerate}
+  \item Let $G$ be the secure pseudo-random generator. Define $G'(s) = G(s)[0,1]$ i.e $G$ whose output is truncated to the first two bits. It only takes five queries to the hash function to find a collison.
+  \item The attack game for $G'$ proceeds as follows:
+  \begin{enumerate}
+    \item The challenger begins by flipping a coin $b \xleftarrow{R} \{0,1\}$ and sending output which could be $G(s), \; s \xleftarrow{R} \{0,1\}^{\lambda}$ if $b = 0$ or $\ell \xleftarrow{R} \{0,1\}^n$ if $b = 1$. Call this string $r \in \{0,1\}^n$.
+    \item The challenger sends this string to adversary $\mathcal{B}$, an elementary wrapper over an $G'$-adversary $\mathcal{A}$.
+    \item The wrapper $\mathcal{B}$ simply truncates the challenger's string to the first two bits and sends this to adversary $\mathcal{A}$.
+    \item $\mathcal{B}$ outputs whatever $\mathcal{A}$ outputs.
+  \end{enumerate}
+  Observe that the probability of wrapper $\mathcal{B}$ outputting 1 during Experiment 0 will idenitical to the probability adversary $\mathcal{A}$ outputs 1 during Experiment 0. The same applies for Experiment 1. Thus, we reason that
+  \[ PRGadv^*[\mathcal{A}, G'] = PRFadv^*[\mathcal{B}, G] \] showing that $G$ is secure. This is compatible with the interpretation that a pseudo-random generator should not depend on any one select group of bits in its input.
+\end{enumerate}
+
+
+\section*{Problem 7}
+Let $\xi = (Enc, Dec)$ be an AE-secure cipher.
+\begin{enumerate}
+  \item This cipher $\xi' = (Enc', Dec')$ is CPA-secure as follows. Define an elementary wrapper $\mathcal{B_{CPA}}$ around the $\xi'$-adversary $\mathcal{A}$:
+  \begin{itemize}
+    \item Directing all queries of the form $(m_{i0}, m_{i1})$ to the challenger.
+    \item For each response $r$ from the challenger, direct the tuple $(r,r)$ to $\mathcal{A}$.
+    \item Output the result of $\mathcal{A}$
+  \end{itemize}
+
+   This shows that
+    \[CPAadv[\mathcal{A}, \xi'] = CPAadv[\mathcal{B_{CPA}}, \xi]\]
+  To see that $\xi'$ is also CI-secure, we once again define a wrapper $\mathcal{B}_{CI}$ around $\mathcal{A}$ with the following behavio
+  \begin{itemize}
+    \item For any messages $m_i$ sent for encryption from $\mathcal{A}$, wrapper $\mathcal{B}_{CI}$ sends these queries to the challenger. Once the challenger responds with $r$, $\mathcal{B}_{CI}$ sends the pair $(r,r)$ to $\mathcal{A}$.
+    \item Once $A$ responds with ciphertext $c = (c_1, c_2)$, $\mathcal{B}$ sends $c_1$ iff $c_1 = c_2$. Else it halts with by sending $0^n$ to the challenger.
+    Hence,
+        \[CIadv[\mathcal{A}, \xi'] = CIadv[\mathcal{B}_{CI}, \xi]\]
+
+  \end{itemize}
+
+  \item Skipped
+  \item This cipher is not AE-secure nor CPA-secure. To see this, define an adversary $\mathcal{A}$ such that the following game proceeds:
+  \begin{enumerate}
+    \item $\mathcal{A}$ first sends a message $(m_0, m_0)$ to the challenger. The challenger will send $(Enc_{CPA}(k,m_0), H(m_0))$ to $\mathcal{A}$.
+    \item Adversary $\mathcal{A}$ will send messages $(m_0, m_1)$ where $m_0 \neq m_1$. The challenger will send  $(Enc_{CPA}(k,m_b), H(m_b))$ while executing Experiment $b=0,1$.
+    \item Finally, $\mathcal{A}$ checks if $H(m_b) = H(m_0)$. If so, then output 0. Else output 1.
+  \end{enumerate}
+  \item Skipped
+\end{enumerate}
+\end{document}
