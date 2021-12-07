@@ -1,0 +1,148 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{complexity}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\begin{document}
+
+\title{CS 790 HW 3}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+\section*{Problem 1}
+
+\begin{enumerate}
+\item
+  \begin{enumerate}
+    \item False. A contrapostive argument tells us that if $\P = \NP$, then OWFs cannot exist, which further implies that secure PRGs hence secure PRFs cannot exist.
+    \item False. The random oracle's statistics and behavior can be gleaned through $\NP$ statements of the general form, ``does there exist an element which evaluates to $y$ under the random oracle?".
+    \item False. If $\P = \NP$, then a polynomial-time adversary can test all possible keys to invert the message $m_b$ given in the semantic security attack game.
+  \end{enumerate}
+\item
+  True. The Blum-Micali PRG can be iterated $n^{800}$ steps which is still polynomial-time.
+\item
+  True. For the tuple $(g,g^a, g^b, g^c, e(g,g)^{\ell})$, computing $a,b,c$ and doing the appropriate check $e(g,g)^{abc} = e(g,g)^{\ell}$ should be easy.
+\end{enumerate}
+
+\section*{Problem 2}
+
+\begin{enumerate}
+  \item This PRF is key-homomorphic by the following check
+  \[ F(k_1+k_2, x) = H(x)^{k_1 + k_2} = H(x)^{k_1} \cdot H(x)^{k_2} = F(k_1, x) + F(k_2, x)\]
+  for $k_1,k_2 \in \mathbb{Z}_p$.
+  \item To update ciphertext $c$ to $c'$ on the server, it suffices to use key-homomorphic PRFs under the below manner: compute $k_{update} = k_2 - k_1$ under the '+' operation mentioned above. The client would send $k_{update}$ to the server to it to update the old ciphertext:
+  \[ c'_i = c_i \otimes F(k_{update}, i)\]
+  The correctness of this scheme becomes apparent when the expression above is expanded:
+  \begin{align*}
+    c_i \otimes F(k_{update}, i) & = m_i \otimes (F(k_1, i) \otimes F(k_{update}, i)) \\
+    & =  m_i \otimes (F(k_1 + k_{update}, i)) \\
+    & = m_i \otimes (F(k_1 + k_{update}, i)) \\
+    & =  m_i \otimes F(k_2, i)
+  \end{align*}
+  as required
+  \item
+  The protocol proceeds as follows:
+  \begin{enumerate}
+    \item The client computes $H(x)$ and sends $H(x)^r$ for some $r \xleftarrow{R} \mathbb{Z}_p$.
+    \item The server computes $(H(x)^r)^k = H(x)^{rk}$
+    \item The client computes $(H(x)^{rk})^{1/r} = H(x)^k$
+  \end{enumerate}
+  Note that $1/r$ exists by the virtue of the prime order of $\mathbb{G}$. Furthermore, the client knows nothing about the key $k$ nor does the server know anything about the input $x$.
+\end{enumerate}
+
+
+  \section*{Problem 3}
+  Through this section, we assume that same notation used for Lecture 19.
+  \begin{enumerate}
+    \item The Regev Encryption scheme can be amended as follows for message elements $x \in \mathbb{Z}_{16}$:
+    \begin{itemize}
+       \item The procedure $\mathsf{Enc}(pk,x)$ is amended such that $q / 32 > m \cdot B$ and
+       \[ c_0 = r^TA,\quad c_1 = r^{T}b + \left\lfloor \frac{q}{16} \right\rfloor x\]
+       for $r \xleftarrow{R} \mathbb{Z}^n_q $
+       \item The procedure $\mathsf{Dec}(sk,(c_0, c_1))$ is amended such that once it computes $\tilde{x} = c_1 - c_0s$,
+       \begin{itemize}
+         \item if $\tilde{x} < \frac{q}{32}$, output $x = 0$.
+         \item if $ \left\lfloor \frac{q}{16} \right\rfloor z - \frac{q}{32} \leq \tilde{z} < \left\lfloor \frac{q}{16} \right\rfloor z + \frac{q}{32}$, then output $x = z$ for $0 < z < 15$.
+         \item if $\tilde{x} \geq \frac{31q}{32}$, output $x = 15$.
+       \end{itemize}
+    \end{itemize}
+    This scheme however does require that the order of $\mathbb{Z}_q$ be sufficiently large to ensure that $q / 32 > m \cdot B$.
+    \item Let $(c_{00}, c_{01})$ and $(c_{10}, c_{11})$ be two outputs from $\mathsf{Enc}(pk, x_i)$ for $i = 0,1$ respectively. It suffices to show that $(c_{00} + c_{10}, c_{01} + c_{11})$ is a valid encrypted pair for $x_0 + x_1$. Expanding the two elements in the tuple yields:
+    \begin{align*}
+      c_{00} + c_{10} & = r_0^tA + r_1^tA = (r_0 + r_1)^tA \\
+      c_{10} + c_{11} & = (r_0^tb + \left\lfloor \frac{q}{16} \right\rfloor x_0) + (r_1^tb + \left\lfloor \frac{q}{16} \right\rfloor x_1) \\
+      & = (r_0 + r_1)^t b + \left\lfloor \frac{q}{16} \right\rfloor(x_0 + x_1)
+    \end{align*}
+    since $r_0, r_1 \xleftarrow{R} \mathbb{Z}_q^m$. It's immediate that the distribution of the $r_0 + r_1 \in \mathbb{Z}_q^m$ is uniform. Hence, the analysis of the correctness of $\mathsf{Dec}(sk, x_i)$ shows that indeed
+    $(c_{00} + c_{10}, c_{01} + c_{11})$ is a valid encrypted pair for $x_0 + x_1$.
+  \end{enumerate}
+\newpage
+
+
+\section*{Problem 4}
+\begin{enumerate}
+  \item The basic Pedersen commitment scheme can be extended to messages $m_1, \cdots, m_n$ as follows:
+  \begin{enumerate}
+    \item Pick random generators $g_1, \cdots, g_m, h \xleftarrow{R} \mathbb{G}$.
+    \item Define $\mathsf{Commit}_n(m_1,\cdots,m_n, r) = g_1^{m_1} \cdots g_n^{m_n}h^r$ for some $r \xleftarrow{R} \mathbb{Z}_q$.
+  \end{enumerate}
+  The public parameters would be the generators $g_1, \cdots, g_m, h$.
+\item
+\begin{description}
+  \item[Perfect Hiding:] This property follows from a similar argument from the basic Pedersen commitment scheme. Namely, any commitment string $c \in \mathbb{G}$ shows up once in the multiset $\{g_1^{m_1} \cdots g_n^{m_n}h^r \mid r \in \mathbb{Z}_q\}$ for a given $m_1, \cdots, m_n \in \mathbb{Z}_q$.
+  \item[Computationally Binding:]
+\end{description}
+
+\item
+If we were given $H: \mathbb{Z}_q \rightarrow \mathbb{G}$ modeled as a random oracle, then we could create the multi-commitment scheme:
+\[ \mathsf{Commit}_n(m_1, \cdots, m_n, r) = H(r)\prod_{i = 1}^n H(m_i) \]
+To justify security:
+
+\begin{description}
+  \item[Hiding:] The Hiding property follows from the random oracle assumption and the uniform random sample $r \xleftarrow{R} \mathbb{Z}_q$. In other words, for $m_1 \neq m_2 \in \mathbb{Z}_q$,
+  $$ \left\{H(r)\prod_{i = 1}^n H\left(m_{1i}\right) \mid r \xleftarrow{R} \mathbb{Z}_q\right\} \approx_c \left\{H(r)\prod_{i = 1}^n H\left(m_{2i}\right) \mid r \xleftarrow{R} \mathbb{Z}_q\right\} $$
+  where the product can be seen as an independent one-time pad over $\mathbb{G}$.
+  \item[Binding:] The Binding property follows from the view of the function $H$ as a collision-resistant hash function. Specifically, if an adversary finds two $n$-message vectors $m_1 \neq m_2 \in \mathbb{Z}_q^n$ and $r_1,r_2 \in \mathbb{Z}_q$ such that $\mathsf{Commit}_n(m_1,r_1) = \mathsf{Commit}_n(m_2,r_2)$, then w.h.p. must exist some index $1 \leq i \leq n$ such that $m_{1i} \neq m_{2i}$ and
+  $$ H(m_{1i}) = H(m_{2i})$$
+  which yield a collision for $H$.
+\end{description}
+\end{enumerate}
+
+\section*{Problem 5}
+Let $\mathbb{G}_0, \mathbb{G}_1$ be differing groups of prime order $q$ with generators $g_0 \in \mathbb{G}_0$, $g_1 \in \mathbb{G}_1$. Furthermore, let $e: \mathbb{G}_0 \times \mathbb{G}_1 \rightarrow \mathbb{G}_T$ be an asymmetric pairing.
+\begin{enumerate}
+  \item We adopt the BLS signature algorithm nearly identically:
+  \begin{itemize}
+    \item $\mathsf{KeyGen}$ will output $\alpha \xleftarrow{R} \mathbb{Z}_q$ and $g_1^\alpha \in \mathbb{G}_1$ such that $pk = g_1^{\alpha},\; sk = \alpha$
+    \item $\mathsf{Sign(sk, m)}$: output $\sigma \leftarrow H(m)^{\mathsf{sk}}$ where $H:\mathcal{M} \rightarrow \mathbb{G}_0$ is a hash function.
+    \item $\mathsf{Verify(pk, \sigma)}$: if $e(H(m),\mathsf{pk}) = e(\sigma,g_1)$
+  \end{itemize}
+  Correctness of this algorithm follows identically to that of the symmetric case i.e
+  \begin{align*}
+    e(H(m),\mathsf{pk}) = e(H(m), g_1^\alpha) = e(H(m)^\alpha, g_1) = e(\sigma, g_1)
+  \end{align*}
+  \item
+  Let $a,b,c \xleftarrow{R} \mathbb{Z}_q$ be the generated secrets of Alice, Bob, and Carol respectively. The key exchange will proceed according to the following steps:
+  \begin{description}
+    \item[Alice:] Bob $\leftarrow g_0^a$, Carol $\leftarrow g_1^a$
+    \item[Bob:] Alice $\leftarrow g_1^b$, Carol $\leftarrow g_0^b$
+    \item[Carol:] Alice $\leftarrow g_0^c$, Bob $\leftarrow g_1^c$
+  \end{description}
+  This would lead to the newly-shared:
+
+  \begin{description}
+    \item[Alice:] $e(g_0^c,g_1^b)^a = e(g_0,g_1)^{abc}$
+    \item[Bob:] $e(g_0^a,g_1^c)^b = e(g_0,g_1)^{abc}$
+    \item[Carol:] $e(g_0^b,g_1^a)^c = e(g_0,g_1)^{abc}$
+  \end{description}
+as desired.
+\end{enumerate}
+
+\end{document}

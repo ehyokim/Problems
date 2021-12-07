@@ -1,0 +1,84 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{complexity}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\begin{document}
+
+\title{COMP 790 HW 4}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+\section*{Problem 1}
+\begin{enumerate}
+  \item
+  \begin{enumerate}
+    \item {\bf False}. A malicious verifier does not necessarily have to adhere to rules governing an honest verifier.
+    \item {\bf False}. An interactive protocol between an honest verifier $V$ and a malicious $P^*$ could be a one which $P^*$ sends over the statement itself for verification.
+  \end{enumerate}
+
+  \item
+  {\bf True} but it is not strongly secure: an adversary can forge another valid signature for a message-signature pair $(m, (u_t, \alpha_z))$ if she outputs the signature $(u_t \cdot g^{\alpha_a}, \alpha_z + \alpha_a)$ for some $\alpha_a \in \mathbb{Z}_q$.
+
+  \item
+  {\bf False} The sigma-protocol must have the ``special HVZK property" to give the ``ZK" property under the Fiat-Shamir transform.
+\end{enumerate}
+
+\section*{Problem 2}
+\begin{enumerate}
+  \item If $L$ has an interactive protocol $ \langle P, V \rangle$ where the verifier $V$ is deterministic, then if input $x \in L$, there must exist a transcipt of messages from the prover $P$ to $V$ inducing $V$ to output ``$\mathsf{accept}$". Send this transcipt to an algorith which simulates an interaction with $V$ under this transcript. If $V$ accepts, then the algorithm accepts as well. On the other hand, if $x \not\in L$, then, by soundness, all provers $P^*$ cannot yield such a transcript. Since an accepting transcipt is of at most polynomial length and the simulating $V$ is also polynomial time, checking membership of $L$ is at most polynomial time. Hence, $L \in \NP$.
+
+  \item Since the prover has unbounded power, it can simply enumerate all possible interactions with the verifier $V$ as follows, fix a list of answers for queries of $V$ and simulate all of $V$'s coins to calculate the probability of acceptance. Record the answers which maximize the probability of acceptence by $V$. This will be the deterministic answers given during the interaction with $V$. Define $P_{\sup}$ to be this prover. By construction, for all input $x$,
+
+  $$ \mathbb{P}[\langle P_{\sup}, V \rangle(x) = 1] \geq   \mathbb{P}[\langle P^*, V \rangle(x) = 1], \quad \forall\text{ Provers } P $$
+
+  Hence,
+  \begin{align*}
+    x \in L \implies  \mathbb{P}[\langle P_{\sup}, V  \rangle(x) = 1] & \geq  \frac{2}{3} \\
+    x \not\in L \implies \mathbb{P}[\langle P_{\sup}, V  \rangle(x) = 1] & \leq  \frac{1}{3}
+  \end{align*}
+  by definition of the given interactive protocol for $L$. This gives a deterministic interactive protocol as required.
+
+  \item
+  If $x \not\in L$ implies the verifier never accepts, it suffices to construct the following polynomial-time algorithm: given a transcript of an interaction between a prover $P$ and verifier $V$, simulate the transcript and output ``$\mathsf{accept}$" if and only if $V$ outputs ``$\mathsf{accept}$". To show $x \in L$, a single transcript of an accepting interaction is enough. If $x \not\in L$, by perfect soundness, no accepting transcript exists. Hence, $L \in \NP$.
+\end{enumerate}
+
+\section*{Problem 3}
+Given a description of a $\mathsf{CircuitSAT}$ instance, the following relation $\mathfrak{R}$ captures $\mathsf{CircuitSAT}$,
+\begin{align*}
+  \mathfrak{R} = \{ ((c_1,\cdots,c_n), C) \mid C:\{0,1\}^n \rightarrow \{0,1\}, \; \exists b_i \in \{0,1\}, \; r_i \in \mathcal{R}, \; & c_i = \mathsf{Commit}(b_i,r_i) \\
+  & \wedge C(b_1,\cdots,b_n) = 1 \}
+\end{align*}
+If the circuit $C$ consists of XOR and AND gates, the description of the circuit should encode the input variables and output variable for each of the two logical operations. By unraveling this description, $\mathfrak{R}$ can be recasted as a conjunction of simpler relations:
+\begin{align*}
+  \mathfrak{R} = \{ (c_1,\cdots,c_\ell), C) \mid C:\{0,1\}^n \rightarrow \{0,1\}\;
+   \wedge & \bigwedge_{i \in N} (c_{i1}, c_{i2}, c_{i3}) \in \mathcal{L}_{\mathsf{Op}(C, i)} \\
+    & \wedge \exists b_\ell \in \{0,1\}, r_\ell \in \mathcal{R}, \; c_\ell = \mathsf{Commit}(b_\ell, r_\ell) \wedge b_\ell = 1 \}
+\end{align*}
+where $\mathsf{Op}(C, i)$ denotes the a map from circuits $C$, $i \in \mathbb{N}$ to the set of logical operations $\{XOR, AND\}$. The index $i$ refers to some ordering of the operations such that the final operation is last and $c_\ell$ denotes the commitment to the output $b_\ell$ of the total circuit. The tuple $(c_{i1}, c_{i2}, c_{i3})$ is such that for a gate: $c_{i1}, c_{i2}$ refers to the committed values of input values and $c_{i3}$ refers to the committed value of the output value. The value $\ell$ is sufficiently large enough to cover all intermediate values ouputted by the evaluation of the circuit i.e $\ell \geq \log{n} + n + 1$.  \newline
+
+\noindent Note that $\mathfrak{R}$ is a conjunction at most $\log{n} + 1$ relations. Thus, we can perform the Sigma protocol for the AND of these $\log{n} + 1$ associated Sigma protocols. A verifier can efficiently take the description of the circuit $C$ and perform the Sigma protocol for the conjunction of the Sigma protocols stated above. \newline
+
+\noindent Completeness is simple: An honest prover will commit the values of the satisfying assignment as well the as the correct intermediate values. This assignment will be such that the output value of the circuit will be $b_\ell = 1$. The property follows from the completeness of the sub-protocols and the AND Sigma Protocol. By Lecture 22, the sub-protocols for $\mathcal{L}_{XOR},\mathcal{L}_{AND}$ ensure that the committed bits are indeed bits $\{0,1\}$ and respect the logical operation. \newline
+
+\noindent Soundness also follows inductively from the soundness of the sub-protocols. Specifically, extracting witnesses for the sub-protocols  will eventually extract out a total witness which will be a satisfying assignment to the circuit. \newline
+
+\noindent Finally, we mention that the Sigma protocols $\mathcal{L}_{XOR},\mathcal{L}_{AND}$ are special HVZK, since they are the $AND/OR$ Sigma protocols of Schnorr protocols. Hence, a conjunction of these protocols must also be special HVZK.
+
+\section*{Feedback}
+\begin{enumerate}
+  \item $<4$ hours
+  \item Favorite would probably be Problem 3
+  \item Least favorite would probably be Problem 1
+  \item Given the topics covered, I would say this pset was on the easier side.
+  \item Thanks for the great class. Honestly speaking, this class has been the most interesting and engaging class I've taken at UNC so far. The sheer amount of topics covered really made the class worthwhile. The homework sets were challenging enough to reinforce my understanding. Overall, I would change little about the class.
+\end{enumerate}
+
+\end{document}
