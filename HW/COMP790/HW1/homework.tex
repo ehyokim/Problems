@@ -64,7 +64,7 @@ that all of this is my own work.
   \end{enumerate}
   We see that the transcript of this game follows like an attack game between adversary $\mathcal{A}$ and the challenge for pairs of messages $m_0, m_1 \neq k$. As $\mathcal{A}$ is deterministic, the probability that either message is equal to uniformly-chosen key $k$ is at most $\frac{2}{2^n} = \frac{1}{2^{n-1}}$. Thus,
   $$ |SSAdv[\mathcal{A}, \xi'] - SSAdv[\mathcal{B}, \xi]| \leq \frac{1}{2^{n-1}}$$
-  (Note: I couldn't find a convincing way of generalizing this proof and the proof for Problem 3b to probabalisitic adversaries within the due date)
+  %(Note: I couldn't find a convincing way of generalizing this proof and the proof for Problem 3b to probabalisitic adversaries within the due date)
 \end{enumerate}
 
 \section*{Problem 2}
@@ -113,7 +113,14 @@ that all of this is my own work.
 
   \item Construct a map $F'': (\mathcal{K} \times \mathcal{K}) \times \mathcal{X} \rightarrow \mathcal{Y}$ defined as such:
   \[ F(k_1||k_2, x) =  F(k_1, x) \oplus F(k_2, x)\]
-  Note that if a single bit of $k_1 || k_2$ is compromised, then the bit must fall in either $k_1$ or $k_2$. However, even if we assume that either $F(k_1, x)$ or $F(k_2, x)$ is compromised, the security of the other, shows that $F''$ is still a secure PRF. The general idea of the proof would involve assuming that one of the two terms in the addition operation is compromised. We would substitute that with some fixed value known by the $F''$-adversary $\mathcal{A}$. Then, we can define an elementary wrapper $\mathcal{B}$ around the adversary $\mathcal{A}$ such that $\mathcal{B}$ substitutes the fixed value in the compromised term and sends the pair containing the queried value and the compromised term to $\mathcal{A}$. This would reduce the security of $F''$ to the security of $F$.
+  Note that if a single bit of $k_1 || k_2$ is compromised, then the bit must fall in either $k_1$ or $k_2$. However, even if we assume that either $F(k_1, x)$ or $F(k_2, x)$ is compromised, the security of the other, shows that $F''$ is still a secure PRF. The general idea of the proof would involve assuming that one of the two terms in the addition operation is compromised. We would substitute that with some fixed value known by the $F''$-adversary $\mathcal{A}$. Then, we can define an elementary wrapper $\mathcal{B}$ around the adversary $\mathcal{A}$ such that $\mathcal{B}$ substitutes the fixed value in the compromised term and sends the pair containing the queried value and the compromised term to $\mathcal{A}$. This would reduce the security of $F''$ to the security of $F$. To cast this into the attack game paradigm, the logic of the $F''$ adversary $\mathcal{B}$ would proceed as follows:
+  \begin{enumerate}
+    \item The  challenger $\mathcal{C}$ either sets $f \leftarrow F(k_2,-)$ for $k_2 \xleftarrow{R} \mathcal{K}$ or $f \xleftarrow{R} \mathsf{Func}[\mathcal{X},\mathcal{Y}]$ uniformly at random.
+    \item The adversary $\mathcal{B}$ would first sample a key $k_1 \xleftarrow{R} \mathcal{K}$
+    \item For any query request $x$ made by the $F$ adversary $\mathcal{A}$, $\mathcal{B}$ routes this request to the challenger $\mathcal{C}$.
+    \item The challenger sends the value $f(x)$ to $\mathcal{B}$ and in turn $\mathcal{B}$ sends $F(k_1,x)\oplus f(x)$ to $\mathcal{A}$.
+    \item If $\mathcal{A}$ outputs $\hat{b}$, $\mathcal{B}$ outputs $\hat{b}$.
+  \end{enumerate}
 \end{enumerate}
 
 \section*{Problem 4}
