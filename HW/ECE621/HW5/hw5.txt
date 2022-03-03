@@ -1,0 +1,39 @@
+Consider the chessboard.
+
+In this case the brown squares will be X type stabilizers and the yellow squares will be Z type stabilizers. The qubits are on the vertices. For example, c2 has 4 qubits at its corners. The upper left corner qubit is also involved in the b3, c3, and b2 stabilizers.
+
+1 Toric versus Planar
+
+We will consider the toric code and the planar code. For the toric code, the boundary conditions are periodic. For the planar code assume the top and bottom are brown (X) boundaries and the left and right yellow (Z) boundaries. 
+
+a) What is number of logical qubits k for the two codes?
+
+b) What is the number of unencoded qubits n for the two codes?
+
+c) What is the distance for the two codes?
+
+d) What extra stabilizers are needed for the planar code?
+
+ 
+
+2  Decoding syndrome
+
+In this problem, you will be given a list of stabilizers that signify an error.  Find two error patterns that yield the same stabilizer but if combined yield a logical error for the code.  Comment on the Pauli weight (or error string distance) for each error pattern and how they relate to the code distance.
+
+ 
+
+a) c4,d5
+
+b) d8, g3
+
+c)  a3,  b1, c1, e2
+
+d) c3, e3, f3, g4, g5, g7
+
+e) From HW 4, we showed that a distance d CSS code can correct  floor(d-1/2) X errors  and floor(d-1/2) Z errors independently. 
+
+For each code (planar and toric), we will write down two errors with the maximal number of guaranteed correctable X and Z errors.
+
+Choose the first error so that only 4 stabilizers are flipped (indicate errors). (List the stabilizers). Find a complementary error string that leads to a logical error.
+
+For the second error, try to flip as many stabilizers as possible.  Write down the list of broken stabilizers. Find a complementary set of errors that leads to a logical error.

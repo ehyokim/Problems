@@ -1,0 +1,127 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\begin{document}
+
+\title{ECE 621 HW 1}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+\section*{Problem 1}
+
+\begin{enumerate}
+  \item To find the limit on the number of bits needed to encode the source, we first calculate the entropy of the source:
+  %
+  \begin{align*}
+    H(X) & = -\frac{1}{2}\log{\frac{1}{2}}  -\frac{1}{4}\log{\frac{1}{4}}  -\frac{1}{4}\log{\frac{1}{16}} \\
+    & = \frac{1}{2} + \frac{1}{2} + 1 = 2
+  \end{align*}
+  By Shannon's noiseless coding theorem, to encode $n$ words from the set $\{x_1\cdots,x_6\}$, the number of bits required is $2n$ in the limit.
+  \item As there are six words in the set, if we were to fix then number of bits used in the encoding, we would need at least $3$ bits.
+  \item The expected word length is calculated as:
+  \begin{align*}
+    \mathbb{E}_{x_i \sim X}\left[ \# \text{ word length}\right] & = \frac{1}{2} \cdot 1 + \frac{1}{4} \cdot 1 + \frac{1}{4}\cdot 2 = \frac{1}{2} + \frac{1}{2} + \frac{1}{4} = \frac{5}{4} \text{ bits }  \\
+  \end{align*}
+  which is strictly smaller than the limit $< 2$ bits.
+  However, this encoding is not uniquely dicipherable. As the encodings for $x_3 \cdots, x_6$ share a prefix bit with either $x_1,x_2$.
+  \item
+  A uniquely dicipherable variable-length encoding can be constructed as follows:
+  \begin{align*}
+    x_1 & = 0 \\
+    x_2 & = 10 \\
+    x_3 & = 1100 \\
+    x_4 & = 1101 \\
+    x_5 & = 1110 \\
+    x_6 & = 1111 \\
+  \end{align*}
+  The average length of a codeword is calculated as:
+  \begin{align*}
+    \frac{1}{2} \cdot 1 + \frac{1}{4} \cdot 2 + \frac{1}{4} \cdot 4 = 1 + \frac{1}{2} + \frac{1}{2} = 2
+  \end{align*}
+  showing that this construction achieves the optimal encoding length.
+
+\item 
+To find the values of $k$ such that the construction above achieves a shorter expected codeword length than the fixed length encoding in part (b), it suffices to solve for the following inequality:
+\begin{gather*}
+  \left(\frac{1}{2} - k \right) \cdot 1 + \frac{1}{4} \cdot 2 + \frac{3}{16}\cdot 4  + \left(\frac{1}{16} + k \right) \cdot 4  < 3 \\
+  2 + 3k  < 3 \\
+  k < \frac{1}{3}
+\end{gather*}
+This shows that $-\frac{1}{16} \leq k < \frac{1}{3}$ is the desired interval satisfying the condition above.
+\end{enumerate}
+
+\section*{Problem 2}
+\begin{enumerate}
+  \item We compute the required entropy figures:
+  \begin{equation*}
+    H(X) = H_b(q)
+  \end{equation*}
+  %
+  \begin{align*}
+    H(Y) & = -((1-q) + pq))\log{(1-q) + pq)} - (q(1-p))\log{q(1-p)} \\
+        & = -(1 - q(1-p))\log{(1 - q(1-p))} - (q(1-p))\log{q(1-p)} \\
+        & = H_b(q(1-p))
+  \end{align*}
+  %
+  \begin{align*}
+    H(Y\mid X) & = \mathbb{P}(x_0)H(Y\mid x_0) + \mathbb{P}(x_1)H(Y\mid x_1) \\
+    & = q H_b(p)
+  \end{align*}
+  %
+  \begin{align*}
+    H(X:Y) & = H(X) + H(Y\mid X) \\
+           & = qH_b(p) + H_b(q)
+  \end{align*}
+
+  \item
+  From the figures above, we can find the mutual information as:
+  \begin{align*}
+    I(X:Y) & = H(Y) - H(Y\mid X) \\
+           & = H_b(q(1-p)) - qH_b(p)
+  \end{align*}
+  Now to find the channel capacity we must find the maximum value over all probability distribtions over Alice's codewords: $\max_{P(X)}I(X:Y)$. To achieve this, we differentiate over $q$:
+  \begin{align*}
+    \frac{\partial I(X:Y)}{\partial q} = -(1-p)\log{\frac{q(1-p)}{1 - q(1-p)}} - H_b(p)
+  \end{align*}
+  By setting $\frac{\partial I(X:Y)}{\partial q} = 0$, we solve for $q$ to yield the equalities:
+  \begin{gather*}
+    -(1-p)\log{\frac{q(1-p)}{1 - q(1-p)}} - H_b(p) = 0 \\
+    \log{\frac{1- q(1-p)}{q(1-p)}} = \frac{H_b(p)}{1-p} \\
+    \frac{1- q(1-p)}{q(1-p)} = 2^{\frac{H_b(p)}{1-p}} \\
+    q = \frac{1}{(1-p)\left(1 + 2^{\frac{H_b(p)}{1-p}}\right)}
+  \end{gather*}
+  %
+  Substituting $q$ into the mutual information expression and setting $v(p) = \frac{H_b(p)}{1-p}$ will simplify to:
+  %
+  \begin{align*}
+  C & = H\left(\frac{1}{1 + 2^{v(p)}} \right) - v(p)\cdot \frac{1}{1 + 2^{v(p)}} \\
+    & = -\left(\frac{1}{1 + 2^{v(p)}} \right)\log{\frac{1}{1 + 2^{v(p)}}} -\left(\frac{2^{v(p)}}{1 + 2^{v(p)}} \right)\log{\frac{2^{v(p)}}{1 + 2^{v(p)}}} - \frac{v(p)}{1 + 2^{v(p)}} \\
+    & = -\left(\frac{1}{1 + 2^{v(p)}} \right)\log{\frac{1}{1 + 2^{v(p)}}} - \left(\frac{1}{1 + 2^{v(p)}}\left[v(p) - \log{(1 + 2^{v(p)})} \right] \right) \\
+    & = \left(\frac{1}{1 + 2^{v(p)}} \right)\log{(1 + 2^{v(p)})} - \left(2^{v(p)}+1 \right)\frac{v(p)}{1 + 2^{v(p)}} + \frac{2^{v(p)} }{1 + 2^{v(p)}} \log{(1 + 2^{v(p)})} \\
+    & = \left(\frac{2^{v(p)}+ 1}{1 + 2^{v(p)}} \right) \log{(1 + 2^{v(p)})} - \left(\frac{2^{v(p)}+1 }{1 + 2^{v(p)}}\right)v(p) \\
+    & =  \log{(1 + 2^{v(p)})} - v(p) \\
+    & = \log{\left( \frac{1 + 2^{v(p)}}{2^{v(p)}} \right)} \\
+    & = \log{\left(1 + 2^{-v(p)}\right)} \\
+    & = \log{\left(1 + 2^{-\frac{1}{1-p} \left(-p\log{p} - (1-p)\log{1-p} \right)  } \right)} \\
+    & = \log{\left(1 + \left( (2^{\log p})^{\frac{p}{1-p}}(2^{\log{1-p}}) \right) \right) } \\
+    & = \log{\left(1 + \left(1-p\right)p^{\frac{p}{1-p}}\right)}
+\end{align*}
+%
+\item
+First, note that when $p = 0$, this channel becomes the binary noiseless channel. By substituting $p = 0$ into the channel capacity expression above and interpreting $0^0 = 1$, we see that capacity becomes $\log{2} = 1$ bit as expected. Furthermore, the maximum is taken at $q = \frac{1}{2}$.
+
+We recall that the channel capacities for the Binary Symmetric Channel and Binary Erasure Channel are $C_{BSC} = 1 - H_b(p)$ and $C_{BEC} = 1 - p$ respectively. When $p = 0$, all the channel capacities equal to 1 bit of transmission. When $p = \frac{1}{2}$, we see that $C_{BSC} = 0$ and $C_{BEC} = \frac{1}{2}$ and $C = \log(\frac{5}{4}) \approx 0.322$.
+
+Firally, when $p = 1$, the channel capacity will be undefined whereas eC_{BSC} = 1$ and $C_{BEC
+
+
+\end{enumerate}
+\end{document}

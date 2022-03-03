@@ -1,0 +1,77 @@
+
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{complexity}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\newcommand{\bigzero}{\mbox{\normalfont\Large\bfseries 0}}
+
+\begin{document}
+
+\title{ECE 621 HW4}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+
+\section*{Problem 1}
+
+\section*{Problem 2}
+\begin{enumerate}
+	\item We describe the total stabilizer matrix $H_Q$ where $Q$ is the 16-qubit Shor code described in the problem. First, the binary string will be a flattened version of the $4 \times 4$ grid:
+		 \[ (a_{ij})_{i,j = 0}^3 \mapsto a_{00}a_{01}a_{02} \cdots a_{10}a_{11} \cdots a_{32}a_{33} \]
+
+	The stablizer matrix can be expressed as below:
+
+	\begin{description}
+		\item[Z Stabilizers:]
+	\[
+	\begin{pmatrix} 
+	
+	  \begin{matrix}
+			1& 1 & 0 & 0 \\
+			0 & 1 & 1& 0 \\
+			0 & 0 & 1 & 1
+ 		 \end{matrix}
+		 & \bigzero & \bigzero & \bigzero \\
+		\bigzero & 
+	  \begin{matrix}
+			1& 1 & 0 & 0 \\
+			0 & 1 & 1& 0 \\
+			0 & 0 & 1 & 1
+ 		 \end{matrix}
+		  & \bigzero & \bigzero \\
+		\bigzero & \bigzero & 
+	  \begin{matrix}
+			1& 1 & 0 & 0 \\
+			0 & 1 & 1& 0 \\
+			0 & 0 & 1 & 1
+ 		 \end{matrix}  & \bigzero \\
+
+		\bigzero & \bigzero & \bigzero & 
+	  \begin{matrix}
+			1& 1 & 0 & 0 \\
+			0 & 1 & 1& 0 \\
+			0 & 0 & 1 & 1
+ 		 \end{matrix}
+	\end{pmatrix}
+	\]
+\item[X Stabilizers:]
+	\[
+	\begin{matrix}
+	1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+	1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 
+	\end{matrix}
+	\]
+	\end{description}
+\end{enumerate}
+\end{document}
+
+

@@ -1,0 +1,30 @@
+nstructions
+
+Question 1: Uniquely Decipherable
+
+When encoding a series of letters into binary over a noiseless channel, an important property is that the message can be read without knowing where the breaks are.
+Consider encoding X ={x1, x2, x3, x4, x5, x6} with  source probabilities P(X)= {1/2,1/4,1/16,1/16,1/16,1/16} respectively.
+
+a) According to Shannon's noiseless coding theorem, what is the limit on the number of bits needed to encode the source?
+
+b) A fixed length code is uniquely decipherable. What is the minimal length fixed length binary code for this source?
+
+c) Try the following code
+
+x1=0 x2=1 x3=00 x4=01 x5=10 x6=11
+
+What is average letter length and how does it compare to the limit?  What is wrong with this method?
+
+d) Suggest a uniquely decipherable code and calculate the average length relative to the limit.
+
+e) Assume the probability of x1 and x6  are governed by a parameter k where p(x1)=1/2-k and p(x6)=1/16+k, where k varies from -1/16 to 1/2. For what range of k, does your encoding in (d) outperform the fixed length code of (b) in terms of average letter length?
+
+Question 2: Voltage leakage
+
+For many systems, the 1 signal is a high voltage and the 0 signal is low voltage.  If the voltage is reduced due to noise, the 1 will be mistaken for a 0.  Consider a channel where when Alice sends x0 Bob receives y0 with certainty but when Alice send x1 Bob receives y1 with probability 1-p and y0 with probability p.
+
+a) Write down an expression for H(X,Y) and H(Y) as a function of p(x1)=q and p .
+
+b) Calculate the channel capacity.
+
+c) Compare to the channel capacity for the Binary Erasure Channel and the Binary Symmetric Channel.

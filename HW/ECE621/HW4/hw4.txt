@@ -1,0 +1,31 @@
+1. General CSS codes.
+
+a) Show that any distance 3 CSS code can correct any single qubit error and a two-qubit error composed of one Z and one X.
+
+b) For any distance 2k+1 CSS code, describe the set of errors that can be corrected.
+
+c) Specific codes can correct more errors. Show the Steane [7,1,3] code can only correct the minimal number of errors. Identify the extra errors that the Shor [9,1,3] code can correct.
+
+ 
+
+2) 16 Qubit Shor Code
+
+Consdier the 16 qubit Shor code
+
+Let's label each qubit by coordinates i,j ona grid with i and j from 0 to 3
+
+The Z stabilizers are  Zi,jZi,j+1 are for i=0 to 3 and j=0 to 2
+
+The X stabilizers are Xi,0Xi+1,0Xi,1Xi+1,1Xi,2Xi+1,2Xi,3Xi+1,3 for i=0 to 2
+
+a) Write down the stabilizers in the binary form.
+
+b) Identify the classical codes C1 and C2. (Find H and G. Does not need to be in standard form.)
+
+c) Show that C2 is in C1
+
+d) What is the distance and number of encoded bits for C2 and C1?
+
+e) What is the disance and number of encoded qubits for the quantum code?
+
+f) Find minimal weight logical operators X and Z. 
