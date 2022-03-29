@@ -1,0 +1,44 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{complexity}
+\usepackage{graphicx}
+\usepackage{physics}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\begin{document}
+
+\title{ECE 621 HW 6}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+
+\section*{Problem 1 (Comments)}
+
+\begin{description}
+  \item [1. Page 16 bottom left column:] When the authors mention that  ßoperators that connect to potentially distant boundaries are not consistent with a 2-D layout of logical qubits , do they mean that the braiding operations will become cumbersome to perform if we have operators which connect to distant boundaries? If so, what's a simple example of such a nuisance?
+  \item[2. Page 17, first paragraph of Section 9:] The authors write: however, a hardware-based solution will always have a higher error rate than one implemented by control software. How does control software fundamentally differ from hardware in this context?
+  \item[3. Page 18 Section 10.A] Why can't we just initialize the $X$-cut qubit, measure in the logical $Z$ basis, and perform a logical $X$ based on the measurement results? Why go through all this trouble of turning stabilizers on and off?
+  \item[4. Page 19, last paragrapgh of left column:] The authors mention turning on/off stabilizers. How is removing, adding stabilizers actually accomplished in implementation?
+  \item[5. Page 23, Section A.] The author's protocol for moving a logical qubit one cell. What if the hole was larger than one-cell? How does the procedure have to adapt to larger cells? Do we just iteratively perform the procedure for every missing cell comprising the hole?
+\end{description}
+
+\section*{Problem 2}
+
+We elaborate on Figure 14 of the manuscript. Suppose we had a fully-stabilized grid of qubits as depicted in subfigure (a). We wish to initialize an X-cut qubit (a qubit determined through removing an X-type stabilizer) in the $\ket{0_L}$. Here we assume that the $X$-cut qubit we wish to construct will be of the form shown in Figure 11(b). Observe that the logical Z operator $\hat{Z}_L$ chain is comprised of three $Z$ operators on the relevant three data qubits. In order to perform the initilization, we can first remove the 4 X-type stabilizers in the middle as shown in subfigure (b) as well turn the required $Z$-type stabilizers to stop tracking the three data qubits in the middle. By measuring the middle three data qubits in the $Z$-basis, we can set them to the collective state $\ket{000}$. Finally, as subfigure (d) demonstrates, it suffices to complete the qubit by turning the middle two $X$-type stabilizers and the missing $Z$ stabilizers back on. Since we know that $\hat{Z}_L$ commutes with all of the $X$-stablizers, measuring with the $X$-stabilizers will project the $+1$ eigenstate of the logical $Z$ operator $\hat{Z}_L$ as well as the stabilizer subspace of the $X$-stablizers. Thus, the stablizer state will be initialized to $\ket{0_L}$ as required \newline
+
+\section*{Problem 3}
+Figure 24 details the execution of a CNOT operation using two logical qubits of the same cut type, namely the Z-cut type. The braiding operation is only defined with two logical qubits of differing type. Additionally, the $Z$-cut and $X$-cut logical qubits must act as the control and target qubits respectively. However, we can perform a CNOT with two qubits of Z-cut type by using an $X$-cut logical qubit as an intermediary. Subfigure (a) presents this circuit along with the appropriate braiding diagrams (b), (c). Note that the $Z$-cut logical qubit always braids around the $X$-cut logical qubit. This explains the three loops from the $Z$-cut qubit strings wrapping around that of the $X$-cut qubit situated in the second row. The outcome of the logical measurement operator $M_Z$ (measurement in logical $Z$ basis) determines if a corrective logical operator $\hat{X}_L$ is applied to the target-out $Z$-cut qubit. Secondly, the outcome of the logical measurement $M_X$ (measurement in logical $X$ basis) determines if a logical $\hat{Z}_L$ is performed to the target qubit prior to the CNOT operation. Lastly, we remark that three $Z$-cut logical qubits are required to perform this operator with two seperate target-in and target-out Z-cut qubits required.
+The diagrams of subfigures (b), (c) can be interpreted by the following rules:
+\begin{enumerate}
+\item The vertical lines which spawn two parallel lines represents the creation of a logical qubit of a specific cut type. Each line represents a qubit hole.
+\item A line wrapping around another line represents a hole braiding around another hole. In subfigure (b), observe that the second hole of the control-in qubit braids around the first hole of the $X$-cut qubit while the target-in and target-out qubits' first holes braid around the second hole of the $X$-cut qubit.
+\item A vertical line which merges the two parallel lines together represents a measurement destroying the logical qubit as detailed in Figure 15.
+\end{enumerate}
+
+\end{document}
