@@ -1,0 +1,15 @@
+
+
+Read Sections I-IV of https://arxiv.org/abs/1404.3747 by Tomita and Svore
+
+1. Write down the [[n,k,d]] code parameters for Surface-13, Surface-17, and Surface-25 codes.
+
+2. In Figure 5, two circuits are presented for measuring the same X stabilizer that only differ by the order of CNOTS.  Explain why the order matters.
+
+3. Explain why changing the ordering of CNOTs with a single qubit syndrome measurement does not help for the [[7,1,3]] Steane code.
+
+In https://arxiv.org/abs/1612.04795 Fig. 21, Appendix C, Kim and Yoder show that a two-qubit Cat state is sufficient for FT syndrome extraction given the presented connection between the syndrome qubits and the data.
+
+4. Write down the quantum circuit for one round of syndrome extraction.
+
+5. Write down an algorithm for a look up table decoder based on three measurements in the style of the decoder presented in III.A of Tomita and Svore.

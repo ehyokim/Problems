@@ -1,0 +1,41 @@
+ Instructions
+
+The goal of the final project is to cover an aspect of quantum information not covered in the class.  There are three types of projects: numerical computation, and literature review. Project report should be 4-6 pages not including references. 
+
+Numerical Computation
+
+The simulation of quantum error correction codes under different noise models is an important part of testing the properties of quantum error correction codes.  Choose a small code and a noise model and compare the properties in the code capacity model and the phenomenological model.
+
+Literature Review
+
+Choose a topic not covered in detail in the class and prepare a literature review.  Possible topics include
+
+    Decoherence Free Subspaces
+    Finite Rate Quantum Codes
+    Qudit Codes
+    Continuous Variable QEC
+    Bosonic Codes
+    Current results and questions in quantum channel capacities
+
+Timeline
+
+March 28 Submit a one page description of the project (email Shilin and Ken).
+
+April 11 Send two slides summarizing the project
+
+April 13 Discuss 2 slides in class
+
+April 27 Project due by Noon ET
+
+Grading Rubric
+
+10% Slides /In Class Presentation
+
+50% Report Quality (Structure, Layout, Figures, etc.)
+
+20% Completeness (Numerical: How extensive are the calculations?  Review: Is the literature well covered? ) 
+
+20% Analysis (Numerical: Discussion of challenges and limits and suggestions for missing tools. Review: Discussion of importance of topic in the broader field and possible extensions.)
+Additional resources for assignment
+
+No attachments yet 
