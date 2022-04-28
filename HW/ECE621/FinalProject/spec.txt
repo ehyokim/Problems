@@ -36,6 +36,7 @@ Grading Rubric
 20% Completeness (Numerical: How extensive are the calculations?  Review: Is the literature well covered? ) 
 
 20% Analysis (Numerical: Discussion of challenges and limits and suggestions for missing tools. Review: Discussion of importance of topic in the broader field and possible extensions.)
+- Pretty much extensions based on Brueckmann paper.
 Additional resources for assignment
 
 No attachments yet 
