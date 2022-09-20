@@ -1,0 +1,182 @@
+\documentclass[12pt]{article}%
+\input{preamble}
+
+\newcommand{\Uone}{\mathcal{U}_1}
+\newcommand{\Utwo}{\mathcal{U}_2}
+\newcommand{\Uint}{\Uone \cap \Utwo}
+\newcommand{\V}{\mathcal{V}}
+\setlength\parindent{0pt}
+
+
+\title{PHY510 HW 3}
+\author{Edward Kim}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1}
+Start by differentiating the linear relation to see that:
+\[ \frac{\partial y_i}{\partial x_j} = \sum_{\ell = 1}^n \Lambda_{i\ell} \frac{\partial x_\ell}{\partial x_j} = \Lambda_{ij} \]
+Combining this with the chain rule in respect to $f(y) = f(y_1,\cdots, y_n)$ to yield the following:
+\begin{align*}
+\frac{\partial f}{\partial x_i} =  \sum_{j = 1}^n \frac{\partial f}{\partial y_j} \frac{\partial y_j}{\partial x_i} =  \sum_{j = 1}^n \Lambda_{ji} \frac{\partial f}{\partial y_j}
+\end{align*}
+
+From this equivalence, we can deduce that the change-of-coordinates matrix will be:
+
+\[ \tilde{v} = \Lambda v \] where $v$ and $\tilde{v}$ are the component vectors of our differential operator $V$ in terms of the two bases.
+
+\section*{Problem 2}
+\begin{enumerate}[i.]
+  \item Directly calculating the characterisitic polynomial shows that:
+  \[\det(A - \lambda I) = (5-\lambda)(-9-\lambda) + 48 = 0 \]
+  Hence:
+  \[ \lambda^2 + 4\lambda + 3 = 0\] which has roots $\lambda_1 = -3, \; \lambda_2 = -1$
+
+  \item Solving the appropriate system of linear equations shows that the corresponding eigenvectors will the vectors $v_{\lambda_1} = \begin{pmatrix}
+    3 \\ 2
+  \end{pmatrix}$ for $\lambda_1 = -3$ and $v_{\lambda_2} = \begin{pmatrix}
+    2 \\ 1
+  \end{pmatrix}$ for $\lambda_2 = -1$
+
+  \item From our findings in the previous section, the change-of-basis matrix will be:
+  \[ S = \begin{bmatrix}
+      3 & 2 \\ 2 & 1
+  \end{bmatrix} \]
+
+  By solving the system $AX = I$, we get the inverse:
+
+  \[ S^{-1} =\begin{bmatrix}
+      -1 & 2 \\ 2 & -3
+  \end{bmatrix}   \]
+
+\item Multiply the relevant matrices together:
+
+\[S^{-1}AS = \begin{bmatrix}
+    -1 & 2 \\ 2 & -3
+\end{bmatrix} \begin{bmatrix}
+ 5 & -12 \\ 4 & 9
+\end{bmatrix} \begin{bmatrix}
+    3 & 2 \\ 2 & 1
+\end{bmatrix} = \begin{bmatrix}
+    3 & -6 \\ -2 & 3
+\end{bmatrix} \begin{bmatrix}
+    3 & 2 \\ 2 & 1
+\end{bmatrix}  = \begin{bmatrix}
+    -3 & 0 \\ 0 & -1
+\end{bmatrix}\]
+as expected.
+\end{enumerate}
+
+\section*{Problem 3}
+\begin{enumerate}[i.]
+  \item Calculating the eigenvalues for both matrices $M_1, M_2$ shows that both have the same spectrum, namely $\{2,2,1,1,1\}$.
+
+ The determinant for the first matrix can be directly calculated through the derivations below:
+ %
+ First, expand the determinant along the most bottom row. This will result in a submatrix of size $4 \times 4$ with the last row and column deleted. From there, we expand along the third row from which have the equivalence:
+ \[ \det (M_1 - \lambda I) = (1 - \lambda)(1-\lambda) \det \begin{bmatrix}
+    2 & 0 & 0 \\
+    0 & 2 & 0 \\
+    1 & 0 & 1
+ \end{bmatrix} \]
+ Further expansions along the first row of the determinant on the right yield the expected characteristic polynomial:
+ \[\det (M_1 - \lambda I)= (1 - \lambda)^3(2-\lambda)^2 \]
+%
+  \item
+  As suggested by the problem, any supplementary work will be attached and referenced by this solution.
+
+  For $M_1$, we have a basis of $\complex^5$ consisting of linearly independent eigenvectors given as columns of the matrix:
+
+  \[ Q_1 = \begin{bmatrix}
+      1 & 0 & 1 & 0 & 0 \\
+      0 & 1 & 0 & 0 & 0 \\
+      0 & 0 & 0 & 1 & 0 \\
+      1 & 0 & 0 & 0 & 1 \\
+      0 & 0 & 1 & 1 & 0
+  \end{bmatrix} \]
+
+  These eigenvectors can be determined by the solutions of the corresponding linear equations $(M_1 - I){\bf x} = 0$ and $(M_1 - 2I){\bf x} = 0$.
+
+  For $M_2$, there are two eigenvectors of the forms:
+
+\[\left\{  \ell_{1} = \begin{bmatrix}
+  1 \\ 1 \\ 0 \\ 1 \\ 0
+\end{bmatrix}, \ell_{2} = \begin{bmatrix}
+1 \\ 0 \\ 0 \\ 1 \\ 1
+\end{bmatrix} \right\} \]
+
+where the first column vector $\ell_1$ is an eigenvector of $\lambda_1 = 2$ and the second column vector  $\ell_2$ is an eigenvector of $\lambda_2 = 1$. From here, we can now solve for the Jordan basis and the associated Jordan form. Let $J_1,J_2$ denote the Jordan forms for matrices $M_1,M_2$ respectively. Then, we deduce that
+
+\[J_1 = \begin{bmatrix}
+  2 & 0 & 0 & 0 & 0 \\
+  0 & 2 & 0 & 0 & 0 \\
+  0 & 0 & 1 & 0 & 0 \\
+  0 & 0 & 0 & 1 & 0 \\
+  0 & 0 & 0 & 0 & 1 \\
+\end{bmatrix}, \quad
+  J_2 = \begin{bmatrix}
+  2 & 1 & 0 & 0 & 0 \\
+  0 & 2 & 0 & 0 & 0 \\
+  0 & 0 & 1 & 1 & 0 \\
+  0 & 0 & 0 & 1 & 1 \\
+  0 & 0 & 0 & 0 & 1 \\
+\end{bmatrix}  \]
+
+$J_1$ will simply be a diagonal matrix as the eigenvectors consistute a basis for $\complex^5$. For the Jordan basis of $M_2$, we solve a series of linear equations to determine the other generalized eigenvectors. We do this by first noticing that each generalized eigenspace has its dimension has the algebraic multiplicity of the eigenvalues in respect to the characteristic polynomial. Take the eigenvector $\ell_1$ with eigenvalue $\lambda = 2$ as an example. We know that there must exist some vector $s'$ such that $(M_2 - 2I)s' = \ell_1$ and other vector $s''$ such that $(M_2 - 2I)s'' = s'$. These three vectors $\{\ell_1,s',s''\}$ must be a basis for the generalized eigenspace for $\lambda = 2$. We solve for these vectors through a system of linear equations. This leads to the total Jordan basis for $M_2$:
+
+\[ Q_2 = \begin{bmatrix}
+  1 &  0 & 1 & 0 & -1 \\
+ 1 & 1 & 0 & 0 & 0 \\
+ 0 & 0 & 0 & 0 &   1 \\
+ 1 & 0 & 1 & 1 & -1 \\
+ 0 & 0 & 1 & 0 & 0 \\
+\end{bmatrix} \]
+
+\item The matrices $Q_1,Q_2$ ascertained in the previous part are the desired similarity transforms in the sense that:
+
+\[ J_i = Q_i^{-1} M_i Q_i \quad i \in \{1,2\} \]
+\end{enumerate}
+
+\section*{Problem 4}
+\begin{description}
+  \item[[H] 5.39] We first prove the second assertion for two square invertible matrices $A,B$, which immediately folllows from the string of implications:
+  \begin{align*}
+    AB + BA = 0 \implies \ AB = - BA & \implies ABA^{-1} = -B \\ & \implies \Tr ABA^{-1} = - \Tr B \\ & \implies \Tr B = - \Tr B
+  \end{align*}
+  The same steps can be traced to see that $\Tr A = - \Tr A$, which shows that $\Tr A = \Tr B = 0$.
+
+  As for the first assertion, notice that by taking the determinant of both sides, we yield the equivalence:
+  \begin{align*}
+  \det(AB) = \det(-BA) & \implies \det(AB) = (-1)^n \det(BA) \\
+  & \implies \det(A)\det(B) = (-1)^n \det(B)\det(A)
+  \end{align*}
+
+  Now since $A,B$ are invertible, $\det(A), \det(B) \neq 0$. Hence, we can divide both sides to find the equality $1 = (-1)^n$. This can only be true if $n$ is even, as we needed.
+
+  \item[[H] 5.43] These subproblems can be answered by determining the matrix of the linear transformation and taking the trace of said matrix:
+  \begin{enumerate}[a.]
+    \item $\Tr \begin{bmatrix}
+      1 & 1 & -1 \\
+      2 & 3 & -2 \\
+      1 &  -1 & 0
+    \end{bmatrix} = 4$
+    \item $\Tr \begin{bmatrix}
+      0 & 1 & -1 \\
+      1 & 2 & 1 \\
+      0 &  -1 & 1
+    \end{bmatrix} = 3$
+    \item $\Tr \begin{bmatrix}
+      1 & i & -1 & i \\
+      2i & 3 & -2i & -1 \\
+      1 & -i & 0 & 0 \\
+      0 &  0 & 1 & i
+    \end{bmatrix} = 4 + i$
+  \end{enumerate}
+
+  \item [[H] 5.45]
+  If $V$ is the vector space in which operators $A,B$ act upon, then suppose $V$ is finite-dimensional of dimension $N$. Set some basis of $V$ such that $[A,B] = cI$ becomes an equality between $N \times N$ matrices with $I$ being the $N \times N$ identity matrix. The trace operator here will be well-defined, so taking the trace will give us that $\Tr[A,B] = \Tr(AB) - \Tr(BA) = 0$ by the cyclic property of the trace. However, $\Tr(cI) = cN$. For $c \neq 0$, this gives us a contradiction and shows that $\dim V$ cannot be finite. Recall that the canonical commutation relationship between the position and momentum operator is $[\hat{x}, \hat{p}] = i\hbar I$. In light of the observation just shown, these two operators cannot be defined in finite dimensions.
+\end{description}
+
+\end{document}
