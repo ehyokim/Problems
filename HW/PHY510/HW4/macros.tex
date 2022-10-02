@@ -1,0 +1,29 @@
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+
+% General Mathematical Notation
+\newcommand{\reals}{{\mathbb{R}}}
+\newcommand{\complex}{{\mathbb{C}}}                    %reals                  %reals
+\newcommand{\nnreal}{{\nnnum R}}
+                   %nonnegative
+
+\newcommand{\nat}{\mathbb{N}}                      %natural numbers
+\newcommand{\integers}{{\num Z}}                      %integers
+\newcommand{\rat}{{\num Q}}                      %rationals
+\newcommand{\nnrat}{{\nnnum Q}}
+
+\newcommand{\boldu}{\textbf{u}}
+\newcommand{\boldv}{\textbf{v}}
+%\newcommand{\ip}[1][2]{\langle {#1}, {#2},\rangle}
+
+% Differentiation
+\newcommand{\totder}[1][]{\frac{d^{#1}}{dx^{#1}}}
+
+% Environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+
+% Series
+\newcommand{\powaseries}[1][0]{\sum_{n = {#1}}^{\infty}}

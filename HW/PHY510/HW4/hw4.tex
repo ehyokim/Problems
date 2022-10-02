@@ -1,0 +1,313 @@
+\documentclass[12pt]{article}%
+\input{preamble}
+
+\newcommand{\Uone}{\mathcal{U}_1}
+\newcommand{\Utwo}{\mathcal{U}_2}
+\newcommand{\Uint}{\Uone \cap \Utwo}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\gpart}[1][t]{\frac{\partial g(x,t)}{\partial {#1}}}
+\setlength\parindent{0pt}
+\newcommand{\Legen}[1][n]{(x^2 - 1)^{#1}}
+
+\title{PHY510 HW 4}
+\author{Edward Kim}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1}
+\begin{enumerate}[i.]
+  \item We begin by first noting that
+
+  \begin{align*}
+      \frac{1}{2^nn!}\totder[n](x+1)^n(x-1)^n = \sum_{i+j = n} C_{ij}(x-1)^i(x+1)^j
+  \end{align*}
+
+
+  where $C_{ij}$ is simply a product of higher-order exponents arising from differentiating each product term according to the chain rule.
+
+  Observe that any term in the sum on the right with a $(x-1)$ term will vanish when $x=1$. Hence, the only term which survive is the term where $i=0,j=n$. Here, $C_{0n} = n!$, so
+
+  \[ P_n(1) = \frac{1}{2^n n!} (n!)(1+1)^n = 1\].
+
+  Now for $P_n(0)$, we can use the recurrence relation derived in part (ii) below to see that,
+
+  $P_{n+1}(0) = -\frac{n}{n+1}P_{n-1}(0)$ for odd $n$. The Legendre polynomial is odd, thus, even indices will vanish.
+
+  And $P_{n+1}(0) = (-\frac{n}{n+1})(-\frac{n}{n+1})$
+
+
+  \item First, suppose that $m \neq n$. Then:
+
+  \begin{equation} \label{eq:q1p1}
+  \langle P_m, P_n \rangle = \int_{-1}^1 P_m(x)P_n(x) dx = \frac{1}{2^{m+n}m!n!}\int_{-1}^1 \totder[m]\Legen[m]\totder[n]\Legen dx
+  \end{equation}
+
+  Without loss of generality, suppose $m > n$. By exploiting integration by parts, we can move the differential operator from the left term (of $m$) to the right term (of $n$). To see one iteration of this step, the right-hand side evaluates to:
+
+  \[\frac{1}{2^{m+n}m!n!} \left[ \left. \totder[m-1] \Legen[m] \totder[n]\Legen\right|_{-1}^1 - \int_{-1}^1 \totder[m-1] \Legen[m] \totder[n+1]\Legen dx \right]  \]
+
+  The left term vanishes according to the criterion for the Rodriguez formula, leaving us with the right-hand integral with the differential operator shifted to the $P_n$ term. If we iterate this $m$ times, the right-hand side of Eq \ref{eq:q1p1} eventually reduces to:
+
+  \begin{align}
+    \langle P_m, P_n \rangle = \frac{(-1)^m}{2^{m+n}m!n!} \int_{-1}^1 \Legen[m]\totder[m+n]\Legen dx
+  \end{align}
+
+  However, observe that $(x^2 - 1)^n$ is a polynomial of order $2n$. Since $m > n$, it must hold that $m + n > 2n$. Hence, the right factor in the integral vanishes, resulting the entire integral to vanish. The required orthogonality condition is thus satisified.
+
+  Now we consider the case where the indices align at $n$.
+
+  \[ \langle P_n, P_n \rangle = \frac{1}{2^{2n}(n!)^2}\int_{-1}^1 \totder[n]\Legen\totder[n]\Legen dx \]
+
+  By iterating integration by parts $n$ times, the expression equates to
+  \begin{align*}
+     \langle P_n, P_n \rangle & = \frac{(-1)^n(2n)!}{2^{2n}(n!)^2}\int_{-1}^1 (x^2-1)^n dx \\
+      &= \frac{(2n)!}{2^{2n}(n!)^2}\int_{-1}^1 (1 - x^2)^n dx \\
+      & = \frac{(2n)!}{2^{2n}(n!)^2}\frac{2^{n+1}n!}{1 \cdot 3 \cdot \cdots \cdot (2n+1)} \\
+      & = \frac{2^{n+1}( 2\cdot 4 \cdot \cdots 2n)}{(2n+1)n! 2^{2n}} \\
+      & = \frac{2^{2n+1}n!}{2^{2n}(2n+1)} \\
+      & = \frac{2}{2n + 1}
+  \end{align*}
+
+  Combining the two observations shows that:
+
+  \[\langle P_m, P_n \rangle = \frac{2}{2n+1}\delta_{mn} \]
+
+  \item We will prove the below equality through induction:
+
+  \begin{equation}
+    (x^2 - 1) \totder[i] (x^2 - 1)^n = 2S_i\totder[i-2](x^2 - 1)^n + (n -i + 1)(2x \totder[i-1](x^2-1)^n)
+  \end{equation}
+  for $2 \leq i \leq n+2$ where $S_i = \sum_{j = 0}^{i-2} n - j$
+
+  The base case for $i = 2$ can be derived by differentiating the equivalence mentioned in the footnate on both sides:
+
+  \[(x^2 -1)\totder[2](x^2 -1)^n = 2n(x^2 - 1)^n + (n-1)(2x \totder (x^2 -1)^n) \]
+
+  Suppose our hypothesis is true for some $2 \leq i < n + 2$. We handle the $i+1$ case by simply differentiating both sides of the equality for the $i$ case:
+
+  \begin{align*}
+      & 2x \totder[i] \Legen + \Legen[] \totder[i+1] \Legen \\
+      = & 2(\sum_{j=0}^{i-2} n - j) \totder[i-1] \Legen + 2(n - i +1)(\totder[i-1]\Legen + x \totder[i]\Legen)
+  \end{align*}
+
+  Expanding the second term on the right-hand side and coalesing the terms to the right-hand side shows:
+
+  \[ \Legen[] \totder[i+1] \Legen = 2(S_{i+1})\totder[i-1]\Legen + (n-i)(2x \totder[i] \Legen) \]
+
+  as required. By taking $i = n+2$ and multiplying both sides by
+  $-1$ shows that $P_n$ are solutions to the associated ODE.
+\end{enumerate}
+
+
+\section*{Problem 2}
+\begin{enumerate}[i.]
+  \item The relevant computations are attached to this HW. From inspection of the first five terms, we see that the generating function for $g(x,t) = (1 - 2xt + t^2)^{-1/2}$ indeed has its coefficients aligned with the values of the Legendre polynomial over the interval $[-1,1]$.
+
+  \item We first check the claimed identity. Through inspection, the following must hold:
+  \begin{align*}
+    \gpart = \frac{\partial}{\partial t}\left( \frac{1}{\sqrt{1 - 2xt + t^2}}\right) & = \frac{1}{2} (1-2xt + t^2)^{-3/2} (-2x + 2t) \\
+    & = - (1 - 2xt + t^2)^{-3/2} (t-x) \\
+    & = (x-t) (1 - 2xt + t^2)^{-3/2}
+  \end{align*}
+
+  This implies that \[ (1 - 2xt + t^2) \gpart  = (x-t)g(x,t) \] Now assuming this identity, it suffies to show that \[ (n+1)P_{n+1} = (2n + 1)xP_n - nP_{n-1} \]
+
+  From above, we know that
+  \[ \gpart = (x-t)g(x,t) + 2xt \gpart - t^2 \gpart\]
+
+  Differentiating $g(x,t)$ decrements the power series terms by a power and adds on a constant factor:
+  \[ \gpart = \powaseries n P_n(x)t^{n-1} \]
+
+  On the right hand side, we can calculate the effect of multiplication and differentiation:
+
+  \[ (x-t)g(x,t) = \powaseries xP_n(x) t^n - \powaseries P_n(x)t^{n+1}\]
+
+  \begin{align*}
+      2xt \gpart - t^2 \gpart & = 2n \powaseries xP_n(x)t^n - n \powaseries P_n(x)t^{n+1}
+  \end{align*}
+
+  Combining these two calculations gives us the right-hand side:
+  \begin{align*}
+      (x-t)g(x,t) + 2xt \gpart - t^2 \gpart & = (2n+1) \powaseries xP_n(x)t^n - (n+1) \powaseries P_n(x)t^{n+1}
+  \end{align*}
+
+  The total equality can now be expressed as:
+  \[ \powaseries n P_n(x)t^{n-1} = (2n+1) \powaseries xP_n(x)t^n - (n+1) \powaseries P_n(x)t^{n+1}\]
+
+  The constant term evaluates to zero, hence the left-hand side can be written as
+
+  \[ \powaseries[1] n P_{n-1}(x)t^{n} = (2n+1) \powaseries xP_n(x)t^n - (n+1) \powaseries P_n(x)t^{n+1}\]
+
+  By equating coefficient terms of the same order, we deduce the desired identity.
+
+  \item
+
+  First, we check the veracity of the claimed identity. Observe the following:
+
+  \begin{align*}
+      t \gpart & = -\frac{t}{2}(1 - 2xt + t^2)^{-3/2}(-2x + 2t) = t(x-t)(1 - 2xt + t^2)^{-3/2} \\
+      (x-t) \gpart[x] & = -\frac{1}{2}(x-t)(1 - 2xt + t^2)^{-3/2}(-2t) = t(x-t)(1 - 2xt + t^2)^{-3/2}
+  \end{align*}
+
+
+  Assuming the identity, evaluating both sides yields two power series:
+
+
+  \begin{align*}
+      (x-t) \gpart[x] & = \powaseries x P_n'(x) t^n - \powaseries P_n'(x)t^{n+1} \\
+      t \gpart  & = \powaseries nP_n(x)t^n
+  \end{align*}
+
+  By consulting the identity,
+  \[ \powaseries nP_n(x)t^n =  \powaseries x P_n'(x) t^n - \powaseries P_n'(x)t^{n+1}\].
+
+  Note that $P_0'(xa) = 0$ as $P_0(x) = 1$. This allows us to rewrite the equality:
+
+  \[ \powaseries nP_n(x)t^n =  \powaseries x P_n'(x) t^n - \powaseries P_{n-1}'(x)t^{n}\]
+
+  Equating terms of like order shows that
+  \[ xP'_n - P_{n-1}' = nP_n \]
+
+  \item
+  The derivation of the first identity begins by differentiating both sides of the recurrence relation dervied in part (ii). This shows that:
+
+  \[(n+1)P_{n+1}' - (2n+1)P_n - (2n+1)xP_n' + nP_{n-1}' = 0 \]
+
+  Now we rearrange the terms
+
+  \[ (2n + 1)P_n + (2n +1)xP_n' = (n+1)P'_{n+1} + nP_{n-1}' \]
+
+  Use the identity in part (iii) and expand:
+
+
+
+  \[ (2n + 1)P_n + (2n +1)(nP_n + P_{n-1}') = (n+1)P'_{n+1} + nP_{n-1}' \]
+
+    \[ (2n+1)P_n + (2n+1)nP_n + (2n+1) P'_{n-1} = (n+1)P_{n+1}' + nP_{n-1}'\]
+
+    Finally, rearranging the terms once again shows:
+    \[ (2n+1)(n+1)P_n = (n+1)P'_{n+1} - (n+1)P'_{n-1}  \]
+
+    Dividing both sides by $(n+1)$ produces the required identity.
+
+  The derivation of the second identity proceeds as below. We will make us of the first recurrence relation derived just above. First, take the identity shown in part (iii) and multiply both sides by $x$:
+
+  \begin{align*}
+      x^2P_n' - xP_{n-1}' & = nxP_n \\
+      x^2P_n' - [(n-1)P_{n-1} + P_{n-2}'] & = nxP_n \textbf{\quad [part (iii)] } \\
+      (x^2-1)P_n' + (P'_n - P_{n-2}') - (n-1)P_{n-1} & = nxP_n  \\
+      (x^2-1)P_n' + (2(n-1)+1)P_{n-1} - (n-1)P_{n-1} & = nxP_n \textbf{\quad [part (iv) a]} \\
+      (x^2-1)P_n' + (2n -1)P_{n-1}  - (n-1)P_{n-1} & = nxP_n \\
+      (x^2-1)P_n' & = nxP_n - nP_{n-1}
+  \end{align*}
+
+
+
+\item
+We begin with the substituted expression:
+
+\begin{equation}
+  (x^2 -1)P_n'' + 2xP_n' - n(n+1)P_n
+\end{equation}
+
+It suffies to show that this expression evaluates to zero. Towards this end, we start by substituting the identity derived in part (iii):
+
+\begin{align}
+  & (x^2 -1)P_n'' + 2(nP_n + P_{n-1}'') - n(n+1)P_n \\
+= & (x^2 -1)P_n'' + nP_n + 2P_{n-1}' - n^2 P_n \label{eq:partv}
+\end{align}
+
+Now take the second identity shown in part (iv) above and differentiate both sides:
+\begin{align*}
+  2xP_n' + (x^2 - 1)P_n'' & = nP_n + nxP_n' - nP'_{n-1} \\
+  \implies (x^2 - 1)P_n'' & = nP_n + (n-2)xP_n' - nP_{n-1}'
+\end{align*}
+
+By subsituting this equality into Eq \ref{eq:partv}:
+
+\begin{align*}
+  & 2nP_n + (n-2)xP'_n + (2-n)P_{n-1}' - n^2P_n \\
+  = & 2nP_n + (n-2)[xP'_n - P_{n-1}'] - n^2 P_n \\
+  = & 2nP_n + (n-2)[nP_n] - n^2P_n \\\
+  = & 0
+\end{align*}
+
+where the secont-to-last equality uses part (iii).
+In totality, this shows that $P_n$ is indeed a solution to ODE associated to the Legendre polynomials.
+\end{enumerate}
+
+\newcommand{\boldr}{\textbf{r}}
+\newcommand{\boldrp}{\textbf{r'}}
+
+\section*{Problem 3}
+
+We begin by stating the explicit for the function:
+
+\[ \frac{1}{|\boldr - \boldr'|} = (x^2 + y^2 - (z - r_z))^{-1/2} \]
+Note that $r_x = r_y = 0$ as $\boldr$ lies on the z-axis. By substituting spherical coordinates into the expression for the position of the point mass charge and simplifying:
+\[ \frac{1}{|\boldr - \boldr'|}  = (r'^2 + r_z^2 - 2r_zr'\cos{\theta})^{-1/2} \]
+
+Without lose of generality, assume that $r_z = r < r'$. then we can factor out the $r'2$:
+
+\[ \frac{1}{|\boldr - \boldr'|}  = (r')^{-1}(1 - 2(r_z/r')\cos{\theta} + (r_z/r')^2)^{-1/2} \]
+
+The right-hand side is a factor of the generating function for the Legendre polynomials:
+
+\[ \frac{1}{|\boldr - \boldr'|}  = \frac{1}{r'}\powaseries (r_z/r')^n P_n(\cos{\theta})\]
+
+as desired.
+
+\section*{Problem 4}
+  The relevant computations are attached to this homework. They are labeled by problem number.
+
+  For part (iii), the partial sums of the sine function expanded in respect to the Legendre polynomials converge much faster to the function in comparison to the discontinuous function presented above. This makes sense as ultimately these partial sums are sums of continuous functions. Furthermore, they are also smooth on the interval $[-1,1]$. Thus, in order to approximate a discontinuity at points $-\frac{1}{2},\frac{1}{2}$, higher-order polynomial terms must have some influence on the total sum.
+
+
+\section*{Problem 5}
+
+\begin{enumerate}
+  \item Suppose the norm in question is induced by an inner product in finite-dimensional complex Euclidean space. By expanding the inner product, we can derive the required equivalence. Let $\boldu,\boldv \in \complex^n$.
+\begin{align*}
+      \norm{\boldu + \boldv}^2 + \norm{\boldu - \boldv}^2 & = \ip{\boldu + \boldv} + \ip{\boldu - \boldv}{\boldu - \boldv} \\
+      & = (\norm{\boldu}^2 + \norm{\boldv}^2 + \ip{\boldu}{\boldv} + \ip{\boldv}{\boldu}) \\
+      & + (\norm{\boldu}^2 + \norm{\boldv}^2) + \ip{\boldu}{-\boldv} + \ip{-\boldv}{\boldu})\\
+      & = 2(\norm{\boldu}^2 + \norm{\boldv}^2)
+\end{align*}
+The last equality follows from the bi-linearity of the inner product.
+
+\item
+Consider the following two sequences defined as follows: Let $i \neq j \in \mathbb{N}$ be two indices. Let $\boldu, \boldv \in \ell^{\infty}(\complex)$ such that:
+\begin{align*}
+  \boldu_a = \delta_{a i} \\
+  \boldv_a = \delta_{a j}
+\end{align*}
+
+For both sequences, there exists only one index with a non-trivial of one, hence $\norm{\boldu} = \norm{\boldv} = 1$. On the other hand, if we were to add and subtract $\boldu, \boldv$, we would have two places with non-trivial values. However, the upper bound on the sequences do not change. Hence $\norm{\boldu + \boldv} = \norm{\boldu - \boldv} = 1$. This shows that:
+%
+\begin{equation*}
+  \norm{\boldu + \boldv}^2 + \norm{\boldu - \boldv}^2 = 2 \neq 4 = 2(1 + 1) = 2(\norm{\boldu}^2 + \norm{\boldv}^2)
+\end{equation*}
+
+\item Once again, consider two sequences $\boldu, \boldv \in \ell^{1}(\complex)$ defined as below:
+
+\begin{align*}
+  \boldu_a = \begin{cases}
+      1 \text{ if } a = 1,3 \\
+      -1 \text{ if } a = 2 \\
+      0 \text{ otherwise }
+\end{cases} \\
+\boldv_ a = \begin{cases}
+    1 \text{ if } a = 2,4 \\
+    -1 \text{ if } a = 3 \\
+    0 \text{ otherwise }
+\end{cases}
+\end{align*}
+
+A direct calculation shows that $\norm{\boldu} = \norm{\boldv} = 3$. However, due to cancellation and merging of terms in indices $2,3$, $\norm{\boldu + \boldv} = 2$ and $\norm{\boldu - \boldv} = 6$. Thus,
+\begin{equation*}
+  \norm{\boldu + \boldv}^2 + \norm{\boldu - \boldv}^2 = 4 + 36 = 40 \neq 36 = 2(9 + 9) = 2(\norm{\boldu}^2 + \norm{\boldv}^2)
+\end{equation*}
+\end{enumerate}
+\end{document}

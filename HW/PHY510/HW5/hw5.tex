@@ -1,0 +1,209 @@
+\documentclass[12pt]{article}%
+\input{preamble}
+
+\newcommand{\Uone}{\mathcal{U}_1}
+\newcommand{\Utwo}{\mathcal{U}_2}
+\newcommand{\Uint}{\Uone \cap \Utwo}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\gpart}[1][t]{\frac{\partial g(x,t)}{\partial {#1}}}
+\setlength\parindent{0pt}
+\newcommand{\Legen}[1][n]{(x^2 - 1)^{#1}}
+
+\newcommand{\normphi}[1][v]{\abs{\Phi\left({#1}
+\right)}}
+
+\title{PHY510 HW 5}
+\author{Edward Kim}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1}
+\begin{enumerate}[i.]
+  \item First, consider when $\normphi \leq C\norm{v}$ for all $v \in \hil$ and some constant $C$. Restricting ourselves to the cases where $\norm{v} = 1$, we see that $\normphi(v) \leq C$ for all such vectors $v$. Thus, taking the supremum over all such unit norm vectors should also be bounded above by $C$. In other words, $\sup_{\norm{v}= 1}{\normphi} \leq C$.
+
+  Conversely, for any $v \in \hil$, we can scale a non-zero vector by dividing by its norm. The case for the null vector is trivial. Hence:
+  \[ \normphi[\frac{v}{\norm{v}}] \leq C \implies \frac{1}{\norm{v}}\normphi \leq C \implies \normphi \leq C\norm{v}, \quad \forall v \in \hil\]
+
+  \item
+  To show that boundedness implies continuity of $\Phi$, let $\{v_i\}_{i=1}^\infty$ be a sequence in $\hil$ convergent to some $v \in \hil$ within the norm. By the boundedness of $\Phi$, for any $v_i$ in the sequence:
+
+  \[ \normphi[v_i - v] \leq C\norm{v_i - v} \]
+  However, $\lim_{i \rightarrow \infty} \norm{v_i - v} = 0$. Hence, we see that by taking such a limit and both sides:
+
+  \[ \lim_{i \rightarrow \infty}\abs{\Phi(v_i) - \Phi(v)} = 0 \]
+
+  which demonstrates that $\Phi(v_i) \rightarrow \Phi(v)$ within the Euclidean norm in $\complex$. This shows that $\Phi$ is continuous as required.
+
+  \item
+  To show the converse, for the sake of contradiction, suppose that $\Phi$ is not bounded. By definition, this would imply that for every $n \in \nat$, there exists some $v_n \in \hil$ such that $\norm{v_n} = 1$ and $\normphi[v_n] \geq n$. Choose one such $v_n$ for every element $n \in \nat$ to construct the sequence $\{v_n\}_{n \in \nat}$.
+
+  Now we will construct a modified sequence from the previous one as follows: set $\tilde{v}_i = \frac{1}{i}v_i$. We then have that
+
+  \[ \lim_{i \rightarrow \infty} \norm{\tilde{v}_i} = \lim_{i \rightarrow \infty} \frac{1}{i} \norm{v_i} =  \lim_{i \rightarrow \infty} \frac{1}{i}  = 0\]
+
+  We see that the norm of the vectors in the sequence tend to zero. Hence, the sequence $\{\tilde{v}_i\}_{i \in \nat}$ must converge to the null vector (since $\norm{x} = 0 \implies x = 0$). On the other hand
+
+  \[ \normphi[\tilde{v_i}] = \normphi[\frac{1}{i} v_i] =  \frac{1}{i}\normphi[v_i] \geq 1 \] for all $\tilde{v_i}$ in the sequence. In particular, $\lim_{i \rightarrow \infty} \abs{\Phi(\tilde{v_i})} \neq 0 = \Phi(0)$. This contradicts the continuity of $\Phi$ as we had assumed and concludes the proof.
+\end{enumerate}
+
+\section*{Problem 2}
+\begin{enumerate}
+  \item For $N \in \nat$, define $v_N$ to be the partial sum:
+  \[ v_N = \sum_{j =1}^N \overline{\Phi(e_j)} e_j \]
+
+  then linearity of $\Phi$ shows that
+  \[ \Phi(v_N) = \sum_{j =1}^N \overline{\Phi(e_j)} \Phi(e_j)  = \sum_{j=1}^N \abs{\Phi(e_j)}^2\]
+  Since $\Phi$ is bounded, $\normphi[v_N] \leq C\norm{v_N}$ for some universal constant $C$. By substituting the proper definitions:
+
+  \[\sum_{j=1}^N \abs{\Phi(e_j)}^2 \leq C  \left(\sum_{j=1}^N \abs{\Phi(e_j)}^2 \right)^{1/2} \]
+
+  which shows that:
+
+  \[\sum_{j=1}^N \abs{\Phi(e_j)}^2 \leq C^2  \]
+
+  By taking the limit $N \rightarrow \infty$:
+
+  \[\sum_{j=1}^{\infty} \abs{\Phi(e_j)}^2 \leq C^2 < \infty \]
+
+  Thus, the infinite series converges.
+
+  \item
+  Take $S_N$ to be the partial sums of the relevant sum:
+
+  \[S_N = \sum_{j = 1}^N \overline{\Phi(e_j)}e_j \]
+
+  Now we deduce that for $N >M$:
+
+  \begin{align*}
+    \norm{S_N - S_M}^2 & = \norm{\sum_{j = M + 1}^N \overline{\Phi(e_j)}e_j}^2 \\
+     & =  \ip{S_N - S_M}{S_N - S_M} \\
+     & = \sum_{i,j = M+1}^N \overline{\Phi(e_i)}\Phi(e_j) \ip{e_j}{e_i} \\
+     & = \sum_{j = M+1}^N \abs{\Phi(e_j)}^2 < \infty
+  \end{align*}
+
+  Take $N,M$ sufficiently large so that $\sum_{j = M+1}^N \abs{\Phi(e_j)}^2 < \epsilon^2$ for some $\epsilon > 0$. We can do this by part one and the Cauchy criterion. Then the observations made previously show that:
+
+  \[\norm{S_N - S_M} < \epsilon \]
+
+  This demonstrates that $\lim_{M,N \rightarrow \infty}\norm{S_N - S_M} = 0$. Subsequently, the sequence of partial sums $\{S_N\}_{N \in \nat}$ is a Cauchy sequence in $\hil$. As $\hil$ is complete in respect to its norm, the series $\sum_{j =1}^{\infty}\overline{\Phi(e_j)} e_j$ must converge within $\hil$.
+
+  %Hence, by taking the limit as $N \rightarrow \infty$, it follows that $\norm{\sum_{j = }^\infty \overline{\Phi(e_j)}e_j} < \infty$
+
+\end{enumerate}
+
+\section*{Problem 3}
+\begin{enumerate}[i]
+  \item We show that the norm defined as $\norm{A}$ is indeed a norm:
+  \begin{itemize}
+    \item For $A,B \in \bhilop$, the following assertions hold:
+    \begin{align*}
+      \norm{A + B} & = \sup_{\norm{x} = 1} \norm{(A+B)x} \\
+      & \leq \sup_{\norm{x} = 1} \norm{Ax} + \norm{Bx}\\
+       & \leq \sup_{\norm{x} = 1} \norm{Ax} + \sup_{\norm{x'} = 1} \norm{Bx'} \\
+       & = \norm{A} + \norm{B}
+    \end{align*}
+    \item For $A \in \bhilop, c \in \complex$,
+    \begin{align*}
+      \sup_{\norm{x} = 1} \norm{(cA)x} = \sup_{\norm{x} = 1} \abs{c}\cdot \norm{Ax} = \abs{c}\cdot \sup_{\norm{x} = 1} \norm{Ax} = \abs{c}]\cdot \norm{A}
+    \end{align*}
+
+    \item  For $A \in \bhilop$,
+    \[ \norm{A} = \sup_{\norm{x} = 1} \norm{Ax} \geq 0  \] since $||Ax|| \geq 0$ for such $x$. Furthermore, suppose $\norm{A} = 0$. Then from the definition, it is clear that $\norm{Ax} = 0$ for all $\norm{x} = 1$. Hence, $Ax = 0$ for all unit vectors $x$, and $A$ must map all unit vectors to zero. This forces $A = 0$.
+  \end{itemize}
+
+  \item We tailor the proof presented in Problem 1 to operators on $\hil$. Once again, if the operator $A \in \mathcal{L}(\hil)$, is not bounded, then by the definition of the norm and boundedness presented in the problem, there must exist a sequence of unit vectors $v_n, \; \norm{v_n} = 1$  such that $\norm{Av_n} > n$ for each $n \in \nat$. Construct a modified sequence by setting $\tilde{v}_n = \frac{1}{n}v_n$. Then through a similar argument as Problem 1:
+  \[ \lim_{n \rightarrow \infty} \tilde{v}_n = 0 \] However, $\norm{A\tilde{v}_n} \geq 1$ for $n \in \nat$. In particular,
+  $\lim_{n \rightarrow \infty} \norm{A\tilde{v}_n} \neq 0 = A(0)$. This contradicts the assumption that $A$ is a continuous operator.
+
+  \item
+  We argue that our completed operator $A$ is well-defined. To start, let $\{v_i\}_{i \in \nat}$ be a sequence which converges to $v$, a point not necessarily contained in $\mathcal{D}_A$. Since $A$ is continuous on $\mathcal{D}_A$, the sequence $\{v_i\}_{i \in \nat}$ must be mapped to another sequence $\{Av_i\}_{i \in \nat}$ such that the latter sequence converges in $\hil$ to some element say $p \in \hil$. Setting $Ax = p$ shows that this limit exists.
+
+  Furthermore, let $\{v'_i\}_{i \in \nat}$ be another sequence converging to $v$. By continuity of $A$, we know that $Av_i \rightarrow Av$ and $Av'_i \rightarrow Av'$ for some $Av' \in \hil$. It follows that by linearity
+
+  \[ A(v_i' - v_i) \rightarrow Av - Av' \]
+  within $\hil$. Now consider the sequence $\{v_i - v_i'\}_{i \in \nat}$. We claim that the norm of the elements vanish as $i \rightarrow \infty$. Indeed, the triangle inequality tells us that for $i > N$ for $N$ sufficiently large such that $\norm{v_i - v}, \norm{v'_i - v} < \frac{\epsilon}{2}$,
+
+  \[ \norm{v_i - v_i'} \leq \norm{v_i - v} + \norm{v - v_i'} < \epsilon \]
+
+  As we can choose $\epsilon > 0$ to be arbitrary, $\norm{v_i' - v_i} \rightarrow 0$ as $i \rightarrow \infty$. thus, $v_i - v'_i \rightarrow 0$ as vectors in $\hil$. By the continuity of $A$,
+
+  \[A(v_i - v_i') \rightarrow A(0) = 0 \]
+  Since we know that every convergent sequence in $\hil$ must converge to a unique limit:
+
+  \[ Av - Av' = 0 \implies Av = Av' \]
+
+This completes the proof.
+
+  \item
+  To begin, observe the following string of equalities for a unit vector $\norm{x} = 1$:
+
+  \begin{align*}
+    \norm{Ax}^2 = \ip{Ax}{Ax} & = \ip{x}{A^\dagger Ax} \\
+    & \leq \norm{x} \cdot \norm{A^{\dagger}Ax} \\
+    & \leq \norm{x}\cdot \norm{A^\dagger} \cdot \norm{Ax}
+  \end{align*}
+
+where the first inequality follows from the Cauchy-Schwarz inequality and the second inequality from the definition of the operator norm.
+
+Simplifiying the final expression yields that
+
+\[ \norm{Ax} \leq \norm{A^\dagger} \]
+
+and by taking the supremum over all such unit vectors $x$:
+
+\[ \norm{A} \leq \norm{A^\dagger}\]
+
+The same argument can be repeated with $\norm{A^\dagger x}^2$ to demonstate that
+
+\[ \norm{A^\dagger} \leq \norm{A} < \infty \]
+
+This not only proves that $A^\dagger$ is a bounded operator, but also $ \norm{A^\dagger} = \norm{A}$.
+
+\item
+
+To show this, it suffices to show the following assertion.
+
+For $A$ bounded operator such that $\norm{A} < \abs{\lambda}$, $A - \lambda I$ is invertible and
+
+\begin{equation} \label{eq:invert}
+(A - \lambda I)^{-1} = - \frac{1}{\lambda} \sum_{j = 0}^\infty \left(\frac{A}{\lambda}\right)^n
+\end{equation}
+
+
+Hence, if $(A - \lambda I)$ is not invertible, then $|\lambda| \leq ||A||$.
+
+To show the assertion, we first show that the infinite sum of the left-side of Equation \ref{eq:invert} converges. It suffices to show that it must have bounded norm:
+
+\begin{align*}
+  \norm{-\frac{1}{\lambda}\sum_{j=0}^\infty \left(\frac{A}{\lambda}\right)^j} \leq \frac{1}{\abs{\lambda}} \sum_{j = 0}^\infty \left(\frac{\norm{A}}{\abs{\lambda}}\right)^n = \frac{1}{|\lambda|}\frac{1}{1 - \frac{\norm{A}}{\abs{\lambda}})} = \frac{1}{\abs{\lambda} - \norm{A}} < \infty
+\end{align*}
+
+The second-to-last equality holds since $\norm{A} < \abs{\lambda}$, which turns the series into an infinite geometric series. Second, we must show that this infinite series is indeed the inverse of $A - \lambda I$. We argue by partial sums. For some $N \in \nat$:
+
+\begin{align*}
+  (A - \lambda I)\left[-\frac{1}{\lambda}\sum_{j = 0}^N \left( \frac{A}{\lambda}\right)^j \right] & = - \frac{1}{\lambda}\left[ \sum_{j =0}^N \frac{A^{j+1}}{\lambda^j} - \lambda\sum_{j =0}^N \left(\frac{A}{\lambda}\right)^j \right] \\
+  & = - \sum_{j =0}^N \left(\frac{A}{\lambda}\right)^{j+1} + \sum_{j =0}^N \left(\frac{A}{\lambda}\right)^j \\
+  & = I - \left(\frac{A}{\lambda}\right)^{N+1}
+\end{align*}
+
+Now computing the norm of the second term of the simplified expression:
+
+%\begin{align*}
+%  \norm{I - \left(\frac{A}{\lambda}\right)^{N+1}} \leq 1 + \left(\frac{\norm{A}}{\abs{\lambda}}\right)^{N+1}
+%\end{align*}
+
+\[ \norm{\left(\frac{A}{\lambda}\right)^{N+1}} \leq \left(\frac{\norm{A}}{\abs{\lambda}}\right)^{N+1} \rightarrow 0, \quad N \rightarrow \infty \].
+
+ where we have used $\norm{A^n} \leq \norm{A}^n$ for $n \in \mathbb{Z}^{+}$ and $\norm{A} < \abs{\lambda}$. Any sequence of operator whose norms converge to zero must converge to the trivial operator $A = 0$ (property of the operator norm). Hence, $I - \left(\frac{A}{\lambda}\right)^{N+1}$ converges to $I$ as $N \rightarrow \infty$ as desired.
+
+ This proves our proposition. By definition, $\lambda$ is an eigenvalue iff the inverse of $A - \lambda I$ does not exist within $\bhilop$. By the proposition above, this implies that $\abs{\lambda} \leq \norm{A}$.
+
+
+
+
+
+\end{enumerate}
+
+\end{document}
