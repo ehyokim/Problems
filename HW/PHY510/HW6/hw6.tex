@@ -1,0 +1,252 @@
+\documentclass[12pt]{article}%
+\input{preamble}
+
+\newcommand{\Uone}{\mathcal{U}_1}
+\newcommand{\Utwo}{\mathcal{U}_2}
+\newcommand{\Uint}{\Uone \cap \Utwo}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\gpart}[1][t]{\frac{\partial g(x,t)}{\partial {#1}}}
+\setlength\parindent{0pt}
+\newcommand{\Legen}[1][n]{(x^2 - 1)^{#1}}
+
+\newcommand{\normphi}[1][v]{\abs{\Phi\left({#1}
+\right)}}
+
+\title{PHY510 HW 6}
+\author{Edward Kim}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Problem 1}
+\begin{enumerate}
+  \item
+  This are the solutions to \textbf{H 5.8}
+  \begin{enumerate}
+    \item A symmetric $N \times N$ matrix with real values $A$ is completely determined by the values in the upper-triangular region of $A$ as $A^T = A$ forces the lower triangular region to match the upper triangular section of $A$. Counting the total number of entries, there are $N(N+1)/2$ independent values to set.
+
+    \item If $A$ is anti-symmetric, note that the trace has to vanish as $A = -A^T$, so $a_{ii} = - a_{ii}$. Deleting these entries from our analysis, there will be $N(N-1)/2$ entries in the strictly upper triangular region of $A$.
+
+    \item Let $A$ be an $N \times N$ orthogonal matrix. Note that setting the columns to be pairwise orthonormal will immediately set the rows to be pairwise orthonormal (since $A^TA = I$, $AA^T = I$ as the two-sided inverse is unique in finite-dim). To set the columns to be pairwise orthogonal, consider the following procedure. Start with the first column $c_1$. Since we need this column to be orthonormal, this restricts the value of the say the lowest entry of $c_1$. Now move to the second column $c_2$. We have two constraints on this column: it must be orthogonal to $c_1$ and $\norm{c_2} = 1$. This produces two linear constraints. Hence, we delete the last two components of $c_2$. Proceeding inductively, we deduce that $c_i$ must have the last $i$ cells restricted in order for $\ip{c_i}{c_k} = 0$ for $k < i$ and $\norm{c_i} = 1$. Hence, there are $i$ linear constraints for $i$ dependent variables. The number of such constraints will be $N(N-1)/2$.
+
+    \item
+    Given an $N \times N$ unitary matrix $U$, divide it into two real-valued $N \times N$ matrices $R,C$ such that $U = R + iC$. In order for the procedure outlined the previous part to yield unique solutions, we need to set the upper-triangular regin of $C$. Now once again, consider the first column of $U$ denoted as $u_1$. By the decomposition above, we can express $u_1 = r_1 + i c_1$ where $r_1,c_1$ are the first columns of the component matrices $R,C$ respectively. We need to ensure the orthonormality condition $\norm{u_1} = 1$. To this end, first expand out $\norm{u_1}^2$, and one of the terms in the sum will be:
+
+    \[ \ip{u_1}{u_1} = \cdots + (\abs{r_{1,n}}^2 + \abs{c_{1,n}}^2) \]
+
+    Hence, by restricting the last component of $r_1$ and designating the entire column $c_1$ be the independent, one linear constraint will determine one dependent variable $r_{1,n}$, ensuring that this variable can be solved for uniquely. Now consider $u_2 = r_2 + ic_2$. Consider the expanded sum computing $\ip{u_2}{u_2}$:
+
+    \[\ip{u_2}{u_1} = \cdots + (r_{2,n-1} + ic_{2,n-1})
+    (\overline{r_{1,n-1} + ic_{1,n-1}}) + (r_{2,n} + ic_{2,n}) (\overline{r_{1,n} + ic_{1,n}})     \]
+
+    and the corresponding sum $\ip{u_2}{u_2} $
+
+    \[\ip{u_2}{u_2} = \cdots + (\abs{r_{2,n-1}}^2 + \abs{c_{2,n-1}}^2) + (\abs{r_{2,n}}^2 + \abs{c_{2,n}}^2)\]
+
+        Hence, we have three linearly independent linear constraints: two constraining both the real and imaginary components of $\ip{u_2}{u_1}$ due to the orthogonality between $u_1,u_2$ and the other constrained by $\ip{u_1}{u_1}$. Hence, by only setting $c_{2,n-1}$. We have three restricted variables $r_{2,n-1},c_{2,n-1}, r_{1,n}$ which can be uniquely determined by the aforementioned linear constraints.
+
+        Proceed inductively, to notice that, for column $u_i$, by setting $c_{i,1}, \cdots, c_{i, n-i}$, we get $2*{i-1} + 1 = 2i - 1$ linear constraints for $2i-1$ dependent variables. This completely determines $U$, and there are $N(N+1)/2$ real independent variables in $R$ and $N(N-1)/2$ complex independent variables in $C$ we can set. This totals to $N^2$ total independent variables.
+
+    \item The key is to note that any Hermitian matrix $H = R_H + iC_H$ be constrained by the following: $R_H$ should be symmetric and $C_H$ should be anti-symmetric. By part (a) and (b) above, we see that the sum of the number of independent variables from both matrices total to $N^2$.
+
+    \item First, divide $M$ into quadrants of size $N \times N$ matrices:
+
+    \begin{equation}
+        M = \begin{bmatrix}
+          M_{11} & M_{12} \\ M_{21} & M_{22}
+      \end{bmatrix}
+    \end{equation}
+
+    By directly expanding $M^T\Omega M $ and equating the blocks with $\Omega$, we yield the following relations:
+
+    \begin{align*}
+        M_{12}^T M_{22} = M^T_{22}M_{12} \\
+        M^T_{11}M_{21} = M^T_{21}M_{11} \\
+        M^T_{12} M_{21} - M_{22}^TM_{11} = -I \\
+        M^T_{11} M_{22} - M_{21}^TM_{12} = I \\
+    \end{align*}
+
+    Observe that the first two equalities show that $  M_{12}^T M_{22}, M^T_{11}M_{21}$ is symmetric. This yields $2\cdot \frac{N(N+1)}{2} = N(N+1)$ linearly independent constraints. Additionally, if we transpose the third equality on both sides, we produce the last equality. Hence, we can just consider the third relation. This amounts to $N(N+1) + N^2 = 2N^2 + N$ linear constraints. Hence, there are $(2N)^2 - 2N^2 - N = 2N^2 - N$ independent variables.
+  \end{enumerate}
+\end{enumerate}
+
+\section{Problem 2}
+We first calculate the eigenvalues:
+
+\begin{align*}
+  \det(A - \lambda I) & =  -\lambda \det \begin{bmatrix}
+                                      - \lambda & i \\
+                                      -i & \lambda
+                                      \end{bmatrix}
+                                    + i \det \begin{bmatrix}
+                                         i & i \\
+                                         1 & -\lambda
+                                            \end{bmatrix}
+                                    + \det \begin{bmatrix}
+                                         i & \lambda \\
+                                         1 & -i
+                                        \end{bmatrix} \\
+  & = -\lambda(\lambda^2 -1) + i(-\lambda i - i) + (1 + \lambda) \\
+  & = -\lambda(\lambda^2 - 1) + 2(\lambda + 1) \\
+  & = (\lambda + 1)^2(\lambda - 2)^2
+\end{align*}
+
+So our spectrum is $\lambda_{1,2} = -1, \lambda_3 = 2$
+Solving for the eigenvectors and normalize them shows us that:
+\[ (\lambda_1, v_1) = (-1,\frac{1}{\sqrt{2}}\begin{bmatrix}
+                    1 \\ 0 \\ -1
+                  \end{bmatrix})
+                  \quad  (\lambda_2, v_2) = (-1, \frac{1}{3\sqrt{2}}\begin{bmatrix}
+                                      1 \\ -2i \\ 1
+                                    \end{bmatrix})
+                   \quad  (\lambda_3, v_3) = (2,\frac{1}{\sqrt{3}} \begin{bmatrix}
+                    1 \\ i \\ 1
+                  \end{bmatrix}) \]
+
+is the full spectrum with its associated orthonormal eigenvectors.
+
+Hence, a unitary diagonalizing this matrix will be given by the columns:
+
+\begin{equation*}
+ U = \begin{bmatrix}
+    v_3 & v_2 & v_1
+\end{bmatrix}
+\end{equation*}
+
+\section{Problem 3}
+
+Consider the action of the product $a^\dagger$: $$ a^\dagger\ket{n} = \sqrt{n+1}\ket{n+1} $$
+
+As $\{\ket{n}\}_{n \in \mathbb{Z^+}}$ is a complete orthonormal set, Parseval's relation tells us that
+\[ \ip{f}{f} = \sum_{n = 0}^\infty \abs{\bra{n}\ket{f}}^2\]
+
+Now consider the element $a^\dagger \ket{f}$ expressed as a linear combination in the orthonormal basis:
+\[a^\dagger \ket{f} =  \sum_{n = 0}^\infty \bra{n}a^\dagger\ket{f}\ket{n} =   \sum_{n = 1}^\infty \sqrt{n}\bra{n-1}\ket{f}\ket{n} \]
+
+By Bessel's inequality, we deduce that:
+
+\[\norm{a^\dagger \ket{f} }^2 \geq  \sum_{n = 1}^\infty n\cdot \abs{\bra{n-1} \ket{f}}^2  \]
+
+By equality given by Parseval's relation mentioned above, we see that no finite constant $C$ can bound the sum on the right side of the inequality. Hence, $a^\dagger $ cannot be bounded. The case for $a$ proceeds similarly.
+
+\section{Problem 4}
+
+Calculating the eigenvalues and vectors of the matrix show that the eigenvalues and eigenvectors are given by:
+\[ (\lambda_1, v_1) = (1, \begin{bmatrix}
+  1 \\ 0
+\end{bmatrix}), \quad (\lambda_2, v_2) = (a, \begin{bmatrix}
+    1 \\ a-1
+\end{bmatrix}) \]
+
+Normalize the eigenvectors to set $$ \tilde{v_1} = v_1, \; \tilde{v_2} = \frac{1}{\sqrt{a^2 - 2a + 2}} \cdot v_2$$
+
+On the other hand, $\norm{A}_2 = \sup_{\norm{x} = 1} \norm{Ax}_2$. Note that $\norm{A}_2$ does not depend on the particular basis in which the matrix $A$ is expressed under as unitary operators preserve norm. Thus, we express $A$ in its diagonal form induced by the basis $\tilde{v_1}, \tilde{v_2}$. \newline
+
+However, in this diagonal basis, it follows from studying both cases that the maximum is taken when $x = \tilde{v_2}$ if $1 < |a|$ and $x = \tilde{v_2}$ otherwise. Combining both cases tells us that $\norm{A}_2 \leq \max\{1, \norm{a}\}$. Therefore, the operator norm for $A$ aligns exactly with the spectral norm in $\complex^2$.
+
+\section{Problem 5}
+\begin{enumerate}
+  \item The sufficient direction is evident from noticing that if $H$ is positive, then any vector $v \in \hil$ can be expressed a linear combination of the orthonormal eigenvectors of $H$ say $e_1,\cdots,e_n$. Then:
+  $$ \ip{e_i}{He_i} = \lambda_{i} > 0$$ for $1 \leq i \leq n$. Conversely, if the eigenvalues of $H$ are all positive, then taking the orthogonal expansion of a non-zero vector $v \in \hil$:
+
+  \[ \ip{v}{Hv} = \sum_{i = 1}^n \lambda_{i} \abs{v_i}^2 \]
+
+  Since $\lambda_i > 0$ and $|v_i|^2 > 0$ for at least one $v_i$, $ \ip{v}{Hv} > 0$ for all non-zero $v \in \hil$ as required.
+
+  \item From the definition, it is immediate that it is Hermitian. Furthermore,
+
+  \[ \det X^\dagger X = \overline{\det X }\det X = \prod_{i =1}^n \abs{\lambda_i}^2 \]
+
+  The product on the right is strictly positive as $\det{X} \neq 0$.
+
+  \item
+  To compute the polar decomposition, we take motivation from the previous part to first compute $\sqrt{A^\dagger A}$. Since $A$ is invertible, the product will be positive, so the square root is well-defined. First, diagonalize $A^\dagger A$ to produce the eigenvalues $\lambda_1 = 2, \; \lambda_2 = 18$. Then the square root can be taken over the diagonalized matrix, so that in respect to the eigenbasis of $A^\dagger A$:
+
+  \[ \sqrt{A^\dagger A} = \begin{bmatrix}
+    3 \sqrt{2} & 0 \\ 0 & \sqrt{2}
+  \end{bmatrix} \]
+
+  Subsequently, the eigenbasis can be take to be the orthonormal eigenvectors:
+
+  \[ (\lambda_1, v_1) = (2, \frac{1}{2\sqrt{2}} \begin{bmatrix}
+     \sqrt{7} \\ i
+  \end{bmatrix}), \quad (\lambda_2, v_2) = (18, \frac{1}{2\sqrt{2}}\begin{bmatrix}
+      i \\ \sqrt{7}
+  \end{bmatrix}) \]
+
+  This allows us to express $R = \sqrt{A^\dagger A}$ in the standard basis:
+
+  \begin{align*}
+    R & = \frac{1}{8} \begin{bmatrix}
+        i & \sqrt{7} \\ \sqrt{7} & i
+  \end{bmatrix} \begin{bmatrix}
+    3 \sqrt{2} & 0 \\ 0 & \sqrt{2}
+  \end{bmatrix} \begin{bmatrix}
+      -i & \sqrt{7} \\ \sqrt{7} & -i
+  \end{bmatrix} \\
+    & = \frac{1}{4} \begin{bmatrix}
+      5 \sqrt{2} & i\sqrt{14} \\ -i\sqrt{14} & 11\sqrt{2}
+    \end{bmatrix}
+  \end{align*}
+
+Now $R$ is postive, hence it must be invertible since it has no vanishing eigenvalues. We compute $R^{-1}$ as:
+\[R^{-1} = \frac{1}{4}\frac{1}{\det R} \begin{bmatrix}
+      11\sqrt{2} & -i\sqrt{14} \\ i\sqrt{14} & 5\sqrt{2}
+\end{bmatrix} = \frac{1}{24} \begin{bmatrix}
+      11\sqrt{2} & -i\sqrt{14} \\ i\sqrt{14} & 5\sqrt{2} \end{bmatrix} \]
+
+  Thus, calculating $AR^{-1}$:
+
+  \[AR^{-1} = \frac{1}{24} \begin{bmatrix}
+        -15i\sqrt{2}& 3\sqrt{14} \\ 3i\sqrt{14} & 15\sqrt{2} \end{bmatrix} \]
+
+
+\item
+
+Suppose $[R,U] = 0$ for $A = UR$. Since $R = R^\dagger$, it must be that $[R^\dagger, U] = 0$ and $[U^\dagger, R] = 0$. These facts are enough to express the following commutations:
+
+\[A^\dagger A = R^\dagger U^\dagger U R = U  R^\dagger U^\dagger R = UR R^\dagger U^\dagger = AA^\dagger\]
+
+Hence, $A$ is normal.
+
+\end{enumerate}
+
+\section{Problem 6}
+\begin{enumerate}
+  \item
+  Since $O$ is orthogonal, if $\lambda_i$ is an eigenvalue of $O$ with eigenvector $v_i$,  then:
+  \[\ket{v_i} = O^TO \ket{v_i} = \abs{\lambda_i}^2\ket{v_i} \]
+  Since $v_i \neq 0$, $|\lambda_i| = 1$. Hence, all of the eigenvalues lie on the unit circle and are of the form $e^{i \theta}$ for $0 \leq \theta < 2\pi$. Furthermore, if $\lambda_i$ is an eigenvalue of $O$, then as $O$ is normal, $O^T$ must have $\overline{\lambda_i}$ as an eigenvalue. Hence,
+
+  \[ \det(O - \overline{\lambda_i} I) = \det(O^T - \overline{\lambda_i} I) = 0 \]
+
+  where the second equality is established by denoting the determinat doesnt change value under transpose. This shows that $\overline{\lambda_i}$ must also be an eigenvalue of $O$. and that the eigenvalues will take the form $e^{\pm i \theta_1}, \cdots,e^{\pm i \theta_n} $
+
+  \item We can proceed through a similar argument as in the previous portion since $\det O = 1$, $\prod_{i=1}^{2n+1} \lambda_i$. The arguments above show that for every $\lambda_i$ in the spectrum of $O$, $\overline{\lambda_i}$ is also contained in the spectrum. From the discrepancy in the dimension, all $\lambda_i$ cannot have an imaginary component since $\det O = 1$, a real number. This forces at least one of the eigenvalue to be real and to respect the unit determinant and the pairing of the other eigenvalues, this eigenvalue must be positive one.
+
+  \item 
+\end{enumerate}
+
+
+\section{Problem 7}
+Consider a change of basis from the variables $x_1,\cdots, x_n$ to say $y_1, \cdots, y_n$ such that $A$ is diagonalized with positive diagonal entries. Such a representation will be given by a linear transformation $ y = Ox$ where the columns of $O$ will be the orthonormal eigenvectors guaranteed by the real spectral theorem.
+
+Standard change-of-variable techniques require that we account for the change by first calculating the determinant of the Jacobian of the change-of-variable transformation:
+
+\[ \abs{J} = \abs{\det \frac{\partial(y_1, \cdots, y_n)}{\partial(x_1,\cdots,x_n)}} \]
+
+However, the matrix $O$ tells us that $y_i = \sum_{j = 0}^n O_{ij}x_j$. Plugging this into our Jacobian above reveals that $\frac{\partial y_i}{\partial x_j} = O_{ij}$. Thus, the determinant is actually taken over the matrix $O$, and so $|J| =1$ as $O$ is simply a rotation matrix. This allows us to reexpress the integral as:
+
+\begin{align*}
+  \int_{-\infty}^\infty \cdots \int_{-\infty}^\infty e^{-\sum_{i = 1}^n \lambda_i x_i^2} dy_1 \cdots dy_n =\prod_{i =1}^n \int_{-\infty}^\infty e^{-\lambda_i x_i^2} dy_i
+\end{align*}
+
+Furthermore, techniques in calculus show that $\int_{-\infty}^\infty e^{-x^2} dx = \sqrt{\pi}$. Another change-of-variables $z = \sqrt{\lambda} x$ tells us that:
+$$\int_{-\infty}^\infty  e^{-\lambda x^2} dx = \sqrt{\frac{\pi}{\lambda}} $$
+
+which makes sense when $\lambda > 0$. Apply to every factor in the product derived above to arrive at our result:
+
+\[\prod_{i =1}^n \int_{-\infty}^\infty e^{-\lambda_i x_i^2} dy_i = \prod_{i =1}^n \sqrt{\frac{\pi}{\lambda_i}} = \sqrt{\frac{\pi^n}{\det A}} \]
+
+\end{document}

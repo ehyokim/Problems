@@ -1,0 +1,134 @@
+\documentclass[12pt]{article}%
+\input{preamble}
+
+\newcommand{\Uone}{\mathcal{U}_1}
+\newcommand{\Utwo}{\mathcal{U}_2}
+\newcommand{\Uint}{\Uone \cap \Utwo}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\gpart}[1][t]{\frac{\partial g(x,t)}{\partial {#1}}}
+\setlength\parindent{0pt}
+\newcommand{\Legen}[1][n]{(x^2 - 1)^{#1}}
+
+\newcommand{\normphi}[1][v]{\abs{\Phi\left({#1}
+\right)}}
+
+\newcommand{\disip}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\infsum}[1][0]{\sum^{\infty}_{n = {#1}}}
+\newcommand{\posinfint}[1][0]{\int_{#1}^\infty}
+\newcommand{\neginfint}[1][0]{\int_{-\infty}^{#1}}
+
+% Fourier Shortcuts
+\newcommand{\piinter}{[-\pi,\pi]}
+\newcommand{\pifrac}{\frac{1}{\pi}}
+\newcommand{\piint}[2][x]{\int_{-\pi}^\pi {#2} \; d{#1}}
+\newcommand{\twopiint}[2][x]{\int_{0}^{2\pi} {#2} \; d{#1}}
+\newcommand{\foutrans}[1][k]{\tilde{f}({#1})}
+
+% Misc
+\newcommand{\parafrac}[2]{\para{\frac{#1}{#2}}}
+
+\title{PHY510 HW 9}
+\author{Edward Kim}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1}
+
+\begin{enumerate}
+    \item We will use the trick introduced in Stone and Goldbart for this portion. As detailed, the function we wish to calculate is:
+
+    \begin{align*}
+        f(z) = 2u\left(\frac{z}{2},\frac{z}{2i} \right) & = 2\left[\para{\frac{z}{2}}^4 - 6\para{\frac{z}{2}}^2\para{\frac{z}{2i}}^2 + \para{\frac{z}{21}}^4\right] \\
+        & = 2 \left(\frac{z^4}{16} + 6 \frac{z^4}{16} + \frac{z^4}{16}\right) \\
+        & = z^4
+    \end{align*}
+
+    This will be our analytic function up to some constant $iC$ for some $C \in \reals$. As a quick sanity check, computing the real and imaginary functions $u(x,y), v(x,y)$ reveals that:
+
+    \[ u(x,y) = x^4  - 6xy + y^4, \quad v(x,y) = 4x^3y - 4xy^3\]
+
+    \item It appears simpler to use the trick in this case. As above, we tailor the trick to the case when we are given the imaginary component $v(x,y)$:
+
+    \def \PartTwoNumerA {2 \parafrac{z}{2} \parafrac{z}{2i}}
+    \def \PartTwoDenomA { \parafrac{z}{4}^4 + \parafrac{z}{2i}^4 + 2 \parafrac{z}{2}^2 \parafrac{z}{2i}^2 + 2 \parafrac{z}{2}^2 - 2 \parafrac{z}{2i}^2 + 1 }
+
+    \def \PartTwoDenomB {\cancel{\parafrac{z^4}{16}} + \cancel{\parafrac{z^4}{16}} - \cancel{2 \parafrac{z^4}{16}} + 2\parafrac{z^2}{4} + 2\parafrac{z^2}{4} + 1}
+
+    \begin{align*}
+      f(z) = 2i \cdot v\left(\frac{z}{2}, \frac{z}{2i} \right) & = -2i \left[\frac{\PartTwoNumerA}{\PartTwoDenomA} \right]\\
+      & = \frac{-z^2}{\PartTwoDenomB} \\
+      & = - \frac{z^2}{z^2 + 1}
+    \end{align*}
+
+    This will be our analytic function up to some real constant $C \in \reals$.
+
+    \item We solve this portion using direct integration. We first calculate:
+
+    \[ \partder{v}{x} = e^{-y}\cos(x) \quad \partder{v}{y} = -e^{-y}\sin(x) \]
+
+    By the Cauchy-Riemann Equations, we can integrate over the proper partial derivatives to find $v(x,y)$:
+
+    \begin{align*}
+      u(x,y) & = \int \partder{u}{x} dx = \int -e^{-y}\sin(x) = e^{-y}\cos(x) + \phi(x) \\
+      u(x,y) & = \int \partder{u}{y} dy = - \int e^{-y}\cos(x) dy = e^{-y}\cos(x) + \phi(y)
+    \end{align*}
+
+    where $\phi(x), \phi(y)$ are both terms depending only on $x,y$ respectively. Equating these two expressions together then shows that
+
+    \[ u(x,y) =  e^{-y}\cos{x}, \; v(x,y) = e^{-y}\sin{x}\]
+
+    The analytic function which satisfies these constraints must be
+
+    \[ w(z) = e^{iz} \]
+\end{enumerate}
+
+\section{Problem 2a ([H] 10.5)}
+
+We start with the fact that if $f$ is analytic, then its complex derivative can be expressed as \[\totder{f}{z} = \partder{u}{x} + i\partder{v}{x}\]
+%
+By the chain rule, we derive that:
+
+\begin{align}
+  \partder{u}{r} & = \partder{u}{x} \cos(\theta) + \partder{u}{y}\sin(\theta) \label{eq:urRel}\\
+  \partder{v}{r} & = \partder{v}{x} \cos(\theta) + \partder{v}{y}\sin(\theta) \label{eq:uvRel}
+\end{align}
+
+Subsequently, we directly calculate the following:
+\begin{align*}
+  \partder{u}{r} + i\partder{v}{r} & = \left[\partder{u}{x} \cos(\theta) + \partder{u}{y}\sin(\theta)\right] + i\left[\partder{v}{x} \cos(\theta) + \partder{v}{y}\sin(\theta)\right] \\
+  & = \left[\partder{u}{x} \cos(\theta) - \partder{v}{x}\sin(\theta)\right] + i\left[\partder{v}{x} \cos(\theta) + \partder{u}{x}\sin(\theta)\right] \\
+  & = \partder{u}{x}\left[\cos(\theta) + i\sin(\theta)\right] + \partder{v}{x}\left[-\sin(\theta) + i\cos(\theta)\right] \\
+  & = \partder{u}{x}\left[\cos(\theta) + i\sin(\theta)\right] + i \partder{v}{x}\left[\cos(\theta) + i\sin(\theta)\right] \\
+  & = e^{i\theta}\left[\partder{u}{x} + i\partder{v}{x}\right]
+\end{align*}
+where we get the second equality by invoking the Cauchy-Riemann Conditions.
+
+Multiply both sides of the equation by $e^{-i\theta}$ and invoke our first comment to yield the desired form \[\totder{f}{z}= e^{-i\theta} \left[\partder{u}{r} + i\partder{v}{r} \right]\]
+
+Additionally, consider the equalities derived once more from the chain rule:
+
+\begin{align}
+  \partder{u}{\theta} & = - \partder{u}{x}\left(r \sin(\theta)\right) + \partder{u}{y}\left(r\cos(\theta)\right) \label{eq:uthetaRel} \\
+    \partder{v}{\theta} & = - \partder{v}{x}\left(r \sin(\theta)\right) + \partder{v}{y}\left(r\cos(\theta)\right) \label{eq:vthetaRel}
+\end{align}
+
+Now we combine Equations \ref{eq:urRel}, \ref{eq:vthetaRel}:
+
+\begin{align*}
+  \partder{u}{r} - \frac{1}{r}\partder{v}{\theta} & = \left[\partder{u}{x} \cos(\theta) + \partder{u}{y}\sin(\theta)\right] - \frac{1}{r}\left[- \partder{v}{x}\left(r \sin(\theta)\right) + \partder{v}{y}\left(r\cos(\theta)\right) \right] \\
+  & = \cancel{\left[\partder{u}{x} - \partder{v}{y}\right]} \cos(\theta) + \cancel{\left[\partder{u}{y} +  \partder{v}{x}\right]} \sin(\theta) \\
+  & = 0
+\end{align*}
+
+The factors cancel due to the CR conditions. Additionally, we can apply the same idea to Equations \ref{eq:uvrel},\ref{eq:uthetaRel}:
+
+\begin{align*}
+  \partder{v}{r} + \frac{1}{r}\partder{u}{\theta} & = \left[\partder{v}{x} \cos(\theta) + \partder{v}{y}\sin(\theta)\right] + \frac{1}{r}\left[- \partder{u}{x}\left(r \sin(\theta)\right) + \partder{u}{y}\left(r\cos(\theta)\right) \right] \\
+  & = \cancel{\left[\partder{v}{y} - \partder{u}{x}\right]}\sin(\theta) + \cancel{\left[\partder{v}{x} + \partder{u}{y}\right]}\cos(\theta) \\
+  & = 0
+\end{align*}
+Hence, the Cauchy-Riemann Conditions expressed in polar coordinates turn out to be \[\partder{u}{r} =  \frac{1}{r}\partder{v}{\theta}, \quad \partder{v}{r} = - \frac{1}{r}\partder{u}{\theta}\]
+
+\end{document}

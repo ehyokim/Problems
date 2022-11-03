@@ -1,0 +1,307 @@
+\documentclass[12pt]{article}%
+\input{preamble}
+
+\newcommand{\Uone}{\mathcal{U}_1}
+\newcommand{\Utwo}{\mathcal{U}_2}
+\newcommand{\Uint}{\Uone \cap \Utwo}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\gpart}[1][t]{\frac{\partial g(x,t)}{\partial {#1}}}
+\setlength\parindent{0pt}
+\newcommand{\Legen}[1][n]{(x^2 - 1)^{#1}}
+
+\newcommand{\normphi}[1][v]{\abs{\Phi\left({#1}
+\right)}}
+
+\newcommand{\disip}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\infsum}[1][0]{\sum^{\infty}_{n = {#1}}}
+\newcommand{\posinfint}[1][0]{\int_{#1}^\infty}
+\newcommand{\neginfint}[1][0]{\int_{-\infty}^{#1}}
+
+\title{PHY510 HW 7}
+\author{Edward Kim}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Problem 1}
+\begin{enumerate}[a.]
+  \item The following inequality shows that this series diverges
+  \begin{equation*}
+      \infsum[2] \frac{1}{n} \leq \infsum[2]\frac{1}{\ln{n}}
+  \end{equation*}
+  \item The inequality below shows that this series converges
+  \begin{equation*}
+    \infsum[1] \frac{1}{n(n+1)} \leq \infsum[1]\frac{1}{n^2} < \infty
+  \end{equation*}
+
+  \item
+  We use the ratio test: if we denote the elements of our sequence as $a_i$
+  \begin{align*}
+      \lim_{n \rightarrow \infty} \abs{\frac{a_{n+1}}{a_n}} = \lim_{n \rightarrow \infty} \frac{n+1}{2} \rightarrow \infty
+  \end{align*}
+  Thus, this series must diverge.
+
+  \item
+  We use the Root test as follows: for $n \geq 1$
+  \begin{align*}
+    \left( \frac{1}{2n+1}\right)^{1/n} < \left(\frac{1}{n}\right)^{1/n}
+  \end{align*}
+  Take the limit $n \rightarrow \infty$ on both sides to yield:
+  \begin{align*}
+    \lim_{n \rightarrow \infty} \left(\frac{1}{2n+1}\right)^{1/n} <   \lim_{n \rightarrow \infty} \left(\frac{1}{n}\right)^{1/n} = 1
+  \end{align*}
+  The equality holds since $\lim_{n \rightarrow \infty} n^{1/n} = 1$. This shows that the series $\infsum[1] \frac{1}{2n+1}$ must converge.
+
+  \item By a simple comparison test,
+  \begin{equation*}
+      \infsum[1] \frac{1}{3n(3n+1)} \leq \frac{1}{9}\infsum[1] \frac{1}{n^2} < \infty
+  \end{equation*}
+
+  \item By the integral test:
+
+  \begin{align*}
+    %\infsum[2] \frac{1}{n \ln{n}} & \leq
+   \int_{2}^\infty \frac{1}{x\ln{x}} dx
+     = \int_{x=2}^{x = \infty} \frac{1}{\ell} d\ell
+    = \ln{\ln{x}}\mid_{2}^\infty
+  \end{align*}
+  This integral diverges at infinity, so the series in question  $\infsum[2] \frac{1}{n \ln{n}}$ must diverge.
+\end{enumerate}
+
+\section{Problem 2}
+\begin{description}
+  \item[[A] 5.5.1]
+  We utilize Abel's Test by observing the following decomposition:
+  \begin{align*}
+        \infsum[1] \frac{(-1)^{n-1}}{n^x} = \infsum[1] \frac{(-1)^{n-1}}{n} \left(\frac{1}{n}\right)^{x-1}
+  \end{align*}
+
+  Set $a_n = \frac{(-1)^{n-1}}{n}$ and $f_n(x) = \left(\frac{1}{n}\right)^{x-1}$. The Leibniz test for alternating series shows that $\sum_n a_n$ converges. Furthermore, the sequence of functions $f_n(x)$ is monotonically decreasing $(f_{n+1}(x) < f_{n}(x))$ and bounded above by one for all $x \geq 1$. Hence, Abel's Test tells us that this series converges uniformly for all $1 \leq x < \infty$.
+
+
+  For $\zeta(x) = \infsum[1] \frac{1}{n^x}$, set a postive constant $\epsilon > 0$. Similar to the analysis above, we decompose the terms:
+
+  \begin{equation*}
+    \infsum[1] \frac{1}{n^x} = \infsum[1] \frac{1}{n^{1 + \epsilon}} \left(\frac{1}{n}\right)^{x - (1 + \epsilon)}
+  \end{equation*}
+
+  By setting $a_n = \frac{1}{n^{1 + \epsilon}}$, $\sum_n a_n$ converges as a $p$-series. Assuming $x \geq 1+\epsilon > 0$, Abel's Test shows that this series of functions converges uniformly.
+
+  \item[[A] 5.5.3]
+  Assume $x \in (0, \infty)$. We will first consider the interval in which the series in question converges. Indeed, a simple comparison and root test reveals that:
+  \begin{equation*}
+      \infsum \frac{1}{1 + x^n} \leq \infsum \frac{1}{x^n}
+  \end{equation*}
+  Applying the root test to the right-hand sum shows that:
+  \begin{equation*}
+    \lim_{n \rightarrow \infty} \frac{x^n}{x^{n+1}} =  \lim_{n \rightarrow \infty} \frac{1}{x} = \frac{1}{x}
+  \end{equation*}
+
+  To force this series to converge, $x > 1$. So we know that the original series converges when $1 < x < \infty$.
+
+  Now for uniform convergence, set a positive constant $\epsilon > 0$ and assume $x \geq 1 + \epsilon$. Then we see that:
+
+  \begin{equation*}
+    \abs{\frac{1}{1 + x^n}} \leq \frac{1}{x^n} \leq \frac{1}{(1 + \epsilon)^n} = a_n
+  \end{equation*}
+
+  Apply the ratio test to the series $\sum_n a_n$ to find that:
+  \begin{equation*}
+    \lim_{n \rightarrow \infty} \abs{\frac{a_{n+1}}{a_n}} = \frac{1}{1  + \epsilon} < 1
+  \end{equation*}
+
+  and so this series must converge. By the Weierstrass M-test, the series $\infsum \frac{1}{1 + x^n}$ must converge uniformly (and absolutely) on the range $1 < 1 + \epsilon \leq x < \infty$.
+
+  \item[[A] 5.5.4]
+  If the two separate series $\infsum[0] a_n \cos{nx}$ and $\infsum b_n \sin{nx}$ converge uniformly everywhere, then the combined Fourier series $\infsum[0] a_n \cos{nx} + b_n \sin{nx}$ must also converge everywhere. To this end, note that: \[ \abs{a_n \cos{nx}} \leq \abs{a_n} \] Since $\sum_n \abs{a_n}$ converges by our assumptions, by the Weierstrass M-test, the infinte series $\infsum[0] a_n \cos{nx}$ must converge uniformly on all intervals, hence everywhere on the real line.
+
+  The case is similar for $\infsum b_n \sin{nx}$. This shows the required fact.
+
+\end{description}
+
+\section{Problem 3}
+\begin{enumerate}
+  \item We first consider the integral
+  \begin{align*}
+    \doubinfint \frac{\sin{nx}}{\pi x} f(x) dx
+    & = \frac{2}{\pi} \posinfint[\epsilon] \frac{\sin{nx}}{x} dx \\
+    & = \frac{2}{\pi} \posinfint[n\epsilon] \frac{\sin(y)}{y} dy
+  \end{align*}
+  This is under the substitution $y = n x$. Choose $n$ suffcient large such that the integral
+  \[\posinfint[n\epsilon] \frac{\sin(y)}{y} dy < \frac{\pi \epsilon}{2}\]
+  We can do this as $\posinfint[n\epsilon] \frac{\sin(y)}{y} dy \rightarrow 0$ as $n \rightarrow 0$.
+  We can then approximate the integral by:
+
+ \[ \approx \epsilon + \int_{-\epsilon}^{\epsilon} \frac{\sin{nx}}{\pi x} f(x) dx \approx \epsilon + f(0) \frac{2}{\pi}\frac{\pi}{2} =  \epsilon + f(0)\]
+
+ Sending $\epsilon \rightarrow 0$ shows that $\frac{\sin{nx}}{\pi x} \rightarrow \delta(x)$.
+
+\end{enumerate}
+
+
+\section{Problem 4}
+\begin{enumerate}[i.]
+  \item Since $\sin{x}$ has only simple roots i.e we can leverage the formula for the Dirac delta function composed with the $\sin{x}$ function: \[ \delta(\sin{x}) = \sum_{\substack{x_0 \\ \sin{x_0} = 0 \\ \cos{x_0} \neq 0}} \frac{\delta(x - x_0)}{\abs{\cos{x_0}}} = \sum_{k \in \mathbb{Z}} \delta(x - k\pi)  \]
+
+  \item We begin by setting a test function $g \in \testfunc$. By taking the derivative of the distribution $f(x)\delta(x)$, we see that:
+  \begin{align*}
+    \disip{(fg)'}{g} = - \disip{f\delta,g'} =  - \doubinfint (f(x)\delta(x))g'(x) dx & = - \doubinfint (f(x)g'(x))\delta(x) dx = -f(0)g'(0) \\
+    & = - \disip{f(0)\delta}{g'} \\
+    & = \disip{f(0)\delta'}{g}
+  \end{align*}
+
+  This shows that $(f(x)\delta(x))' = f(0)\delta'(x)$. Furthermore, we show that the standard Leibniz rule coincides with this equality:
+
+  \begin{align*}
+    \disip{f'\delta + f\delta'}{g}
+     & = \disip{\delta}{f'g} + \disip{\delta'}{fg} \\
+    & = \disip{\delta}{f'g} - \disip{\delta}{f'g + fg'} \\
+    & = \cancel{\disip{\delta}{f'g}} - \cancel{\disip{\delta}{f'g}} - \disip{\delta}{fg'} \\
+    & = -f(0)g'(0) \\
+    & = \disip{f(0)\delta'}{g}
+  \end{align*}
+
+\item First take the first order derivative using the Heaviside function decomposition to see that:
+
+\begin{equation*}
+  \frac{d}{dx}(\abs{x}) = (\theta(x) - \theta(-x)) + x(\theta'(x) + \theta'(-x))
+\end{equation*}
+
+Taking the three cases separating, we calculate that
+\[ \frac{d}{dx}(\abs{x}) = \begin{cases}
+                              1 \quad x > 0 \\
+                              0 \quad x = 0 \\
+                              -1 \quad x < 0
+                            \end{cases} \]
+as the second term vanishes in all three cases. We proceed to the second order derivative. Set the function $H(x) = \frac{d}{dx}(\abs{x})$ and $g \in \testfunc$:
+
+\begin{align*}
+  \disip{\frac{d^2}{dx^2}(\abs{x})}{g} & = \doubinfint \para{\frac{d}{dx} H(x)} g(x) dx \\
+  & = \cancel{H(x)g(x)\mid_{-\infty}^{\infty}} - \doubinfint H(x)\frac{dg}{dx} dx \\
+  & = - \left(\int_0^{\infty} dg - \int_{-\infty}^0 dg \right) \\
+  & = - \para{g(x)\mid_{0}^\infty - g(x)\mid_{-\infty}^0} \\
+  & = 2g(0) \\
+  & = \disip{2\delta}{g}
+\end{align*}
+
+Hence, $\frac{d^2}{dx^2}(\abs{x}) = 2\delta(x)$ as distributions.
+
+\item
+Fix some $\epsilon > 0$. For $f \in \testfunc$, we can decompose $\disip{g'}{f}$ as below:
+\begin{align*}
+  \disip{g'}{f} = \int_{-\infty}^{x_0 - \epsilon} g'(x)f(x) dx  + \int_{x_0 + \epsilon}^{\infty} g'(x)f(x) dx
+\end{align*}
+
+Now we use integration by parts:
+\begin{align*}
+\disip{g'}{f} & = \left[g(x)f(x)\mid_{-\infty}^{x_0 - \epsilon} - \int_{-\infty}^{x_0 - \epsilon} g(x)f'(x) dx
+ \right] + \left[g(x)f(x)\mid_{x_0 + \epsilon}^{\infty} + \int_{x_0 + \epsilon}^{\infty} g(x)f'(x) dx \right] \\
+ & = -\left[ (g(x_0 + \epsilon)f(x_0 + \epsilon) - g(x_0 - \epsilon)f(x_0 - \epsilon)) + \left( \int_{-\infty}^{x_0 - \epsilon} g(x)f'(x) dx + \int_{x_0 + \epsilon}^{\infty} g(x)f'(x) dx\right) \right]
+\end{align*}
+
+Hence, if we were to take the limit $\epsilon^+ \rightarrow 0$,
+
+\[-\lim_{\epsilon^+ \rightarrow 0} \left[\int_{-\infty}^{x_0 - \epsilon} g(x)f'(x) dx +\int_{x_0 + \epsilon}^{\infty} g(x)f'(x) dx\right] -  f(x_0)\lim_{\epsilon^+ \rightarrow 0} \left[g(x_0 + \epsilon) - g(x_0 - \epsilon)\right] \]
+
+The limit on the left will converge to $-\disip{g}{f'} = \disip{g'}{f}$ on $x \neq x_0$. Furthermore,
+\[\doubinfint \Delta g_0 \delta(x-x_0)\cdot f(x) dx =  f(x_0)\lim_{\epsilon^+ \rightarrow 0} \left[g(x_0 + \epsilon) - g(x_0 - \epsilon)\right] \]
+
+Combining the two facts, this shows that
+\[ \disip{g'}{f} = \disip{g'_{cl}(x) + \Delta g_0 \delta(x - x_0)}{f} \]
+
+\end{enumerate}
+
+\section{Problem 5}
+\begin{enumerate}
+  \item We use the definition of a derivative of a distribution for $\phi = e^{\abs{x}}$. For $f \in \testfunc$
+  \begin{align*}
+    \disip{\phi'}{f} & = - \disip{\phi}{f'} \\
+  &   = - \left[\int_{-\infty}^0 e^{-x}f'(x) dx + \int_0^{\infty} e^x f'(x) dx \right] \\
+  & =  - \left[e^{-x}f(x)\mid_{-\infty}^0  + \int_{-\infty}^0 e^{-x}f'(x) dx \right] - \left[e^xf(x)\mid_0^\infty -  \int_0^{\infty} e^x f'(x) dx\right] \\
+  & = \int_0^{\infty} e^x f(x) dx - \int_{-\infty}^0 e^{-x} f(x) dx \\
+  & = \int_0^{\infty} e^{\abs{x}} f(x) dx  + \int_{-\infty}^0 -e^{\abs{x}} f(x) dx \\
+  & = \doubinfint \text{sgn}(x)e^{\abs{x}}f(x) dx \\
+  & = \disip{ \text{sgn}(x)e^{\abs{x}}}{f}
+  \end{align*}
+  So $(e^{\abs{x}})' = \text{sgn}(x)e^{\abs{x}}$ as distributions.
+
+  \item
+  For $\phi = \sin{\abs{x}}$:
+  \begin{align*}
+    \disip{\phi'}{f} & = - \disip{\phi}{f'} \\
+    & = - \left[ \posinfint \sin(x) f'(x)dx + \neginfint \sin(-x)f'(x) dx  \right] \\
+    & =  - \left[ \left( \cancel{\sin(x)f(x)\mid_0^{\infty}} - \posinfint \cos(x)f(x)dx\right) - \left(\cancel{\sin(x)f(x)\mid_{-\infty}^0}  - \posinfint \cos(x)f(x) dx\right) \right] \\
+    & = \posinfint \cos(x)f(x) dx - \neginfint \cos(x)f(x) dx \\
+    & = \posinfint \cos(\abs{x})f(x) dx + \neginfint (-1) \cdot \cos(\abs{x})f(x) dx \\
+    & = \doubinfint \text{sgn}(x) \cos(\abs{x}) f(x)dx
+    & = \disip{\text{sgn}(x) \cos(\abs{x})}{f}
+  \end{align*}
+
+  So $(\cos(\abs{x})' = \text{sgn}(x) \cos(\abs{x})$
+
+  \item
+  For $f \in \testfunc$:
+
+  \begin{align*}
+      -\disip{\prinval{\frac{1}{x}}}{f} = - \lim_{\epsilon^+ \rightarrow 0} \left[ \int_{-\infty}^{-\epsilon} \frac{f'(x)}{x}dx + \posinfint[\epsilon] \frac{f'(x)}{x}dx\right] \\
+  \end{align*}
+
+  Integrate by parts on the integrals:
+
+    \begin{align*}
+        \int_{-\infty}^{-\epsilon} \frac{f'(x)}{x}dx + \posinfint[\epsilon] \frac{f'(x)}{x}dx & = \left( \frac{1}{x}f(x)\mid_{-\infty}^{-\epsilon} + \neginfint[-\epsilon] \frac{f(x)}{x^2} dx \right) + \left( \frac{1}{x}f(x)\mid_{\epsilon}^{\infty} + \posinfint[\epsilon] \frac{f(x)}{x^2} dx \right) \\
+        & = \frac{1}{-\epsilon}f(-\epsilon) - \frac{1}{\epsilon}f(\epsilon) + \left(\posinfint[\epsilon] \frac{f(x)}{x^2} dx + \neginfint[-\epsilon] \frac{f(x)}{x^2} dx \right)
+    \end{align*}
+
+    However, note that :
+    \[ \lim_{\epsilon^+ \rightarrow 0} \frac{f(\epsilon) + f(-\epsilon) - 2f(0)}{\epsilon} = f'(0^+) - f'(0^-) = 0\]
+
+    and
+    \[ - \frac{2f(0)}{\epsilon} \approx \int_{-\epsilon}^{\epsilon} \frac{f(0)}{x^2} \]
+    for small $\epsilon >0$.
+
+
+
+\end{enumerate}
+
+\section{Problem 6}
+\begin{enumerate}
+  \item We begin by examining the left-hand side of the purported equivalence. Let $f \in \testfunc$. We calculate the following:
+
+  \begin{align*}
+      \disip{x\left(c\delta(x) + \prinval{\frac{1}{\abs{x}}}\right)}{f} & = \disip{cx\delta(x)}{f} + \disip{ x\prinval{\frac{1}{\abs{x}}}}{f} \\
+      & = \cancel{\disip{\delta(x)}{cxf}} + \disip{\prinval{\frac{1}{\abs{x}}}}{xf} \\
+      & = \lim_{\epsilon^+ \rightarrow 0} \left(\int_{-\infty}^{-\epsilon} \frac{xf(x)}{\abs{x}} dx + \int_{\epsilon}^{\infty} \frac{xf(x)}{\abs{x}} dx \right) \\
+      & =  \lim_{\epsilon^+ \rightarrow 0} \left(\int_{\epsilon}^{\infty} \frac{xf(x)}{x} dx  - \int_{-\infty}^{-\epsilon} \frac{xf(x)}{x} \right) \\
+      & =  \lim_{\epsilon^+ \rightarrow 0} \left( \int_{\epsilon}^{\infty} 1 \cdot f(x) dx + \int_{-\infty}^{-\epsilon} (-1) \cdot f(x) dx \right) \\
+      & = \int_{-\infty}^{\infty} \text{sgn}(x)f(x) dx \\
+      & = \disip{\text{sgn}(x)}{f}
+  \end{align*}
+
+  where the second-to-last equivalence is understood to be the distribution a limit of integrals of the previous line. Thus, we see that $xu = \text{sgn}(x)$ as distributions.
+
+  \item We claim that $u(x) = - \prinval{\frac{1}{x}} + c\delta(x)$ for some constant $c$. Let us first check that
+  $\disip{x^2\left(-\prinval{\frac{1}{x}}\right)'}{f} = \disip{1}{f}$ for $f \in \testfunc$
+
+  \begin{align*}
+    \disip{x^2\left(-\prinval{\frac{1}{x}}\right)'}{f} & = \disip{\left(\prinval{\frac{1}{x}}\right)'}{-x^2f} \\
+    & = P \int_{-\infty}^{\infty}{\frac{x^2f(x) - 0 \cdot f(0)}{x^2}} dx \\
+    & = \int_{-\infty}^{\infty} 1 \cdot f(x) dx \\
+    & = \disip{1}{f}
+  \end{align*}
+
+  where we utilize the derivative calculated for $\prinval{\frac{1}{x}}$ in Problem 5.
+
+  Furthermore,
+  \begin{align*}
+      \disip{c\delta'}{x^2f} = - \disip{\delta}{cx^2f' + 2cxf} = 0
+  \end{align*}
+
+  Combining these two derivations gives us the desired result.
+
+
+\end{enumerate}
+
+
+\end{document}
