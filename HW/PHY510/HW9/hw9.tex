@@ -71,15 +71,15 @@
     By the Cauchy-Riemann Equations, we can integrate over the proper partial derivatives to find $v(x,y)$:
 
     \begin{align*}
-      u(x,y) & = \int \partder{u}{x} dx = \int -e^{-y}\sin(x) = e^{-y}\cos(x) + \phi(x) \\
-      u(x,y) & = \int \partder{u}{y} dy = - \int e^{-y}\cos(x) dy = e^{-y}\cos(x) + \phi(y)
+      u(x,y) & = \int \partder{u}{x} dx = \int -e^{-y}\sin(x) dx = e^{-y}\cos(x) + \phi(y) \\
+      u(x,y) & = \int \partder{u}{y} dy = - \int e^{-y}\cos(x) dy = e^{-y}\cos(x) + \psi(x)
     \end{align*}
 
-    where $\phi(x), \phi(y)$ are both terms depending only on $x,y$ respectively. Equating these two expressions together then shows that
+    where $\psi(x), \phi(y)$ are both terms depending only on $x,y$ respectively. However, inspecting the results shows that $\phi(y) = \psi(x) = C\in \reals$. Equating these two expressions together,
 
-    \[ u(x,y) =  e^{-y}\cos{x}, \; v(x,y) = e^{-y}\sin{x}\]
+    \[ u(x,y) =  e^{-y}\cos{x} + C, \; v(x,y) = e^{-y}\sin{x}\]
 
-    The analytic function which satisfies these constraints must be
+    In the case where $C=0$, the analytic function which satisfies these constraints must be
 
     \[ w(z) = e^{iz} \]
 \end{enumerate}
@@ -122,7 +122,7 @@ Now we combine Equations \ref{eq:urRel}, \ref{eq:vthetaRel}:
   & = 0
 \end{align*}
 
-The factors cancel due to the CR conditions. Additionally, we can apply the same idea to Equations \ref{eq:uvrel},\ref{eq:uthetaRel}:
+The factors cancel due to the CR conditions. Additionally, we can apply the same idea to Equations \ref{eq:uvRel},\ref{eq:uthetaRel}:
 
 \begin{align*}
   \partder{v}{r} + \frac{1}{r}\partder{u}{\theta} & = \left[\partder{v}{x} \cos(\theta) + \partder{v}{y}\sin(\theta)\right] + \frac{1}{r}\left[- \partder{u}{x}\left(r \sin(\theta)\right) + \partder{u}{y}\left(r\cos(\theta)\right) \right] \\
@@ -130,5 +130,153 @@ The factors cancel due to the CR conditions. Additionally, we can apply the same
   & = 0
 \end{align*}
 Hence, the Cauchy-Riemann Conditions expressed in polar coordinates turn out to be \[\partder{u}{r} =  \frac{1}{r}\partder{v}{\theta}, \quad \partder{v}{r} = - \frac{1}{r}\partder{u}{\theta}\]
+
+\section{Problem 2b [H] 10.5}
+
+Using the definitions of $\sin(x), \cos(x), \sinh(y), \cosh(y)$, the equalities below must hold:
+
+\begin{align*}
+  \sin(z) & = \sin(x + iy) \\
+          & = \cos(iy)\sin(x) + \sin(iy)\cos(x) \\
+          & = \left[\frac{e^{-y} + e^{y}}{2}\right]\sin(x) + \left[\frac{e^{-y} - e^{y}}{2i}\right]\cos(x) \\
+          & = \cosh(y)\sin(x)+ i \sinh(y)\cos(x)
+\end{align*}
+where the second equality follows from the standard sine angle addition formula and
+\begin{align*}
+  \cos(z) = \cos(x + iy) & = \cos(x)\cos(iy) - \sin(x)\sin(iy) \\
+  & = \cos(x)\left[\frac{e^{-y} + e^{y}}{2}\right] - \sin(x)\left[\frac{e^{-y} - e^{y}}{2i}\right] \\
+  & = \cos(x)\cosh(y) - i \sin(x)\sinh(y)
+\end{align*}
+
+Now consider the roots of $\sin(z)$ first. This imposes the constraints:
+
+\begin{align*}
+  \cosh(y)\sin(x) = 0 \\
+  \sinh(y)\cos(x) = 0
+\end{align*}
+Observe that $\cosh(y) \neq 0$ for all $y \in \reals$ as both $e^y, e^{-y} > 0$. This would force $\sin(x) = 0$. However $\cos(x),\sin(x)$ do not share any roots in common. Thus, this would further force $\sinh(y) = 0$. This can only happen if $y = 0$ i.e $z \in \reals$. \newline
+
+Similarly, the two constraints imposed for $\cos(z) = 0$ will be
+\begin{align*}
+  \cos(x)\cosh(y) =0 \\
+   \sin(x)\sinh(y) = 0
+\end{align*}
+
+Following the same line of logic $\cos(x) = 0$ since $\cosh(y) \neq 0$. So $\sinh(y) = 0$ iff $y =0$.
+
+\section*{Problem 2c [H] 10.12}
+
+\begin{enumerate}[i.]
+  \item $\mathfrak{Re}\sin(z) = \sin(x)\cosh(y)$ by Problem 2b above.
+  \item
+  We calculate that:
+  \begin{align*}
+    \cosh(z) & = \frac{e^{x+iy} + e^{-(x+iy)}}{2} \\
+    & = \frac{1}{2}\left[e^x(\cos(y) + i\sin(y)) + e^{-x}(\cos(y) - i\sin(y))\right] \\
+    & = \frac{1}{2}\left[(e^x + e^{-x})\cos(y) + i(e^x - e^{-x})\sin(y)\right] \\
+    & = \cosh(x)\cos(y) + i\sinh(x)\sin(y)
+  \end{align*}
+  Thus, $\mathfrak{Im}\cosh(z) = \sinh(x)\sin(y)$
+
+  \item
+  Proceeding as before with the calculation shown in Problem 2b:
+  \begin{align*}
+    \abs{\sin(z)}^2 & = \abs{\cosh(y)\sin(x)+ i \sinh(y)\cos(x)}^2 \\
+    & = \cosh^2(y)\sin^2(x) + \sinh^2(y)\cos^2(x) \\
+    & = \left[\frac{e^{2y} + e^{-2y} + 2}{4}\right]\sin^2(x) + \left[\frac{e^{2y} + e^{-2y} - 2}{4}\right]\cos^2(x) \\
+    & =  \frac{e^{2y} + e^{-2y}}{4} + \frac{1}{2} (\sin^2(x) - \cos^2(x)) \\
+    & = \left[ \frac{e^{2y} + e^{-2y} - 2}{4}\right] + \frac{1}{2}(\sin^2(x) - \cos^2(x) + 1) \\
+    & = \sinh^2(y) + \sin^2(x)
+  \end{align*}
+  where in the second-to-last equality we added a vanishing term of $- \frac{1}{2} + \frac{1}{2}$
+
+  \item
+  This case follows similarly to the third case above:
+  \begin{align*}
+    \abs{\cosh(z)}^2 & = \cosh^2(x)\cos^2(y) + \sinh^2(x)\sin^2(y) \\
+    & = \left[\frac{e^{2y} + e^{-2y} + 2}{4}\right]\cos^2(y) + \left[\frac{e^{2y} + e^{-2y} - 2}{4}\right]\sin^2(y) \\
+    & = \left[\frac{e^{2x} + e^{-2x}}{4}\right] + \frac{1}{2}(\cos^2(y) - \sin^2(y)) \\
+    & = \left[\frac{e^{2x} + e^{-2x} - 2}{4}\right] + \frac{1}{2}(\cos^2(y) - \sin^2(y) + 1) \\
+    & =\sinh^2(x) + \cos^2(y)
+  \end{align*}
+\end{enumerate}
+
+\section*{Problem 2d (b)}
+
+Expandin the complex exponential and equating the components shows that:
+
+\begin{align*}
+  e^x\cos(y) & = 1 \\
+  e^x\sin(y) & = \sqrt{3}
+\end{align*}
+
+If we square both equations and add the results, we see that $e^{2x} = 4$. This forces $x = \ln{2}$. Furthermore, since $e^x > 0$. Both $\cos(y), \sin(y) > 0$, meaning $y$ must lie on the first quadrant of the unit circle. In fact, the only points which satisfy the constraints above will be $\frac{\pi}{3} + 2n\pi$ for $n \in \mathbb{Z}$. Thus, the complex numbers which satisfy the equation above will be \[ \ln{2} + i\left(\frac{\pi}{3} + 2n\pi \right) \quad n \in \mathbb{Z} \]
+
+\section*{Problem 3}
+\begin{enumerate}
+  \item We show this directly. Define $z' = \frac{az + b}{cz + d}$ and $z'' = \frac{\alpha z + \beta}{\gamma z + \delta}$.
+  \begin{align*}
+      z''(z) & = \frac{\alpha \frac{az + b}{cz + d} + \beta}{\gamma \frac{az + b}{cz + d} + \delta} \\
+      & = \frac{\alpha(az + b) + \beta(cz+d)}{\gamma(az+b) + \delta(cz+d)} \\
+      & = \frac{(\alpha a + \beta c)z + (\alpha b + \beta d)}{(\gamma a + \delta c)z + (\gamma b  + \delta d)}
+  \end{align*}
+  In accordance with:
+  \begin{equation*}
+    \begin{bmatrix}
+      \alpha & \beta \\
+      \gamma & \delta
+    \end{bmatrix}  \begin{bmatrix}
+        a & b\\
+        c & d
+      \end{bmatrix} = \begin{bmatrix}
+        \alpha a + \beta c  & \alpha b + \beta d \\
+         \gamma a + \delta c   & \gamma b + \delta d
+    \end{bmatrix}
+  \end{equation*}
+  as expected.
+
+  \item
+  Consider the claimed cross ratio identity for M\"{o}bius transformation $w$:
+  \begin{equation*}
+    \frac{(w - w_3)(w_2-w_4)}{(w - w_4)(w_2 - w_3)} =   \frac{(z - z_3)(z_2-z_4)}{(z - z_4)(z_2 - z_3)}
+  \end{equation*}
+
+  Observe by intepreting both sides as functions of $z$, the two expressions align at points $z_2,z_3,z_4$, namely they equal $1,0,\infty$ respectively.
+
+  Multiply the left side by $\frac{cz+d}{cz+d}$ to cancel the denominators of both $w$ and expand out the fraction by cross multiplcation. By moving all the terms to the left side, we see that this yields a polynomial in $z$ of degree at most two. However, we know that this polynomial must vanish at least three points $z_1,z_2,z_3$. Hence, the identity must hold over all $z$ as this polynomial must be zero everywhere.
+
+  Now by solving for $w$ will yield an expression in terms of $z_2,z_3,z_4,w_2,w_3,w_4$ and independent variable $z$. The values $w_i$ are completely determined by $w$.
+
+  \item
+  Consider the map:
+  \begin{align*}
+      w(z) = - \frac{(z -z_1)(z_2-z_3)}{(z - z_3)(z_1 - z_2)}
+  \end{align*}
+
+  This map takes $z_1 \mapsto 0$, $z_2 \mapsto 1$, $z_3 \mapsto \infty$ as required. This can be found through direct inspection or the result from the previous part. We shall show the latter. As mentioned before, we wish to find a M\"{o}bius transformation which maps $z_1 \mapsto 0$, $z_2 \mapsto 1$, $z_3 \mapsto \infty$. Invoke the identity in part two to see that
+
+  \begin{align*}
+      1 - w & = \frac{(z-z_2)(z_1-z_3)}{(z-z_3)(z_1-z_2)} \\
+       w  & = -  \frac{(z-z_2)(z_1-z_3)}{(z-z_3)(z_1-z_2)} + 1 \\
+      & = \frac{((z_1 - z_2) - (z_1 - z_3))z + (z_2(z_1 - z_3) - z_3(z_1 - z_2))}{(z-z_3)(z_1-z_2)} \\
+      & =  - \frac{(z -z_1)(z_2-z_3)}{(z - z_3)(z_1 - z_2)}
+  \end{align*}
+
+
+
+  %Observe that the identity of part two asserts that the cross ratio is invariant under M\"{o}bious transformations.
+
+
+  To check that $w$ is indeed a M\"{o}bius transformation, it suffices to check that $ad - bc \neq 0$. This is equivalent to the $ad - bc = 1$ as the inverse of the square root of the determinant can be multiplied to the numerator and denominator of $w(z)$. Note that this does not change the M\"{o}bius transformation but does scale the determinant to unity. To this end
+
+  \begin{align*}
+    \det \begin{bmatrix}
+        -(z_2 - z_3) & z_1(z_2 - z_3) \\
+        z_1 - z_2 & -z_3(z_1 - z_2)
+  \end{bmatrix} & = z_3(z_1 - z_2)(z_2 - z_3) - z_1(z_2 - z_3)(z_1 - z_2) \\
+  & = (z_3 - z_1)(z_2 - z_3)(z_1 - z_2)
+  \end{align*}
+  If the points $z_1,z_2,z_3$ are all distinct, then this quantity will be non-vanishing.
+\end{enumerate}
 
 \end{document}
