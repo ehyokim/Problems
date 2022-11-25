@@ -1,0 +1,362 @@
+\documentclass[12pt]{article}%
+\input{preamble}
+
+\newcommand{\Uone}{\mathcal{U}_1}
+\newcommand{\Utwo}{\mathcal{U}_2}
+\newcommand{\Uint}{\Uone \cap \Utwo}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\gpart}[1][t]{\frac{\partial g(x,t)}{\partial {#1}}}
+\setlength\parindent{0pt}
+\newcommand{\Legen}[1][n]{(x^2 - 1)^{#1}}
+
+\newcommand{\normphi}[1][v]{\abs{\Phi\left({#1}
+\right)}}
+
+\newcommand{\disip}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\infsum}[1][0]{\sum^{\infty}_{n = {#1}}}
+\newcommand{\posinfint}[1][0]{\int_{#1}^\infty}
+\newcommand{\neginfint}[1][0]{\int_{-\infty}^{#1}}
+
+% Fourier Shortcuts
+\newcommand{\piinter}{[-\pi,\pi]}
+\newcommand{\pifrac}{\frac{1}{\pi}}
+\newcommand{\piint}[2][x]{\int_{-\pi}^\pi {#2} \; d{#1}}
+\newcommand{\twopiint}[2][x]{\int_{0}^{2\pi} {#2} \; d{#1}}
+\newcommand{\foutranscoeff}[1][k]{\tilde{f}({#1})}
+\newcommand{\foutrans}[1]{\mathcal{F}\left[{#1}\right](k)}
+
+% Misc
+\newcommand{\parafrac}[2]{\para{\frac{#1}{#2}}}
+
+%HW 10
+\newcommand{\wc}{w(\mathcal{C})}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\Lcal}{\mathcal{L}}
+\newcommand{\contint}[1][\mathcal{C}]{\oint_{#1}}
+\newcommand{\Cep}{\mathcal{C}_\epsilon}
+\newcommand{\CR}{\mathcal{C}_R}
+\newcommand{\sgn}[1]{\text{sgn}({#1}) }
+
+
+\title{PHY510 HW 11}
+\author{Edward Kim}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{Problem 1}
+\begin{enumerate}
+  \item We first consider the contour $\C$ consisting of four arcs $[-R,-\epsilon], C_\epsilon, [\epsilon,R], C_R$. $\Cep$ is defined to be the clockwise positive semi-circle centered at the origin with radius $\epsilon > 0$ with $\CR$ defined to be the same except oriented counter-clockwise.
+
+  Consider the function $f(z)= \frac{e^{ikz}}{z}$ with $k > 0$. This function is analytic within the region enclosed by the closed contour $\C$. By the Cauchy-Goursat Theorem:
+  \begin{equation} \label{eq:start_contint}
+\contint \frac{e^{ikz}}{z} \; dz = \left[ \int_{-R}^{\-\epsilon} + \int_\epsilon^R  \right]\frac{e^{ikz}}{z} \; dz +   \left[\int_{\CR} + \int_{\Cep} \right] \frac{e^{ikz}}{z} \; dz = 0
+  \end{equation}
+
+  By Jordan's Lemma, $\int_{\CR}\frac{e^{ikz}}{z} \; dz$ must vanish as $R \rightarrow \infty$. Furthermore,
+  \[I_{\Cep} = \int_{\Cep}\frac{e^{ikz}}{z} \; dz = \int_{\pi}^0 \frac{e^{ik(\epsilon\cos{\theta}+ i\epsilon\sin{\theta})}}{\epsilon e^{i\theta}} (\epsilon ie^{i\theta}) \; d\theta =   -i\int_0^\pi e^{ik(\epsilon\cos{\theta}+ i\epsilon\sin{\theta})} \; d\theta \]
+
+  As $\epsilon \rightarrow 0$, $e^{ikz} \approx 1$:
+
+\[I_{\Cep} = -i\int_0^\pi\; d\theta = -i\pi\]
+Hence, by taking the proper limits the contour integral around $\C$ reduces to the equivalence:
+
+\[ P \doubinfint \frac{e^{ikx}}{x} \; dx = i\pi  \quad k > 0 \]
+
+Additionally, in the case where $k < 0$, we flip the countour $
+\C$ to the lower-half plane in order to ensure that Jordan's lemma holds. To reverse the order of integration to the clockwise direction, we flip the sign of Equation \ref{eq:start_contint} and the rest of the calculation holds as above. So
+\[P \doubinfint \frac{e^{ikx}}{x} \; dx = -i\pi \quad k < 0\]
+
+Combining these two calculations yields:
+
+\[P \doubinfint \frac{e^{ikx}}{x} \; dx = i\pi\cdot\sgn{k}\]
+
+%Check statement?
+
+\item
+
+Consider the string of equivalences:
+\begin{align*}
+  \sqrt{2\pi}\mathcal{F}\left[\frac{1}{x^2}\right](k) & = P\doubinfint - \frac{d}{dx}\left(\frac{1}{x}\right) e^{ikx} \; dx \\
+  & = ik P \doubinfint \frac{e^{ikx}}{x} \; dx = ik(i\pi\cdot\sgn{k}) \\
+  & = -\pi k \cdot \sgn{k}
+\end{align*}
+Hence, $\mathcal{F}\left[\frac{1}{x^2}\right](k) =  -\sqrt{\frac{\pi}{2}}k\cdot \sgn{k}$
+
+For the next function:
+\begin{align*}
+\sqrt{2\pi}\mathcal{F}\left[\sin^2(x)\right](k)
+& = \doubinfint \sin^2(x) e^{ikx} \; dx \\
+& = - \doubinfint \left(\frac{e^{2ix} + e^{-2ix} -2 }{4}\right)e^{ikx} \; dx \\
+& = - \frac{1}{4} \doubinfint e^{(2+k)ix} + e^{(-2+k)ix} - 2e^{ikx} \; dx
+\end{align*}
+
+Recall the following integral formula for the Dirac delta function:
+\[ \delta(x) = \frac{1}{2\pi}\doubinfint e^{ikx} \; dk\]
+
+By linearity, the integral above will reduce to:
+
+\begin{align*}
+\sqrt{2\pi}\mathcal{F}\left[\sin^2(x)\right](k)= & -\frac{1}{4} \left[2\pi \delta(k+2) + 2\pi \delta(k-2) - 4\pi \delta(k)\right] \\
+= & -\frac{\pi}{2} \delta(k+2) - \frac{\pi}{2} \delta(k - 2) + \pi\delta(k)
+\end{align*}
+
+Dividing by the normalizing factor thus yields the following:
+\[\mathcal{F}\left[\sin^2(x)\right](k)=-\frac{1}{2}\sqrt{\frac{\pi}{2}} \delta(k+2) - \frac{\pi}{2}\sqrt{\frac{\pi}{2}}  \delta(k - 2) + \sqrt{\frac{\pi}{2}} \delta(k) \]
+
+\item
+We can combine the facts we learned above to calculate as follows:
+\begin{align*}
+    \sqrt{2\pi}\foutrans{\frac{\sin^2(x)}{x}} & = - \frac{1}{4} \doubinfint \frac{1}{x^2} \left(\frac{e^{2ix} + e^{-2ix} -2}{4}\right)e^{ikx} \; dx \\
+    & = -\frac{1}{4} \doubinfint \frac{e^{(2+k)ix}}{x^2} + \frac{e^{(-2+k)ix}}{x^2} - \frac{2e^{ikx}}{x^2} \; dx \\
+    & = \frac{1}{4} \left[ \pi(k+2)\cdot \sgn{k+2} + \pi(k-2)\cdot \sgn{k-2} - 2\pi k \cdot \sgn{k}\right]
+\end{align*}
+
+Dividing by the normalizing factor, we get
+\[\foutrans{\frac{\sin^2(x)}{x}} = \frac{1}{4 } \left[ \sqrt{\frac{\pi}{2}} (k+2)\cdot \sgn{k+2} + \sqrt{\frac{\pi}{2}} (k-2)\cdot \sgn{k-2} - 2\sqrt{\frac{\pi}{2}}  k \cdot \sgn{k}\right]\]
+
+The plot is attached to this file for $k \in [-5,5]$.
+
+%Maybe say a few things about the plot.
+
+\item
+Extend the interval of integration to the entire real line. Observe that:
+
+\[\doubinfint \frac{\sin^2(x)}{x^2} \; dx = \sqrt{2\pi}\mathcal{F}\left[\frac{\sin^2(x)}{x^2}\right](0) = \pi \]
+
+Hence, dividing by half shows us that:
+
+\[\int_0^\infty \frac{\sin^2(x)}{x^2} \; dx = \frac{\pi}{2} \]
+
+  \item
+  First, extend the interval of integration to the entire real line and simply consider the positively oriented semi-circle $\C$ lying on the upper half of the complex plane. We invoke the identity and integrate over the ``complexified" function:
+
+  \[ \sin^2(x) = \mathfrak{R}\left[\frac{1}{2}\left(1 -e^{2ix}\right)\right]\]
+
+
+   Let $\C = [-R,R] + \C_R$ where $\C_R$ is the arc of radius $R$ connecting $R$ to $-R$. By the Residue Theorem, it must follow that:
+  \[\contint \frac{1 -e^{2ix}}{(z-i\epsilon)(z+i\epsilon)} \; dz = \left[\int_{-R}^R + \int_{\C_R}\right]  \frac{1 -e^{2ix}}{(z-i\epsilon)(z+i\epsilon)} \; dz = 2\pi i\cdot  \text{Res}(i\epsilon)\]
+
+  The contributions of the contour along $\C_R$ will vanish: suppose we set $z = Re^{i\theta}$, then
+
+  \begin{align*}
+I_{\C_R} = \oint_{\C_R} \frac{e^{2iz} -1}{z^2 + \epsilon^2} \; dz  & = \int_0^\pi \frac{e^{2i(R\cos(\theta) + iR\sin{\theta})} - 1}{R^2e^{2i\theta} + \epsilon^2} (Rie^{i\theta}) \; dz \\
+& = \frac{i}{R} \int_0^\pi \frac{e^{2iR\cos(\theta) - R\sin(\theta) + i\theta} - e^{i\theta}}{e^{2i\theta} + \epsilon/R^2} \; d\theta
+  \end{align*}
+
+From this, the norm can be bounded as follows:
+
+\begin{align*}                                                      \abs{I_{C_R}} \leq  \frac{1}{R} \int_0^\pi e^{-R\sin{\theta}} + 1 \; d\theta \leq \frac{2\pi}{R}
+\end{align*}
+
+  Taking $R \rightarrow \infty$ and calculating the residues:
+
+  \begin{align*}
+    \doubinfint \frac{1- e^{2iz}}{z^2 + \epsilon^2} \; dz = 2\pi i \left( \frac{1 - e^{-2\epsilon}}{2i\epsilon} \right) = -\pi \left( \frac{e^{-2\epsilon} - 1}{\epsilon}\right)
+  \end{align*}
+
+  By taking the limit $\epsilon \rightarrow \infty$ on both sides, the right-hand side will be a derivative of $e^{-2z}$ evaluated at $z = 0$:
+
+  \[\doubinfint \frac{1 - e^{2iz}}{z^2} \; dz  = - \pi (-2) = 2\pi\]
+
+  Thus, accounting for the $\frac{1}{2}$ factor in the beginning,
+\[ \doubinfint \frac{(1- e^{2iz})/2}{z^2} \; dz = \pi\]
+
+By taking the real part of this value, and dividing by half once more to account for the integration interval extension in the beginning, we arrive at the desired result:
+
+\[ \int_{0}^\infty \frac{\sin^2(x)}{x^2} \; dx = \frac{\pi}{2} \]
+
+%  By Darboux's Inequality, we see that
+%  \[ \abs{I_{\Cep}} =  e^{\epsilon} \cdot e^{-k}\pi\]
+
+  %\[\int_{\CR}\frac{e^{ikz}}{z} \; dz = \int_0^\pi \frac{e^{ik(R\cos{\theta}+ iR\sin{\theta})}}{Re^{i\theta}} (Rie^{i\theta}) \; d\theta = ie^{-R} \]
+\end{enumerate}
+
+
+\section{Problem 2}
+\begin{enumerate}
+  \item Invoke the Ratio test:
+  \[\lim_{n \rightarrow \infty} \frac{1}{n+1}\abs{\frac{a_{n+1}}{a_n}z} \]
+
+  Since the series $\sum_n a_n$ converges, the limit of the ratio of its consecutive elements must be strictly smaller than one. Thus, for sufficently large $n$, $\frac{1}{n+1}\abs{\frac{a_{n+1}}{a_n}z} \leq \frac{\abs{z}}{n+1}$ and $$\lim_{n \rightarrow \infty} \frac{\abs{z}}{n+1} = 0$$ as $\abs{z}$ is constant. It must be that the transformed series converges for all $z \in \complex$.
+
+  \item
+  By the previous part, we know that the transformed series is convergent, thus uniformly convergent, everywhere on the complex plane. Thus, the power series $\Phi(tz)$ can be integrated term-by-term to yield another convergent power series:
+
+  \begin{align*}
+    \int_0^\infty e^{-t} \Phi(tz) \; dt = \infsum \frac{a_n}{n!} \left( \int_0^\infty e^{-t} t^n \; dt\right) z^n
+  \end{align*}
+
+  The integral is actually the Laplace transform of $t^n$ evaluated at $s = 1$, $\mathcal{L}\{t^n\}(1)$ where
+
+  \[\mathcal{L}\{t^n\} = \frac{n!}{s^{n+1}}\]
+
+  This simplifies the expression into
+
+  \[\infsum \frac{a_n}{n!} \left( n!\right) z^n  = \infsum a_n z^n = f(z) \]
+
+  and we get our original function as required.
+
+  \item
+  First, suppose that $\abs{z} < 1$, then we take the Borel Transform of our series to yield
+
+  \[ \Phi(z) = \infsum \frac{z^n}{n!} = e^z \]
+
+  Evaluate the integral inverse to see that if $z = x + iy$:
+\begin{align*}
+  \int_0^\infty e^{-t}e^{tz} \; dt & = \int_0^\infty e^{(z-1)t} \; dt \\
+  & = \frac{1}{z -1} \left(e^{(z-1)t} \mid_0^\infty\right) \\
+  & = \frac{1}{z-1}\left(e^{-t}e^{xt}e^{iyt}\mid_0^\infty\right) \\
+  & = \frac{1}{1 - z}
+\end{align*}
+which is the geometric series we started with. Furthermore, note that the imaginary component $y$ vanishes when we evaluate the integral. Hence, as long as $x < 1$, this integral evaluates to the correct inverse. This shows that this integral is an analytic continuation of the original geometric series which only converges on $\abs{z} < 1$.
+
+\item
+
+If $f(z) = e^z = \infsum \frac{z^n}{n!}$, the Borel Transform will be \[\Phi(z) = \infsum \frac{z^n}{(n!)^2}\]
+
+If $I_0(z)$ denotes the modified Bessel function, then
+
+\[I_0(2\sqrt{z}) = \infsum \frac{(2\sqrt{z})^{2n}}{4^n(n!)^2} = \infsum \frac{z^n}{(n!)^2} \]
+
+\item
+For a function to have a Taylor series expanion around the origin in the form $f(z) = \infsum \frac{z^n}{(n!)^k}$ for $k = 2,3 \cdots$, we must have:
+\[ f^{(n)}(0) = \frac{1}{(n!)^{k-1}} \]
+
+A special function which satisifies this criterion is the generalized hypergeometric series:
+
+\[_0F_{k-1}(;1\cdots 1) =\infsum \frac{1}{(1)_n\cdots (1)_n} \frac{z^n}{n!} = \infsum \frac{z^n}{(n!)^k}\]
+
+where $(a)_b$ is the rising factorial symbol
+
+\[ (a)_b = \begin{cases}
+    1 \quad b = 0 \\
+    a(a+1)\cdots(a+b-1) \quad b \geq 1
+\end{cases} \]
+
+\end{enumerate}
+
+\section{Problem 3}
+\begin{enumerate}
+  \item Notice that the power series $f_1(z) = \infsum (n+1)(z+1)^{n}$ is first-order term-by-derivative of the series $\infsum (z+1)^n$ which is exactly the Taylor series expansion of the geometric series $\frac{1}{(1-(z+1))} = -\frac{1}{z}$. The derivative will of course $\frac{1}{z^2}$. Thus, we have shown that the power series converging within $\abs{z+1} < 1$ and $f_2(z) = \frac{1}{z^2}$ defined within $\complex - \{0\}$ agree on the overlap of their respective domains of analycity. By analytic continuation, we can construct a well-defined analytic function $f$ such that
+  \[ f_3(z) = \begin{cases}
+    f_1(z) \quad z \in \{z' \mid \abs{z' + 1} < 1\} \\
+    f_2(z) \quad z \in \complex - \{0\}
+  \end{cases} \]
+
+  $f_3(z)$ is defined on the entire complex plane besides the origin and agrees with the power series within its domain of convergence.
+
+  \item
+  Observe that
+  \begin{align*}
+    f_1(z) = \infsum[1] \frac{z^n}{n} = - \ln(1 - z)
+  \end{align*}
+  with domain of convergence $\abs{z} < 1$ and $z = -1$. Furthermore:
+  \begin{align*}
+    f_2(z) = i\pi + \infsum[1] (-1)^n \frac{(z-2)^n}{n} & = i\pi -\ln(1+(z-2)) \\
+    & = -\ln(e^{i\pi}(-1 +z)) \\
+    & = -\ln(1 - z)
+  \end{align*}
+
+  Hence, the function $-\ln(1-z)$ agrees with both of these power series within their domain of convergence and is analytic on $\complex - \{1\}$. We can analytically extend both power series in such a way that $-\ln(1-z)$ is an analytic continuation of each power series to $\complex - \{1\}$. However, both domains of convergence lie within $\complex - \{1\}$. Hence, they must also be analytic continuations of each other through  $-\ln(1-z)$.
+\end{enumerate}
+
+\section{Problem 4}
+
+\begin{enumerate}
+  \item
+  We will compute $\tanh^{-1}(z)$ as follows. First, note that our objective will be to solve for $w$ in the following equation:
+  \[ \tanh^{-1}(w) = \frac{e^{w} - e^{-w}}{e^w + e^{-w}} = z\]
+
+  Separate the variables into two sides:
+  \[e^{2w} = \frac{1 + z}{1 - z}\]
+  and take the logarithm to get the inverse:
+
+  \[w = \frac{1}{2} \log{\frac{1 + z}{1 - z}} \]
+
+  \item
+  Let us take the principal branch of the complex logarithm which is on the non-positive real line: $- \pi < \theta < \pi$. It suffices to find the values of $z$ which map to a negative real number under the transformation $\frac{1 + z}{1 -z}$:
+
+  \begin{align*}
+    \frac{1 + z}{1 -z} = \frac{(1+x) + iy}{(1-x) + iy} & = \frac{[(1+x) + iy][(1-x) + iy]}{(1-x)^2 + y^2} \\
+    & = \frac{(1 + x)(1 - x) - y^2 + 2iy}{(1-x)^2 + y^2}
+  \end{align*}
+
+  In order for the image to lie on the real line, $y = 0$. Furthermore, we impose:
+  \[ \frac{1+x}{1-x} < 0 \]
+
+  This can only occur if $x < -1$ or $x > 1$. This will be our branch cut. Indeed, checking \href{https://dlmf.nist.gov/4.37#ii}{NIST's Digital Library of Mathematical Functions} corroborates our findings.
+
+\end{enumerate}
+
+
+
+\section{Problem 5}
+
+Denote our integral to be evaluated by $I$:
+\[I = \int_0^\infty \frac{\sqrt{z}\log{z}}{(z-i)(z+i)} \; dz \]
+
+Integrate over the keyhole contour as suggested in the problem. Call this contour $\C = \Lcal_u, \Lcal_\ell, \C_\epsilon, \C_R$ as usual where $\Lcal_u = [\epsilon, R], \Lcal_\ell = [R,\epsilon]$, $\C_\epsilon$ is a circle centered at the origin of radius $\epsilon$ oriented clockwise and $\C_R$ is a circle also centered at the origin of radius $R$ oriented counter-clockwise. Assuming that $R,\epsilon$ suffciently large, small respectively, we invoke the Residue theorem as usual:
+
+\[ \contint \frac{\sqrt{z}\log{z}}{z^2 + 1} \; dz = \left(\left[ \int_{\C_\epsilon} + \int_{C_R}\right] + \left[\int_\epsilon^R + \int_R^\epsilon \right] \right) \frac{\sqrt{z}\log{z}}{z^2 + 1} \; dz = 2\pi i\left[\text{Res}(i) + \text{Res}(-i)\right] \]
+
+As $R \rightarrow \infty, \epsilon \rightarrow 0$, the contributions from the corresponding contours must vanish. To show this: as usual parameterize $z = Re^{\theta}$ and compute:
+
+\begin{align}
+\label{eq:reducedinteR}  I_{\C_R} = \oint_{\C_R} \frac{\sqrt{z}\log{z}}{z^2 + 1} \; dz & = \int_0^{2\pi} \frac{\sqrt{R}e^{i\theta/2}(\log{R} + i\theta)}{R^2e^{2i\theta} + 1} (Rie^{i\theta}) d\theta \\
+  & = iR^{-1/2}\int_0^{2\pi} \frac{(\log{R} + i\theta)e^{3i\theta/2}}{e^{2i\theta} + 1/R^2} d\theta
+\end{align}
+
+We can bound the norm once more through this expression:
+
+\begin{align*}
+  \abs{I_{\C_R}} \leq \frac{2\pi\log{R}}{R^{1/2}} + \frac{1}{R^{1/2}} \int_0^{2\pi} \abs{\theta} \; d\theta \leq \frac{2\pi\log{R}}{R^{1/2}} + \frac{2\pi}{R^{1/2}}
+\end{align*}
+
+Since $\log{R}$ grows asymptotically slower than $\sqrt{R}$, the norm vanishes in the limit. Furthermore, as $\epsilon \rightarrow 0$:
+
+\[\epsilon\sqrt{\epsilon}\cdot \log{\epsilon} \cdot e^{i\theta/2}+ \epsilon \cdot i\theta  \rightarrow 0\]
+
+Hence, from Equation \ref{eq:reducedinteR}, by replacing $R$ with $\epsilon$, we deduce that the contribution from the $\C_\epsilon$ arc must also vanish as $\epsilon \rightarrow 0$. \newline
+
+It suffices to direct our attention then to the contour integrals over $\Lcal_u,\Lcal_\ell$. Observe that the values of the contour along $\Lcal_u$, which is some infinitesimal distance away from the positive real line, will be close to $z^+ = x$. On the other hand, values of the contour along $\Lcal_\ell$ will be close to $z^- = xe^{2\pi i}$. This allows us to compute:
+
+\begin{align} \label{eq:landmark}
+  \int_{\epsilon}^\infty \frac{\sqrt{x}\log{x}}{x^2 + 1} \; dx - \int_{\epsilon}^\infty \frac{\sqrt{x}e^{\pi i}(\log{x}) + 2\pi i}{(xe^{2\pi i})^2 + 1} \; dx = 2 \int_{\epsilon}^\infty \frac{\sqrt{x}\log{x}}{x^2 + 1} \; dx + 2 \pi i \int_\epsilon^\infty \frac{\sqrt{x}}{x^2 + 1} \; dx
+\end{align} \newline
+
+We must now compute the value of the right most integral. In fact, we can use the same keyhole contour as was used above. A similar argument through Jordan's lemma for $C_R$ and reasoning that $\abs{\frac{\sqrt{z}}{z^2 + 1}} \rightarrow 0$ as $\epsilon \rightarrow 0$ shows that:
+
+\[\left[ \int_{\C_\epsilon} + \int_{C_R}\right] \frac{\sqrt{z}}{z^2 + 1} \; dz \rightarrow 0, \quad R\rightarrow  \infty, \epsilon \rightarrow 0 \]
+
+Reasoning on the values of the contour along $\Lcal_u, \Lcal_\ell$, we see that
+
+\begin{align*}
+  \left[\int_\epsilon^\infty + \int_\infty^\epsilon \right] \frac{\sqrt{z}}{z^2 + 1} \; dz & =\int_\epsilon^\infty  \frac{\sqrt{x}}{x^2 + 1} \; dx - \int_\epsilon^\infty \frac{\sqrt{x}e^{\pi i}}{(xe^{2\pi i})^2 + 1)} \; dx \\
+  & = 2 \int_\epsilon^\infty \frac{\sqrt{x}}{x^2 + 1} \; dx
+\end{align*}
+
+Once more, by Residue Theorem, by taking $R \rightarrow \infty, \epsilon \rightarrow 0$:
+\begin{align*}
+\int_{0}^\infty \frac{\sqrt{x}}{x^2 + 1} \; dx & = \pi i \left[\text{Res}(i) + \text{Res}(-i)\right] \\
+& = \pi i \left[ \frac{e^{i\pi/4}}{2i} - \frac{e^{i3\pi/4}}{2i}\right] \\
+& = \frac{\pi}{2} \left[e^{i\pi/4} - e^{i3\pi/4}\right] \\
+& = \frac{\pi}{\sqrt{2}}
+\end{align*} \newline
+
+Now back to our original integral calculations. Take the value just computed as substitute into Equation \ref{eq:landmark} after taking the limits $R \rightarrow \infty, \epsilon \rightarrow \infty$:
+
+\begin{align*}
+  2 \int_0^\infty \frac{\sqrt{x}\log{x}}{x^2 + 1} \; dx + \frac{\pi^2 i}{\sqrt{2}} = 2\pi i \left[\text{Res}(i) + \text{Res}(-i)\right]
+\end{align*}
+
+We finally compute the residues and simplify:
+
+\begin{align*}
+  \int_0^\infty \frac{\sqrt{x}\log{x}}{x^2 + 1} \; dx & = \pi i \left(\frac{\pi e^{i\pi/4}}{4} - 3\frac{\pi e^{3i \pi/4}}{4}\right ) - \frac{\pi^2 i}{\sqrt{2}} \\
+  & = \frac{\pi^2 i}{4} \left[e^{i\pi/4} - 3e^{3\pi i /4}\right] - \frac{\pi^2 i}{\sqrt{2}} \\
+  & = \left(\frac{\pi^2 i \sqrt{2}}{2} + \frac{\pi^2 \sqrt{2}}{4}\right) - \frac{\pi^2 i}{\sqrt{2}} \\
+  & = \frac{\pi^2}{2\sqrt{2}}
+\end{align*}
+
+\end{document}

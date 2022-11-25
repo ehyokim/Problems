@@ -1,0 +1,48 @@
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+
+% General Mathematical Notation
+\newcommand{\reals}{{\mathbb{R}}}
+\newcommand{\complex}{{\mathbb{C}}}                    %reals                  %reals
+\newcommand{\nnreal}{{\nnnum R}}
+                   %nonnegative
+
+\newcommand{\nat}{\mathbb{N}}                      %natural numbers
+\newcommand{\integers}{{\num Z}}                      %integers
+\newcommand{\rat}{{\num Q}}                      %rationals
+\newcommand{\nnrat}{{\nnnum Q}}
+
+\newcommand{\boldu}{\textbf{u}}
+\newcommand{\boldv}{\textbf{v}}
+%\newcommand{\ip}[1][2]{\langle {#1}, {#2},\rangle}
+
+% Differentiation
+\newcommand{\totderop}[1][]{\frac{d^{#1}}{dx^{#1}}}
+\newcommand{\partder}[2]{\frac{\partial{#1}}{\partial{#2}}}
+\newcommand{\totder}[2]{\frac{d{#1}}{d{#2}}}
+
+% Integration
+\newcommand{\doubinfint}{\int_{-\infty}^{\infty}}
+
+% Environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+
+% Series
+\newcommand{\powaseries}[1][0]{\sum_{n = {#1}}^{\infty}}
+
+% Vector Spaces
+
+% Hilbert Space
+\newcommand{\hil}{\mathcal{H}}
+\newcommand{\bhilop}{\mathcal{B}(\mathcal{H})}
+
+% Distributions
+\newcommand{\testfunc}{C_F^{\infty}(\reals)}
+\newcommand{\prinval}[1]{P\left({#1}\right)}
+
+% Typesetting
+\newcommand{\para}[1]{\left( {#1} \right)}
+% \newcommand{\brack}[1]{\left[ {#1} \right]}

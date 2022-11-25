@@ -1,0 +1,328 @@
+\documentclass[12pt]{article}%
+\input{preamble}
+
+\newcommand{\Uone}{\mathcal{U}_1}
+\newcommand{\Utwo}{\mathcal{U}_2}
+\newcommand{\Uint}{\Uone \cap \Utwo}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\gpart}[1][t]{\frac{\partial g(x,t)}{\partial {#1}}}
+\setlength\parindent{0pt}
+\newcommand{\Legen}[1][n]{(x^2 - 1)^{#1}}
+
+\newcommand{\normphi}[1][v]{\abs{\Phi\left({#1}
+\right)}}
+
+\newcommand{\disip}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\infsum}[1][0]{\sum^{\infty}_{n = {#1}}}
+\newcommand{\posinfint}[1][0]{\int_{#1}^\infty}
+\newcommand{\neginfint}[1][0]{\int_{-\infty}^{#1}}
+
+% Fourier Shortcuts
+\newcommand{\piinter}{[-\pi,\pi]}
+\newcommand{\pifrac}{\frac{1}{\pi}}
+\newcommand{\piint}[2][x]{\int_{-\pi}^\pi {#2} \; d{#1}}
+\newcommand{\twopiint}[2][x]{\int_{0}^{2\pi} {#2} \; d{#1}}
+\newcommand{\foutrans}[1][k]{\tilde{f}({#1})}
+
+% Misc
+\newcommand{\parafrac}[2]{\para{\frac{#1}{#2}}}
+
+%HW 10
+\newcommand{\wc}{w(\mathcal{C})}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\contint}[1][\mathcal{C}]{\oint_{#1}}
+
+
+\title{PHY510 HW 10}
+\author{Edward Kim}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{Problem 1}
+
+We first calculate the integral on the right-hand side of the equality:
+
+\begin{align*}
+  \contint f(w(z)) \frac{dw}{dz} \; dz = -i \contint \left(\frac{z - i}{z + i} \right) \frac{dw}{dz} \; dz = \doubinfint \left(\frac{x - i}{x + i} \right) \frac{dw}{dx} dx
+\end{align*}
+
+The derivative of $w$ in respect to the real variable $x$ can be directly computed:
+
+\[ \frac{dw}{dx} = \frac{4 x^2}{\left(x^2+1\right)^2}-\frac{2}{x^2+1}+i \left(\frac{2 x}{x^2+1}+\frac{2 x}{\left(x^2+1\right)^2}-\frac{2 x^3}{\left(x^2+1\right)^2}\right) \]
+
+Taking the integral over the product of this derivative and the integrand above, shows that
+\[\doubinfint \left(\frac{x - i}{x + i} \right) \frac{dw}{dx} dx = 2\pi i\]
+
+Now consider the left-side. Expanding $w$ in terms of $x$ into its real and imaginary components shows that:
+
+\[ w(z) = -\frac{2 x}{x^2+1}+i \left(\frac{x^2-1}{x^2+1}\right) \]
+
+Consider the asymptotic behavior when $x \rightarrow \infty$. In this case, the real component vanishes and the imaginary component approaches $i$. The same can be said for $x \rightarrow - \infty$. Hence, $\lim_{x \rightarrow \infty} w(x) = \lim_{x \rightarrow -\infty} w(x) = i$. Furthermore, $w(0) = -i$ and
+
+\[ \abs{w(x)} = ((2 x)/(1 + x^2))^2 + ((-(1/(1 + x^2)) + x^2/(1 + x^2)))^2 = \frac{1 + 2x^2 + x^4}{(1+x^2)^2} = 1\]
+for all $x \in \reals$. It follows that the left-hand integral is simply a contour integral over the unit circle, and the integral computes the winding number of this circle in respect to the origin. A simple parametrization, $C(z) = e^{i\theta}$ for $0 \leq \theta \leq 2\pi$, shows that this integral must be $2\pi i$ as expected.
+
+\section{Problem 2}
+
+\begin{description}
+  \item[[H] 10.33 (a), (b), (e)]
+  \begin{enumerate}
+    \item
+
+    The function $e^{-z}$ is entire and thus analytic inside the and square contour $\C$. By Cauchy integral formula,
+    \[ \oint_{\C} \frac{e^{-z}}{z - i\pi/2} = 2\pi i (e^{-i\pi/2}) = 2\pi \]
+
+    \item
+    Set $f(z) = e^{z}/(z^2 + 10)$. This function is analytic everywhere except at $z = \pm 10i$. Both of these poles lie outside of $\C$. So,
+    \[\oint_{\C} \frac{e^{z}}{z^2 + 10} dz = \oint_{\C} \frac{f(z)}{z} dz = 2\pi i f(0) = \frac{\pi i}{5}\]
+
+    \item
+    $f(z) = \cosh{z}$ is an entire function, so we use the derivative formula to calculate that:
+    \[ \oint_{\C} \frac{\cosh{z}}{z^4} dz = \frac{2\pi i}{3!}f^{(3)}(0) =  \frac{2\pi i}{3!}\sinh(0) = 0\]
+  \end{enumerate}
+
+  \item[[H] 10.34 ((b),(f))]
+
+  \begin{enumerate}
+    \item Since \[ \frac{\sinh{z}}{(z^2 + \pi^2)^2} = \frac{\sinh{z}}{(z + i\pi )^2 (z - i \pi)^2} \] The only pole which is contained within the region closed by $|z - i| = 3$ is the order two pole $ i\pi$. Set $f(z) = \frac{\sinh{z}}{(z + i\pi)^2}$. Then
+    \[  \oint_{\C} \frac{\sinh{z}}{(z^2 + \pi^2)^2} dz = \oint_{\C} \frac{f(z)}{(z - i\pi)^2} dz = 2\pi i f'(\pi i) = 2\pi i \frac{1}{4\pi^2} = \frac{i}{2\pi} \]
+
+    \item
+    Since \[ \frac{z^2 - 3z + 4}{z^2 -4z + 3} = \frac{z^2 - 3z  +4}{(z-1)(z-3)} \]
+    and $d(i,1) = \sqrt{2}$ and $d(i,3) = \sqrt{10}$, only $z = 1$ lies within the region enclosed by the contour $\C$. By setting $f(z) = \frac{z^2 - 3z + 4}{(z-3)}$ and using Cauchy's Integral Formula, we see that:
+    \[ \oint_{\C} \frac{z^2 - 3z + 4}{z^2 -4z + 3} dz = \oint_{\C} \frac{f(z)}{z-1} dz = 2\pi i f(1) = - 2 \pi i   \]
+  \end{enumerate}
+\end{description}
+
+\section{Problem 3}
+
+Recall that the generalized Rodriguez formula tells that:
+
+\[ P_n(x) = \frac{(-1)^n}{2^n
+\cdot n!}\frac{d^n}{dx^n}(1- x^2)^n \] for $x \in \reals$. If we restrict ourselves to the region enclosed by the unit circle $\C$, we see that $(1-x^2)^n$ is actually analytic within this region as an entire function. Hence, if our real $|x| < 1$, by the Cauchy Integral Formula for higher order derivatives:
+
+\[ P_n(x) = \frac{(-1)^n}{2^n
+\cdot (2 \pi i )} \oint_{\C} \frac{(1 - z^2)^n}{(z - x)^{n+1}} dz \]
+
+as \[ \frac{1}{n!}\frac{d^n}{dx^n}(1- x^2)^n =  \frac{1}{2\pi i} \oint_{\C} \frac{(1 - z^2)^n}{(z - x)^{n+1}}  dz \] if $|x| < 1$.
+
+\section{Problem 4}
+
+\begin{description}
+  \item[[H] 10.39 (b),(d),(h)]
+  \begin{enumerate}
+    \item $f(z) = z \cos{z^2}$ is entire, so we should only expect non-negative degree terms in our expansion. Since
+    \[ \cos(z^2) = \sum_{n = 0}^\infty (-1)^n \frac{z^{4n}}{(2n)!} \] The full expansion will be
+    \[ z \cos{z^2} = \sum_{n = 0}^\infty (-1)^n \frac{z^{4n+1}}{(2n)!} = z - \frac{z^5}{2!} + \frac{z^9}{4!} - \cdots \]
+    and this expansion is valid for the entire complex plane.
+
+    \item $f(z) = \frac{\sinh{z} - z}{z^4}$ is analytic everywhere except $z=0$. We calculate the expansion around the origin as follows:
+    \begin{align*}
+      \frac{\sinh{z} - z}{z^4} & = \frac{\sinh{z}}{z^4} - \frac{1}{z^3} \\
+     & = \frac{1}{z^4}\left(\sum_{n = 0}^\infty \frac{z^{2k+1}}{(2k+1)!}\right) - \frac{1}{z^3} \\
+     & = \sum_{n = 1}^\infty \frac{z^{2k-3}}{(2k+1)!} \\
+     & = \frac{1}{3!z} + \frac{z}{5!} + \frac{z^3}{7!} + \cdots
+    \end{align*}
+
+    Note that this expansion holds in region $0 < |z| < \infty$.
+
+    \item For the function $f(z) = \frac{1}{(z^2 -1)^2}$, we see that there are singularities on the disk $|z| = 1$. Consider the case $|z| > 1$,
+
+    \begin{align*}
+      \frac{1}{(1-z^2)^2} & = \frac{1}{z^4}\frac{1}{(1 - 1/z^2)^2} \\
+      & = \frac{1}{z^4}\left(\sum_{n = 0}^\infty z^{-2n}\right)^2 \\
+      & = \left(\sum_{n = 0}^\infty z^{-2(n+1)}  \right)^2 \\
+      & = \left(\frac{1}{z^2} + \frac{1}{z^4} + \frac{1}{z^6} + \cdots  \right)^2 \\
+      & = \frac{1}{z^4} + \frac{2}{z^6} + \frac{3}{z^8} + \cdots
+    \end{align*}
+
+    The second equality holds since $|z| > 1$. Similarly, we compute the case when $|z| < 1$, which yields:
+
+    \begin{align*}
+      \frac{1}{(1-z^2)^2} & = \left( \sum_{n = 0}^\infty z^{2n} \right)^2 \\
+      & = 1 + 2z^2 + 4z^4 + \cdots
+    \end{align*}
+  \end{enumerate}
+
+  \item[[H] 10.42 (e)]
+  We first expand the denominator in terms of its power series expansion around the origin:
+
+  \begin{align*}
+      6z + z^3 - 6 \sinh{z} = -6\left(\frac{z^5}{5!} + \frac{z^7}{7!} + \cdots \right)
+  \end{align*}
+
+  Dividing both the numerator and denominator by $z^4$ (which we can do since we are excluding $z = 0$ in our expansion):
+  \[\frac{z^4}{6z + z^3 - 6\sinh{z}} = -\frac{1}{6}\left(\frac{z}{5!} + \frac{z^3}{7!} + \frac{z^5}{9!} + \cdots \right)^{-1}\]
+
+  We can compute the reciprocal of the power series, by utilizing the product rule for power series and requiring that multiplying the power series by our reciprocal yields a constant one and trivial coefficient for all terms with degree at least one. This formula can be used recursively. So, it can be calculated that:
+
+  \[\left(\frac{z}{5!} + \frac{z^3}{7!} + \frac{z^5}{9!} + \cdots \right)^{-1} = \frac{5!}{z} - \frac{(5!)^2}{7!}z + \cdots \]
+
+  Hence,
+  \[\frac{z^4}{6z + z^3 - 6\sinh{z}} = - \frac{20}{z} + \frac{10}{21}z + \cdots \]
+\end{description}
+
+By the Residue Theorem, it follows that \[ \oint_{\C}\frac{z^4}{6z + z^3 - 6\sinh{z}} dz = 2\pi i (-20) = -40\pi i\]
+for some small circle encircling the origin.
+
+\section{Problem 5}
+\begin{description}
+  \item[[H] 11.1]
+  From the previous homework, we know that $\cos{z}$ can only have real roots. It follows that $\tan{z}$ has singularities at $z = \frac{(2k+1)\pi}{2}$ for $k \in \mathbb{Z}$ but analytic everywhere else. Only $z = \pm \frac{\pi}{2}$ lie within the circle $\abs{z} = 3$. Denote this circle as $\C$. By Residue Theorem,
+  \[\oint_{\C} \tan{z} dz = 2 \pi i \left[ \text{Res}\left(\frac{\pi}{2}\right) + \text{Res}\left(-\frac{\pi}{2}\right)\right]\]
+
+  To compute the residues, we expand out the Laurent series around $z = \frac{\pi}{2}$ first. To this end, we see that, by the product role for power series,:
+
+  \begin{align*}
+    \frac{1}{\cos{z}} & = \left(-(z- \frac{\pi}{2}) + \frac{(z- \frac{\pi}{2})^3}{3!} - \frac{(z- \frac{\pi}{2})^5}{5!} + \cdots \right)^{-1} \\
+    & = -\frac{1}{z - \frac{\pi}{2}} + \cdots
+  \end{align*}
+
+   We only care about the $b_{-1}$ coefficient, so the truncation is sensible here. By multiplying the Taylor expansion for $\sin{z}$ around $\pi/2$:
+
+   \begin{align*}
+     \frac{\sin{z}}{\cos{z}} & = \left(1 - \frac{(z - \frac{\pi}{2})^2}{2!} + \frac{(z - \frac{\pi}{2})^4}{4!} + \cdots \right)\left(-\frac{1}{z - \frac{\pi}{2}} + \cdots \right) \\
+     & = -\frac{1}{z - \frac{\pi}{2}} + \cdots
+   \end{align*}
+
+   Combining these results shows that $\text{Res}(\frac{\pi}{2}) = -1$. We can perform a similar expansion for the two functions on $z = - \pi/2$. This would simply flip the signs for every term in both $\frac{1}{\cos{z}}$ and $\sin{z}$. Hence, the expansion around $-\pi/2$ will be
+   \begin{align*}
+     \frac{\sin{z}}{\cos{z}} & = \left(-1 + \frac{(z + \frac{\pi}{2})^2}{2!} - \frac{(z + \frac{\pi}{2})^4}{4!} + \cdots \right)\left(\frac{1}{z + \frac{\pi}{2}} - \cdots \right) \\
+     & = -\frac{1}{z + \frac{\pi}{2}} + \cdots
+   \end{align*}
+
+   and $\text{Res}(-\frac{\pi}{2}) = -1$. All together,
+   \[ \oint_{\C} \tan{z} dz = -4 \pi i\]
+
+  \item[[H] 11.5 (h)]
+  First, we extend the integration region to the negative reals as the integrand is even, so it suffices to first evaluate $$ \doubinfint \frac{2x^2 -1}{x^6 + 1} dx = ?$$
+  To this end, we first observe that the poles of the integrand are the six complex roots of the polynomial $z^6 + 1$, which are $e^{i(\pi/6)}, e^{i(\pi/2)}, e^{i(5\pi/6)},e^{i(7\pi/6)},e^{i(9\pi/6)},e^{i(11\pi/6)}$.
+
+  Consider the contour positively oriented along the positive semi-circle $\C$ centered at the origin with radius $R$. Let $\C_R$ denote the upper-half of the semi-circle not lying on the real line. By the Residue Theorem,
+
+  \[ \oint_{\C} \frac{2z^2 -1}{z^6 + 1} dz =  \int_{-R}^R \frac{2z^2 -1}{z^6 + 1} dz + \oint_{\C_R} \frac{2z^2 -1}{z^6 + 1} dz = 2 \pi i \left[\text{Res}(e^{i(\pi/6)}) + \text{Res}(e^{i(\pi/2)}) + \text{Res}(e^{i(5\pi/6)})\right]\]
+
+  By Jordan's Lemma,
+  \[  \lim_{R \rightarrow \infty} \abs{\oint_{\C_R} \frac{2z^2 -1}{z^6 + 1} dz} = 0 \]
+
+  To see this, parametrize $\C_R$ as $z = Re^{i\theta}$ with $0 \leq \theta \leq 2\pi$. Evaluating the integral reveals that:
+
+  \[\abs{\int_{0}^{2\pi} \frac{2(Re^{i\theta})^2 - 1}{(Re^{i\theta})^6 + 1}} = \frac{1}{R^4}\int_{0}^{2\pi}  \abs{\frac{2e^{2i\theta} - 1/R^2}{e^{6i\theta} - 1/R^6}} \]
+
+  As $R \rightarrow \infty$, the integrand will eventually be bounded from above by a constant, namely $2$. So the integral must vanish.
+
+  Now we compute the residues for $e^{i(\pi/6)}, e^{i(\pi/2)}, e^{i(5\pi/6)}$. These will be simple poles, so we can calculate them directly. For example.
+
+    \begin{align*}
+        \text{Res}(e^{i\pi/6}) & = \frac{-1+2 e^{\frac{i \pi }{3}}}{\left(e^{\frac{i \pi }{6}}-i\right) \left(i+e^{\frac{i \pi }{6}}\right) \left(e^{\frac{i \pi }{6}}-e^{-\frac{1}{6} (i \pi )}\right) \left(e^{\frac{i \pi }{6}}-e^{-\frac{1}{6} (5 i \pi )}\right) \left(e^{\frac{i \pi }{6}}-e^{\frac{5 i \pi }{6}}\right)}
+    \end{align*}
+
+    Mathematica was used here to do some simplifications to the residue values. We can add the three computed residue values to find that:
+
+    $2\pi i\left[\text{Res}(e^{i(\pi/6)}) + \text{Res}(e^{i(\pi/2)}) + \text{Res}(e^{i(5\pi/6)})\right] = 2\pi i(0) = 0$
+
+    Thus, by taking $R \rightarrow \infty$, $\doubinfint \frac{2z^2 -1}{z^6 + 1} dz = 0$ and the postive half of the integral must also vanish.
+
+  \item[H 11.8]
+  First, extend the integration interval to the entire real line. We now compute $\doubinfint e^{-x^2}\cos{2bx} \; dx$
+  for $b \neq 0$. First, assume that $b > 0$. Take the integrand to the complex plane, so we can associate the real integral with the real component of the Gaussian integral:
+
+  \[ \doubinfint e^{-z^2 + 2ibz} \; dz = e^{-b^2} \doubinfint e^{-(z + bi)^2} \; dz = e^{-b^2} \int_{-\infty + bi}^{\infty + bi} e^{-u^2} \; du\]
+
+where the last equality arises from the subsitution $u = z + bi$. Consider the positively oriented contour $\C = \C_1 + \C_2 + \C_3 + \C_4$ comprised of four smooth arcs defined by $\C_1 = [-R, R], \C_2 = [R, R + bi], \C_3 = [R+bi, -R + bi], \C_4 = [-R + bi, -R]$. Since $e^{-u^2}$ is entire over the $u$-plane, the Cauchy-Goursat Theorem tells us that $\oint_\C e^{-u^2} du = 0$.
+
+The integrals over the arcs $\C_2,\C_4$ will vanish as $R \rightarrow \infty$. For example,
+
+\[ \abs{\oint_{\C_2} e^{-u^2} \; du} = \abs{\int_0^b e^{-(R + iy)} \; dy} = e^{-R} \abs{\int_0^b e^{-iy} \; dy} \leq be^{-R}\]
+
+The right-hand side vanishes exponentially. This only leaves us with the equality:
+
+\[ \int_{-R}^R e^{-u^2} \; du = -\int_{R + bi}^{-R + bi} e^{-u^2} \; du  = \int_{-R + bi}^{R + bi} e^{-u^2} \; du\]
+
+Taking the limit of both sides $R \rightarrow \infty$, the left side can be equated to the real Gaussian integral:
+
+\[\int_{-\infty + bi}^{\infty + bi} e^{-u^2} \; du = \sqrt{\pi} \]
+
+Hence, by accounting for the even extension in the beginning and the exponential factor:
+
+\[ \int_0^\infty e^{-x^2}\cos{2bx} \; dx = \frac{\sqrt{\pi}}{2}e^{-b^2}\]
+
+For the case where $b < 0$, will be identical as $\cos(2bx)$ is an even function.
+
+
+\end{description}
+
+
+\section{Problem 6}
+\begin{enumerate}[i.]
+  \item
+  As usual, we ``complexify" the integrand and focus our attention to the integral
+  \[ \int_0^\infty e^{i z^2} \; dz \]
+  We will calculate this integral by first integrating over the positively oriented contour depending on positive real parameter $R$: $\C = \C_1 + \C_2 + \C_3$ where $\C_1 = [0,R], \C_3 = [Re^{i\pi/4}, 0]$ and $\C_2$ will be the circular arc beginning from $R$ on the real line to $Re^{i\pi/4}$. Since $e^{iz^2}$ is entire, the Cauchy-Goursat Theorem states that $\oint_{\C} e^{iz^2} dz = 0$. Furthermore, $\oint_{\C_2} e^{iz^2} dz \rightarrow 0$ as $R \rightarrow \infty$:
+
+  \begin{align*}
+    \oint_{\C_2} e^{iz^2} dz & = \int_0^{\pi/4} e^{i(R\cos{\theta} + iR\sin{\theta})^2} \left(-R\sin{\theta} + iR\cos{\theta}\right) \; d\theta \\
+    & =Re^{-R^2}\int_0^{\pi/4}  e^{-i(\cos{2\theta} + 2i\sin{2\theta})} (-\sin{\theta} + i \cos{\theta})\; d\theta
+    \leq Re^{-R^2}\left(\frac{\pi}{2} \cdot e^2 \right)
+  \end{align*}
+  The inequality uses the Darboux inequality. Rearranging the terms in the equality shows that:
+
+  \[ \int_0^R e^{i z^2} \; dz = \int_0^{Re^{i\pi/4}} e^{iz^2} \; dz = e^{i\pi/4}\int_0^R e^{-t^2} dt\]
+
+  The second equality holds by the substitution $z = te^{i\pi/4}$ and $dz =e^{i\pi/4} dt $. By taking the limit on both sides $R \rightarrow \infty$ and equating the rightside with the real Gaussian integral,
+
+  \[ \int_0^\infty e^{i z^2} \; dz = e^{\pi i/4}\frac{\sqrt{\pi}}{2} \]
+
+  By taking the real and complex components of the complex value on the right, we arrive at
+
+  \[  \int_0^\infty \cos(x^2) \; dx = \int_0^\infty \sin(x^2) \; dx = \frac{\pi}{2\sqrt{2}}\]
+
+  \item
+
+
+  \item
+  Solving for the roots of $\frac{1}{1 + x^n}$, we find that the roots are exactly $e^{i\pi(2k+1)/n}$ for $k = 0, \cdots, n-1$. We will integrate over the pie slice contour parametrized by a radius $R$ and consisting of separate positively oriented arcs $\C = \C_1 + \C_2 + \C_3$ where $\C_1 = [0,R]$, $\C_3 = [Re^{2i\pi/n}, 0]$ and $\C_2$ is the circular arc connecting $R$ and $Re^{2i\pi/n}$. There is one isolated singularity at $e^{i\pi/n}$ located within the region enclosed by $\C$. Hence, by the Residue Theorem:
+
+  \[ \oint_{\C} \frac{1}{1 + z^n} dz = 2\pi i \cdot \text{Res}(e^{i \pi}/ n) \]
+
+  We will show that the integral over $\C_2$ will vanish in the limit as $R \rightarrow \infty$.
+
+  \begin{align*}
+    \abs{\oint_{\C_2} \frac{1}{1 + z^n} \; dz} = \abs{\int_0^{2\pi/n} \frac{Rie^{i\theta}}{1 + (Re^{i\theta})^n}\; d\theta} = \frac{1}{R^{n-1}} \abs{\int_0^{2\pi/n} \frac{e^{i\theta}}{e^{ni\theta} + 1/R^n}} \leq
+  \end{align*}
+
+By the application of the Darboux inequality for the norm of the integral on the right side, the whole term will vanish as $r \rightarrow \infty$. Furthermore, the value of the integral over $C_3$ can be calculated:
+
+\[ \oint_{\C_3} \frac{1}{1 + z^n} \; dz = - \int_{0}^{R} \frac{e^{2i\pi /n}}{1 + (te^{2i\pi/n})^n} \; dt = - e^{2i\pi/n} \int_0^R \frac{1}{1 + t^n} \; dt \]
+
+By taking the limit $R \rightarrow \infty$, this integral will align with our starting integral. Combining the observations above,
+
+\[ (1-e^{2i\pi/n})\int_0^\infty \frac{1}{1 + z^n} \; dz = 2\pi i \cdot \text{Res}(e^{i\pi/n}) \]
+
+$e^{i\pi/n}$ is a simple pole of the integrand, we can compute the residue as we did in Problem 6 Part 2:
+
+$$ \text{Res}(e^{i\pi /n}) = \frac{1}{P_n}, \quad P_n = \prod_{i=1}^{n-1} e^{i\pi/n} - e^{(2k+1)i\pi/n}$$
+
+However, note that $P_n = n(e^{i\pi/n})^{n-1}$. To see this, note that any degree $d$ complex polynomial with simple roots of the form $p(z) = (z-z_0)(z-z_1)\cdots (z - z_{d-1})$,
+
+\[p'(z) = \sum_{i = 0}^{d-1} (z-z_0)\cdots\widehat{(z-z_i)}\cdots (z- z_{d-1}) \]
+
+where the hat means that the term is omitted from the term. Hence, $p'(z_i) = (z_i - z_0)\cdots (z_i - z_{i-1})(z_i - z_{i+
+1})\cdots(z_i - z_{d-1})$ for every such $i$. We see that the residue aligns with the derivative of $x^6+1$ at $e^{i\pi/n}$.
+
+This implicitly employs a property derived by [H] Problem 11.2. This equivalence can be shown through a complex version of L'Hopital's Rule and writing $h(z) = (z-z_0)\ell(z)$ where $z_0$ is a simple zero of $h$ and $\ell(z)$ is an analytic function which does not vanish at $z = z_0$.
+
+In the end, we have that
+
+\[(1-e^{2\pi / n})\int_0^\infty \frac{1}{1 + z^n} \; dz = \frac{2\pi i}{ne^{i\pi (n-1)/n}} = \frac{\pi}{n}\left(\frac{2i}{e^{i\pi}e^{-i\pi/n}}\right)= -\frac{\pi}{n}\left(\frac{2i}{e^{-i\pi/n}}\right)\]
+
+Dividing both sides by $(1-e^{2\pi / n})$ reveals the desired identity:
+
+\[\int_0^\infty \frac{1}{1 + z^n} \; dz = -\frac{\pi}{n}\left(\frac{2i}{e^{-i\pi/n}(1-e^{2\pi / n})}\right) = -\frac{\pi}{n}\left(\frac{2i}{e^{-i\pi/n} - e^{i\pi / n}} = \right) = \frac{\pi/n}{\sin{\pi/n}} \]
+
+
+\end{enumerate}
+
+
+\end{document}
