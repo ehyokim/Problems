@@ -1,0 +1,234 @@
+\documentclass[12pt]{article}%
+\input{preamble}
+
+\newcommand{\Uone}{\mathcal{U}_1}
+\newcommand{\Utwo}{\mathcal{U}_2}
+\newcommand{\Uint}{\Uone \cap \Utwo}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\gpart}[1][t]{\frac{\partial g(x,t)}{\partial {#1}}}
+\setlength\parindent{0pt}
+\newcommand{\Legen}[1][n]{(x^2 - 1)^{#1}}
+
+\newcommand{\normphi}[1][v]{\abs{\Phi\left({#1}
+\right)}}
+
+\newcommand{\disip}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\infsum}[1][0]{\sum^{\infty}_{n = {#1}}}
+\newcommand{\posinfint}[1][0]{\int_{#1}^\infty}
+\newcommand{\neginfint}[1][0]{\int_{-\infty}^{#1}}
+
+% Fourier Shortcuts
+\newcommand{\piinter}{[-\pi,\pi]}
+\newcommand{\pifrac}{\frac{1}{\pi}}
+\newcommand{\piint}[2][x]{\int_{-\pi}^\pi {#2} \; d{#1}}
+\newcommand{\twopiint}[2][x]{\int_{0}^{2\pi} {#2} \; d{#1}}
+\newcommand{\foutranscoeff}[1][k]{\tilde{f}({#1})}
+\newcommand{\foutrans}[1]{\mathcal{F}\left[{#1}\right](k)}
+
+% Misc
+\newcommand{\parafrac}[2]{\para{\frac{#1}{#2}}}
+
+%HW 10
+\newcommand{\wc}{w(\mathcal{C})}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\Lcal}{\mathcal{L}}
+\newcommand{\contint}[1][\mathcal{C}]{\oint_{#1}}
+\newcommand{\Cep}{\mathcal{C}_\epsilon}
+\newcommand{\CR}{\mathcal{C}_R}
+\newcommand{\sgn}[1]{\text{sgn}({#1}) }
+
+
+\title{PHY510 HW 12}
+\author{Edward Kim}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{Problem 1}
+
+\begin{enumerate}
+  \item The Gamma function can be re-expressed in terms of a proper limit:
+  \begin{align*}
+    \Gamma(z) & = \lim_{n \rightarrow \infty} \int_0^n t^{z-1}\left(1 - \frac{t}{n}\right)^n \; dt \\[1em]
+    & = \lim_{n \rightarrow \infty}  \left[\cancel{\frac{t^z}{z} \left(1 - \frac{t}{n}\right)^n \Big|_0^n} + \frac{n}{z\cdot n} \int_0^n t^z \left(1-\frac{t}{n}\right)^{n-1} \; dt \right] \\[1em]
+    & =  \lim_{n \rightarrow \infty} \frac{n}{z\cdot n} \left[\cancel{\frac{t^{z+1}}{z+1} \left(1 - \frac{t}{n}\right)^n \Big|_0^n} + \frac{n-1}{(z+1)\cdot n} \int_0^n t^{z+1} \left(1 - \frac{t}{n}\right)^{n-2} \; dt\right]
+  \end{align*}
+
+  Continuing this procedure, we easily see that:
+  \begin{align*}
+      \Gamma(z) & = \lim_{n \rightarrow \infty} \frac{n \cdot (n-1) \cdots 1}{z \cdot (z+1) \cdot (z+n-1)} \frac{1}{n^n} \int_0^n t^{z+n-1} \; dt \\[1em]
+      & = \lim_{n \rightarrow \infty} \frac{n \cdot (n-1) \cdots 1}{z \cdot (z+1) \cdot (z+n-1)} \cdot \frac{1}{n^n} \cdot \frac{n^{z+n}}{z+n} \\[1em]
+      & =  \lim_{n \rightarrow \infty}  \frac{ n \cdot (n-1) \cdots 1}{z \cdot (z+1) \cdot (z+n)} \cdot n^z
+  \end{align*}
+  as desired.
+
+  \item
+  We first check that
+  \[ \prod_{n=1}^{N-1} \left(1 + \frac{1}{n}\right)^z = \prod_{n=1}^{N-1} \left(\frac{n+1}{n}\right)^z = 1 \cdot N^z \]
+
+  Now from (1.3):
+
+  \begin{align*}
+    \Gamma(z) & = \lim_{n \rightarrow \infty}  \frac{ n \cdot (n-1) \cdots 1}{z \cdot (z+1) \cdot (z+n)} \cdot n^z \\[1em]
+    & = \frac{1}{z}\lim_{n \rightarrow \infty}  \prod_{k=1}^{n-1} \left(1 + \frac{1}{k}\right)^z \prod_{k=1}^n \left(\frac{z +k}{k}\right)^{-1} \\[1em]
+    & = \frac{1}{z} \prod_{n=1}^\infty \left(1 + \frac{1}{n}\right)^z\left(1 + \frac{z}{n}\right)^{-1}
+  \end{align*}
+
+  Now from (1.1), we shall prove (1.3). To this end,
+  \begin{align*}
+    \frac{1}{\Gamma(z)} & = z \prod_{n=1}^\infty \left(1 + \frac{1}{n}\right)^{-z}\left(1 + \frac{z}{n}\right) \\
+    & = z  \prod_{n=1}^\infty e^{-\log(1 + \frac{1}{n})z} \left(1 + \frac{z}{n}\right) \\
+    & = z  \prod_{n=1}^\infty e^{-(\log(n+1) - \log(n))z}\left(1 + \frac{z}{n}\right) \\
+  \end{align*}
+
+  The terms in the exponent comprise a telescoping sum. These cancellations can be seen by first expressing the product as a limit:
+  \begin{align*}
+     \frac{1}{\Gamma(z)} & = z \lim_{N \rightarrow \infty}  e^{-\log(N)z} \prod_{n=1}^{N-1} \left(1 + \frac{z}{n}\right) \\
+     & = z \lim_{N \rightarrow \infty} e^{z\left(\sum_{i=1}^N \frac{1}{i} - \log(N)\right)}  \prod_{n=1}^{N-1} \left(1 + \frac{z}{n}\right)e^{-z/n} \\
+     & = z e^{\gamma z}\prod_{n=1}^\infty \left(1 + \frac{z}{n}\right)e^{-z/n}
+  \end{align*}
+
+  This is the Weierstrass product formula we sought.
+
+  \item
+  The Mittag-Leffler Expansion yields the following product expansion:
+
+  \begin{align*}
+    \frac{\sin(z)}{z} = \prod_{n=1}^\infty \left(1 - \frac{z^2}{n^2\pi^2}\right)
+  \end{align*}
+
+  From the Weierstrass product formula, we find that
+
+  \begin{align*}
+    \frac{1}{\Gamma(z)\Gamma(-z)} & = -z^2e^{\gamma z} e^{-\gamma z}\left(\prod_{n=1}^\infty \left(1 + \frac{z}{n}\right)e^{-z/n}\right)\left(\prod_{n=1}^\infty \left(1 - \frac{z}{n}\right)e^{z/n}\right) \\
+    & = -z^2 \prod_{n=1}^\infty \left(1 + \frac{z}{n}\right)\left(1 - \frac{z}{n}\right) \\
+    & = -z^2 \prod_{n=1}^\infty \left(1 - \frac{z^2}{n^2}\right)
+  \end{align*}
+
+  By dividing a $-z$ factor and utilizing the product formula for $\sin(z)$ above, we see that
+  \[ \frac{1}{\Gamma(z)\Gamma(1-z)} = \frac{\sin{\pi z}}{\pi}\]
+
+  Inverting both sides reveals the desired identity.
+
+  \item
+  Denote the contour in question by $\C = L_{\ell} + \C_{\epsilon} + L_u$ where $L_{\ell} = (-\infty - i\epsilon, -i\epsilon)$. $\C_\epsilon$ is the circle centered at the origin oriented counter-clockwise, and $L_u = (i\epsilon, -\infty + i\epsilon)$. We wish to evaluate the integral $\frac{1}{2\pi i}\contint e^{\zeta}\zeta^{-z} \; d\zeta$.
+
+  To this end, we will first show that the contribution from the arc $\C_\epsilon$ vanishes as $\epsilon \rightarrow 0$:
+
+  \begin{align*}
+    \oint_{\C_\epsilon} \frac{e^{\zeta}}{\zeta^z} \; d\zeta & = \int_{-\pi}^\pi \frac{e^{\epsilon\cos\theta + i\epsilon\sin\theta}}{\epsilon^ze^{i\theta z}} \epsilon i e^{i\theta} \; d\theta \\[1em]
+    & = \frac{i\epsilon^{1-z}}{e^z} \int_{-\pi}^\pi e^{\epsilon\cos\theta + i\epsilon\sin\theta} \; d\theta
+    \leq \frac{2\pi i}{e^{z - \epsilon}} \epsilon^{1-z}
+  \end{align*}
+  The inequality will hold for sufficiently small $\epsilon$ when $Re(z) < 1$. Turning our attention to the arcs $L_u,L_\ell$, we find that in the limit the integral can be evaluated as follows:
+  \begin{align*}
+     \frac{1}{2 \pi i} \contint e^\zeta \zeta^{-z} \; d\zeta & =  \frac{1}{2 \pi i} \left[\oint_{L_u} + \oint_{L_\ell}\right] e^{\zeta} \zeta^{-z} \; d\zeta \\[1em]
+     & = \frac{1}{2 \pi i} \left[e^{i\pi z} \int_{\infty}^0 e^{-t} t^{-z} \; (-dt) + e^{-i\pi z} \int_0^{\infty} e^{-t} t^{-z} \; (-dt)\right] \\[1em]
+     & = -\frac{e^{-i\pi z} - e^{i\pi z}}{2\pi i} \left[\int_0^{\infty} e^{-t} t^{-z} \; dt\right]\\
+     & = \frac{\sin{\pi z}}{\pi}\left[\int_0^{\infty} e^{-t} t^{-z} \; dt\right] \\[1em]
+     & = \frac{\sin{\pi z}}{\pi} \int_0^\infty e^{-t} t^{-z} \; dt
+  \end{align*}
+
+  By the identity shown in the previous part, we can equate $$ \frac{1}{\Gamma(z)}\frac{\pi}{\sin{\pi z}} = \Gamma(1 -z)$$ Thus,
+  \[\Gamma(1 -z) =  \int_0^\infty e^{-t} t^{-z} \; dt \quad Re(z) < 1\],
+
+  Evaluating this on $1-z$ where $Re(z) > 0$ shows that:
+  \[\Gamma(z) = \int_0^\infty e^{-t} t^{z - 1} \; dt \quad Re(z) > 0 \]
+
+  giving an alternative definition for (1.7).
+\end{enumerate}
+
+
+\section{Problem 2}
+\begin{enumerate}
+  \item Consider the substitution $t \mapsto zt$. This shows that:
+  \begin{align*}
+    \Gamma(z+1) = \int_0^\infty e^{-tz} (tz)^{z} z \; dt & = z^{z+1} \int_0^\infty e^{-tz}t^z \; dt \\
+    & = z^{z+1} \int_0^\infty e^{z(\ln{t} - t)} \; dt
+  \end{align*}
+
+  \item By the previous part, we know that for non-negative integer $n$
+  \[ n! = n^{n+1}\int_0^\infty e^{n\cdot g(s)} \; ds\] where $g(s) = \ln{s} - s$. Now consider the Taylor series of $g(s)$ expanded around $s = 1$, the point where $g(s)$ takes its maximum value. This can be directly calculated as:
+
+  \begin{align*}
+\ln{s} - s & = -((1-s) + \frac{(1-s)^2}{2} + \frac{(1-s)^3}{3} + \cdots) - s \\
+& = -1 - \frac{(s-1)^2}{2} + \frac{(s-1)^3}{3} - \cdots
+  \end{align*}
+
+  The leading order term will be of quadratic order. Subsitute this expansion into our integral to see that:
+
+  \begin{align*}
+    n! & = n^{n+1} \int_0^\infty e^{n\left(-1 - \frac{(s-1)^2}{2}\right)} \; ds \\
+       & = n^{n+1} e^{-n} \int_0^\infty e^{-\frac{n(s-1)^2}{2}} \;ds
+  \end{align*}
+
+  The integral is a Gaussian integral whose center is shifted towards $z = 1$. In the limit as $n \rightarrow \infty$, the function $e^{-\frac{n(s-1)^2}{2}}$ will tightly concentrate around $s=1$. For sufficiently large $n$, the integral will converge to the full Gaussian integral: $\doubinfint e^{-\frac{n(s-1)^2}{2}} \; ds = \sqrt{\frac{2\pi}{n}}$
+
+  Accounting for this asymptotic value will yield Stirling's approximation:
+  \[ n! \approx \sqrt{2\pi} \cdot n^{n + \frac{1}{2}} e^{-n} = \sqrt{2\pi n} \left(\frac{n}{e}\right)^n\]
+
+\end{enumerate}
+
+\section{Problem 3}
+\begin{enumerate}
+  \item Substitute $t \mapsto e^{-w}$. The new integral after the proper change-of-variables will look like:
+    \begin{align*}
+        B(\alpha,\beta) = - \int_{\infty}^0 e^{-w(\alpha -1)} (1- e^{-w})^{\beta -1} e^{-w} \; dw  = \int_0^\infty e^{-\alpha w}(1 - e^{-w})^{\beta -1} \; dw
+    \end{align*}
+    \item
+    Consider the substituion $2y = (1+x)$ and $2dy = dx$:
+    \begin{align*}
+          \int_{-1}^1 (1+x)^\alpha(1-x)^\beta \; dx & = 2 \int_{0}^1 (2y)^\alpha (2 - 2y)^\beta \; dy \\
+          & = 2^{\alpha + \beta + 1}\int_0^1 y^\alpha (1-y)^\beta \; dy \\
+          & = 2^{\alpha + \beta + 1} B(\alpha+1,\beta+1)
+    \end{align*}
+    assuming $Re(\alpha), Re(\beta) > -1$.
+
+    \item
+     Note: I think there is a mistake in the integral representation given in this section. According to \href{https://mathworld.wolfram.com/PoissonsBesselFunctionFormula.html}{Wolfram Alpha} and the \href{https://dlmf.nist.gov/10.9}{NIST DLMF Database}, the Poisson integral representation formula is given by:
+     \begin{align*}
+       J_\nu(z) & = \frac{1}{\sqrt{\pi}\cdot \Gamma(v + \frac{1}{2})} \left(\frac{z}{2}\right)^\nu \int_0^\pi \sin^{2\nu}{\theta} \cos(z \cos{\theta}) \; d\theta \\
+       & = \frac{2}{\sqrt{\pi}\cdot \Gamma(v + \frac{1}{2})} \left(\frac{z}{2}\right)^\nu \int_0^{\frac{\pi}{2}} \sin^{2\nu}{\theta} \cos(z \cos{\theta}) \; d\theta
+     \end{align*}
+
+     Accounting for the two, we first turn our attention to the integral and perform the substitution $u = \sin{\theta}$ and $du = \cos{\theta} d\theta$. The substitution relation for the differential can be reexpressed as $\frac{1}{\sqrt{1 - u^2}}du = d\theta$. The inner integral will then become:
+
+     \begin{align*}
+        \int_0^{\frac{\pi}{2}} \sin^{2\nu}{\theta} \cos(z \cos{\theta}) & = \int_0^1 \frac{u^{2\nu}}{\sqrt{1-u^2}} \cos(z \sqrt{1 - u^2}) \; du \\[1em]
+        & = \int_0^1 \frac{u^{2\nu}}{\sqrt{1-u^2}} \left(\infsum (-1)^n \frac{\left(z\sqrt{1-u^2}\right)^{2n}}{(2n)!} \right) \; du \\[1em]
+        & = \infsum \frac{(-1)^n}{(2n)!} \left[ \int_0^1 (u^2)^{\nu} \left(1 - u^2\right)^{n - \frac{1}{2}} \; du\right] \frac{z^{2n+\nu}}{2^\nu} \\[1em]
+        & = \frac{1}{2}\infsum \frac{(-1)^n}{(2n)!} \left[  \int_0^1 t^{\nu - \frac{1}{2}}(1-t)^{n - \frac{1}{2}} \; dt\right]  \frac{z^{2n+\nu}}{2^\nu}
+     \end{align*}
+
+     where we expand the $\cos$ term around the origin in the second equality and integrate term-by-term in the third equality. This is valid since the Maclaurin series converges uniformly in a neighborhood around the origin. The final equality arises from performing the substitution $u = t^2$ and $du = 2t\; dt$.
+
+     Now the inner integral will be precisely $$ B\left(\nu + \frac{1}{2}, n + \frac{1}{2}\right) = \frac{\Gamma(\nu + \frac{1}{2})\Gamma(n + \frac{1}{2})}{\Gamma(\nu + n + 1)}$$
+
+     Substitute this entire expression into the original integral representation. The relevant terms will cancel and we will be left with:
+
+     \begin{align*}
+      J_\nu(z) = \frac{1}{\sqrt{\pi}} \infsum \frac{(-1)^n}{(2n)!} \left(\frac{\Gamma(n + \frac{1}{2})}{\Gamma(\nu + n + 1)}\right) \frac{z^{2n+\nu}}{2^\nu}
+     \end{align*}
+
+     The numerator can be expanded according to the recurrence relation $\Gamma(z+1) = z\Gamma(z)$:
+     \[\Gamma\left(n + \frac{1}{2}\right) = \left((n-1) + \frac{1}{2}\right)\left((n-2) + \frac{1}{2}\right)\cdots\frac{1}{2}\Gamma\left(\frac{1}{2}\right) \]
+
+     By recalling that $\Gamma\left(\frac{1}{2}\right) = \sqrt{\pi}$, the two factors in the numerator and denominator will cancel. Furthermore, we can complete the fractions to see that:
+
+     \[ J_\nu(z) = \infsum \frac{(-1)^n}{(2n)!} \frac{1}{\Gamma(\nu + n + 1)}\left(\frac{(2n-1)(2n-3)\cdots 3 \cdot 1}{2^n}\right) \frac{z^{2n+\nu}}{2^\nu} \]
+
+     The incrementally decreasing terms will cancel out the odd terms in the factorial product $(2n)!$. The remaining terms will be of even parity and there will be $n$ terms incrementally decreasing by one. Thus, the total factor in the denominator will simplify to $2^n \cdot n!$
+
+     \[ J_\nu(z) = \infsum \frac{(-1)^n}{2^{2n}\cdot n!} \frac{1}{\Gamma(\nu + n + 1)} \frac{z^{2n+\nu}}{2^\nu} \]
+
+     By invoking the relation $\Gamma(z+1) = z!$ and coalesing terms, we arrive at the Bessel series:
+
+     \[J_\nu(z) = \infsum \frac{(-1)^n}{n!(\nu + n)!} \left(\frac{z}{2}\right)^{2n + \nu} \]
+
+
+
+ \end{enumerate}
+
+
+
+\end{document}
