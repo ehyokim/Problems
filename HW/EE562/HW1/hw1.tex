@@ -1,0 +1,191 @@
+\documentclass[12pt]{article}%
+\input{preamble}
+
+
+% Misc
+\newcommand{\parafrac}[2]{\para{\frac{#1}{#2}}}
+
+%HW 10
+\newcommand{\wc}{w(\mathcal{C})}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\Lcal}{\mathcal{L}}
+\newcommand{\Cep}{\mathcal{C}_\epsilon}
+\newcommand{\CR}{\mathcal{C}_R}
+\newcommand{\sgn}[1]{\text{sgn}({#1}) }
+
+
+
+
+\title{EE562 HW 1}
+\author{Edward Kim}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{Problem 1}
+
+The inequality immediately follows from a proper exponentation and a invocation of Markov's inequality. Since $t > 0$:
+%
+\[ \Prob{X \geq a}  = \Prob{e^{tX} \geq e^{ta}} \leq \frac{\Exp{e^{tX}}}{e^{ta}} = e^{-ta}M(t)\]
+
+Note that the random variable $e^{tX}$ will be non-negative, allowing us to use Markov's inequality with the assumption that $a > 0$. As this inequality holds for all $t > 0$, taking the infinimum of the right-hand side yields the desired bound:
+%
+\[ \Prob{X \geq a} \leq \inf_{t > 0}{e^{-ta}M(t)} \]
+
+\section{Problem 2}
+
+Since $X$ is distributed exponentially with parameter $\lambda > 0$, unraveling the conditional probability and cancelling appropriate terms shows the memoryless property of $X$:
+%
+\[ \Prob{X > s + t \mid X > t} = \frac{\Prob{X > s +t}}{\Prob{X > t}} = \frac{e^{-\lambda(s+t)}}{e^{-\lambda t}} = e^{-\lambda s} = \Prob{X > s}\]
+
+\section{Problem 3}
+Define $X = X_1 + X_2$
+%
+\begin{enumerate}
+  \item The probability mass function for $X$, denoted as $f_X$, can be computed as the convolution between the probability mass functions of $X_1,X_2$, $f_{X_1}, f_{X_2}$ respectively.
+
+  \begin{align*}
+    f_X(k) & = \sum_{w = 0}^k f_{X_1}(w)f_{X_2}(k-w) \\
+    & = \sum_{w = 0}^k \left(\frac{\lambda_1^w}{w!}e^{-\lambda_1}\right)\left(\frac{\lambda_2^{k - w}}{(k-w)!}e^{-\lambda_2}\right) \\
+    & = \frac{e^{-(\lambda_1 + \lambda_2)}}{k!}\left(\sum_{w =0}^k {k \choose w} \lambda_1^w \lambda_2^{k-w}\right) \\
+    & = \frac{(\lambda_1 + \lambda_2)^k}{k!} e^{-(\lambda_1 + \lambda_2)}
+  \end{align*}
+%
+This is simply the probability mass function for a Poisson variable with mean $\lambda_1 + \lambda_2$. Hence, the distribution function of $X$ will also be identical to that of said Poisson variable.
+
+\item
+We directly calculate the conditional probability as follows: For non-negative integer $0 \leq k \leq n$,
+\begin{align*}
+  \Prob{X_1 = k \mid X_1 + X_2 = n}&  = \frac{\Prob{\{X_1 = k\} \cap \{X_2 = n - k\}}}{\Prob{X_1 + X_2 = n}} \\
+  & = \frac{\left(\frac{\lambda_1^k}{k!}e^{-\lambda_1}\right)\left(\frac{\lambda_2^{n-k}}{(n-k)!} e^{-\lambda_2}\right)}{\frac{e^{-(\lambda_1 + \lambda_2)}}{n!}(\lambda_1 + \lambda_2)^n} \\
+  & = \frac{1}{(\lambda_1 + \lambda_2)^n} \left[{n \choose k} \lambda_1^k \lambda_2^{n-k}\right]
+\end{align*}
+\end{enumerate}
+
+
+\section{Problem 4}
+
+\begin{enumerate}
+  \item The random variable $X$ will be geometrically distributed with probability mass function \[ f_X(n) = (1-p)^{n-1}p \]
+
+  \item The first toss yields a head, hence
+  \[ \Exp{X \mid Y_1 = 1} = 1 \]
+
+  \item The equality holds by expanding the conditional probabilities and separating out the infinite sum into two components.
+  \begin{align*}
+    \Exp{X \mid Y_1 = 0} & = \sum_{x = 2}^\infty x \cdot f_{X \mid Y_1}(x  \mid Y_1 = 0) \\
+    & = \sum_{x = 2}^\infty x \cdot \left( \frac{\Prob{X = x \cap Y_1 = 0}}{\Prob{Y_1 = 0}}\right) \\
+    & = \sum_{x = 2}^\infty x \cdot (1-p)^{x-2}p
+  \end{align*}
+
+  The final sum can be separated into two components:
+
+  \begin{align*}
+    \sum_{x = 2}^\infty x \cdot (1-p)^{x-2}p & = 2\cdot p + 3\cdot (1-p)p + 4\cdot(1-p)^2p + \cdots \\
+    & = \left(p + 2\cdot (1-p)p + 3\cdot(1-p)^2p + \cdots \right) \\
+     &  + \left(p + (1-p)p + (1-p)^2 p + \cdots \right) \\
+     & = \Exp{X} + p\left(\frac{1}{1 - (1-p)}\right) \\
+     & = \Exp{X} + 1
+  \end{align*}
+  as desired.
+
+  \item
+  The smoothing property can be readily invoked along with results from the previous parts:
+
+ \begin{align*}
+   \Exp{X} & = \Exp{\Exp{X \mid Y_1}} \\
+   & = \Exp{ 1\cdot p  + \Exp{X}\cdot (1-p)} \\
+   & = p + (1-p) + \Exp{X}\cdot(1-p) \\
+ \end{align*}
+
+  Solving for the expected value leads to the correct value for the geometric distribution:
+  \[\Exp[X] = 1/p \]
+\end{enumerate}
+
+\section{Problem 5}
+Let $T,G$ denote the random variables indicating the test result and the disease contraction status of the patient respectively. The relevant probability is easily calculated through Bayes rule:
+
+\begin{align*}
+  \Prob{G = \text{"ill"} \mid T = \text{"positive"}} & = \frac{\Prob{T = \text{"positive"} \mid G = \text{"ill"}} \cdot \Prob{G = \text{"ill"}}}{\Prob{T = \text{"positive"}}} \\
+  & = \frac{\frac{99}{100} \cdot 10^{-5}}{\frac{99}{100} \cdot 10^{-5} + \frac{1}{100}(1- 10^{-5})} \\
+  & = \frac{99}{99 + (10^5 - 1)}  \\
+  & \approx 10^{-3}
+\end{align*}
+
+\section{Problem 6}
+\begin{enumerate}
+  \item This inequality follows from independence of $X,Y$:
+
+  \[ \Prob{X + Y < 5} \geq \Prob{X < 2 \cap Y < 3}  = \Prob{X < 2} \cdot\Prob{Y < 3} = ab\]
+
+  \item
+
+  Alternatively, we can decompose the probability through Law of the Total Probability and once again invoke independence:
+
+  \begin{align*}
+    \Prob{X + Y < 5} & = \Prob{X + Y < 5 \mid Y < 3} \cdot \Prob{Y < 3} + \Prob{X + Y < 5 \mid Y \geq 3} \cdot \Prob{Y \geq 3} \\
+    & = \Prob{X  \geq 2 \mid Y < 3} \cdot \Prob{Y < 3} + \Prob{X < 2 \mid Y \geq 3} \cdot \Prob{Y \geq 3} \\
+    & = \Prob{X  \geq 2} \cdot \Prob{Y < 3} + \Prob{X < 2} \cdot \Prob{Y \geq 3} \\
+    & = (1 - a)\cdot b + a \cdot (1 - b) \\
+    & = a + b - 2ab \\
+    & \leq a + b
+  \end{align*}
+
+  since $a,b \geq 0$
+\end{enumerate}
+
+\section{Problem 7}
+
+We first solve a slightly more general problem than the one posed. Let $T_n$ correspond to the random variable counting the number of distinct types of coupons collected after $n$ draws. By the smoothing property of conditional expectation, we can readily calculate the expected value of $T_n$:
+
+\begin{align*}
+  \Exp{T_n} & = \Exp{\Exp{T_n \mid T_{n-1}}} \\
+  & = \Exp{(T_{n-1} + 1)\left(1 - \frac{T_{n-1}}{25}\right) + T_{n-1}\left(\frac{T_{n-1}}{25}\right)} \\
+  & = \frac{24}{25}\cdot\Exp{T_{n-1}} + 1
+\end{align*}
+
+This recurrence relation can be expanded along with the boundary condition $\Exp{T_1} = 1$. The result is a geometric series:
+
+\begin{align*}
+  \Exp{T_n} & = \left(\frac{24}{25}\right)^{n-1} + \left(\frac{24}{25}\right)^{n-2} + \cdots + 1 \\
+    & = \frac{1 - (24/25)^n}{1 - 24/25} \\
+    & = 25\cdot (1 - (24/25)^n)
+\end{align*}
+
+Set $n = 10$ to find desired expected number of distinct types of coupons after ten draws:
+
+\[ \Exp{T_{10}} = 25\cdot (1 - (24/25)^{10}) \approx 8.37918\]
+
+\section{Problem 8}
+\begin{enumerate}
+  \item
+  \begin{align*}
+      \Exp{\frac{V^2}{1 + U}} & = \int_{0}^\infty\int_{0}^1 \frac{v^2}{1 + u} f_{U,V}(u,v) \; du \, dv \\
+      & = \int_{0}^\infty\int_{0}^1 \frac{v^2}{1 + u} f_{U}(u)f_V(v) \; du \, dv \\
+      & = \left(\lambda \int_0^\infty v^2 e^{-\lambda v} dv  \right)\left(\int_0^1 \frac{1}{1 + u} \; du\right)
+  \end{align*}
+  %
+  where the second equality arises from independence of $U,V$.
+  %
+  The first integral can be solve by parts:
+  \[\int_0^\infty v^2 e^{-\lambda v} dv = \frac{2}{\lambda^3} \]
+
+  The second integral is a simple substitution $w = 1 + u$:
+  \[ \int_0^1 \frac{1}{1 + u} \; du  = \ln{2}\]
+
+  Hence,
+  \[\Exp{\frac{V^2}{1 + U}} = \left(\frac{2\ln{2}}{\lambda^2}\right)\]
+
+  \item
+  Expand definitions to see that:
+  \begin{align*}
+    \Prob{U \leq V}
+    & = \int_{0}^\infty \Prob{U \leq v}\cdot f_V(v) \; dv \\
+    & = \int_0^\infty \left(\int_0^v  \; du\right) \cdot f_V(v) \; dv \\
+    & = \lambda \int_0^\infty v e^{-\lambda v} \; dv \\
+    & = 1/\lambda
+  \end{align*}
+\end{enumerate}
+
+
+\end{document}
