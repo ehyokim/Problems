@@ -61,9 +61,27 @@
 \end{enumerate}
 
 \section{Problem 2}
+\begin{enumerate}
+  \item $F_n(x) \rightarrow F(x)$ everywhere except the points of discontinuity at $x = 1, \cdots 6$. To see this, we can find the definitions of the probability mass functions:
+
+  \begin{align*}
+      F_n(x) = \begin{cases}
+          0 & x < 1 + \frac{1}{n} \\
+          k/6 & k + \frac{1}{n} \leq x < (k+1) + \frac{1}{n}, \quad k= 1, \cdots, 5 \\
+          1 & x \geq 6 + \frac{1}{n}
+        \end{cases}
+  \end{align*}
+
+  We see that for any point $y$ not on a discontinuty, $F_n(y) \rightarrow F(y)$. However, for any point at $x = 1,\cdots 6$, $F_n(x)$ does not converge to $F(x)$.
+
+  \item $F_x(x)$ seems continuous for all positive integers $x \geq 1$.
+
+  \item $X_n \distconv X$, as $\lim_{n \rightarrow \infty}F_n(x) = F(x)$ at a points $x$ where $F$ is continuous.
+\end{enumerate}
+% $.
 
 \section{Problem 3}
-To show that $X_n \distconv Y$, it suffices to show that the probability mass functions of the sequence $X_n$ converge pointwise for $k = 0,1,2,\cdots$ to that of $Y$. To this end, recall that
+To show that $X_n \distconv Y$, it suffices to show that the sequence of probability mass functions associated to the $X_n$, $f_{X_n}$ converge pointwise to probability mass function of $Y$, $f_Y$. To this end, recall that
 
 \begin{align*}
   \Prob{X_n = k} & = {n \choose k}\left(\lambda/n\right)^k(1 - \lambda/n)^{n-k} \quad (0 \leq k \leq n) \\
@@ -84,7 +102,7 @@ This implies that:
 
 \[ \{\omega : \abs{Z_n(\omega) - Z(\omega)} \geq 2\epsilon\} \subseteq \{\omega :\abs{X_n(\omega) - X(\omega)} \geq \epsilon \} \cup \{\omega :\abs{Y_n(\omega) - Y(\omega)} \geq \epsilon \}  \]
 
-Hence,
+Hence, by sub-additivity
 \[ \Prob{\abs{Z_n(\omega) - Z(\omega)} \geq 2\epsilon} \leq \Prob{\abs{X_n(\omega) - X(\omega)} \geq \epsilon} + \abs{Y_n(\omega) - Y(\omega)} \geq \epsilon \]
 
 As $X_n \probconv X$ and $Y_n \probconv Y$, the two terms of the sum on the right vanish as $n \rightarrow \infty$. Hence, $Z_n \probconv Z$ as required.
@@ -121,6 +139,15 @@ By our assumptions, $\Exp{\abs{(X_n - a_n)}^2} \rightarrow 0$ and $a_n \rightarr
   where $\mathcal{B}(a,b)$ is the beta integral with exponents $a,b$. The last term vanishes as $n \rightarrow \infty$, showing that $Y_n \msconv 0$.
 
   \item
+  Consider an event $\omega \in (0,1)^\mathbb{N}$ corresponding to a sample of the sequence of independent events $X_n$ sampled uniformly from $(0,1)$. For $\epsilon > 0$, define the set of events:
+  \[ E_{n,m} = \{Y_n \leq \frac{1}{m}\}, \quad m, n \geq 1 \]
+
+  The probability is computed as $\Prob{E_{n,matrix}} = 1 - (1 - \epsilon)^n$. Furthermore, $E_{n,m} \subset E_{n+1,m}$. Set $E_m = \bigcup_{n=1}^\infty E_{n,m}$. By continuity, it must be that $\Prob{E_m} = \lim_{n \rightarrow \infty} \Prob{E_{n,m}} = 1$. Therefore, the set of events $\omega\in (0,1)^\mathbb{N}$ such that there exists sufficiently large $n$ such that $Y_n(\omega) \leq \frac{1}{m}$ is of probability one. Now notice that $E_{m+1} \subset E_m$. Set $E = \bigcap_{m=1}^\infty$ and invoke continuity once again:
+
+  \[\Prob{E} = \lim_{m \rightarrow \infty} \Prob{E_m} = 1 \]
+
+Hence, these observations culminate in that:
+    \[\Prob{\{\omega:\lim_{n \rightarrow \infty} Y_n(\omega) = 0\}} = 1 \] and that $Y_n \asconv 0$.
 \end{enumerate}
 
 
