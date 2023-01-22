@@ -1,0 +1,133 @@
+\documentclass[12pt]{article}%
+\input{preamble}
+
+
+% Misc
+\newcommand{\parafrac}[2]{\para{\frac{#1}{#2}}}
+
+%HW 10
+\newcommand{\wc}{w(\mathcal{C})}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\Lcal}{\mathcal{L}}
+\newcommand{\Cep}{\mathcal{C}_\epsilon}
+\newcommand{\CR}{\mathcal{C}_R}
+\newcommand{\sgn}[1]{\text{sgn}({#1}) }
+
+
+
+
+\title{EE562 HW 2}
+\author{Edward Kim}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{Problem 1}
+
+\begin{enumerate}
+  \item
+  \begin{enumerate}
+    \item For every $\omega \in (0,1)$, $X_n(\omega) = 0$ for $n > 1/\omega^{1/3}$. The only edge case remains with $\omega = 0$ as $X_n(\omega) \rightarrow \infty$ as $n \rightarrow \infty$. However, the singleton $\{0\}$ is a measure zero set in the standard unit interval probability space. Hence, $\Prob{\{\omega : \lim_{n \rightarrow \infty} X_n(\omega) = 0\}} = 1$ and $X_n \asconv 0$.
+
+    \item Directly calculating the expectation shows that
+    \[\Exp{\abs{X_n}^2} = \frac{n^2}{n^3} = \frac{1}{n}\]
+    and thus $\Exp{\abs{X_n}^2} \rightarrow 0$ as $n \rightarrow \infty$. So $X_n \msconv 0$.
+
+    \item Since $X_n \asconv 0$, it follows that $X_n \probconv 0$. To see this explicitly, for an arbitrarily small $\epsilon > 0$:
+
+    \[\Prob{\abs{X_n} \geq \epsilon} \leq \frac{1}{n^3}
+    \]
+    for sufficiently large $n$. The right-hand side of the inequality vanishes as $n \rightarrow \infty$, demonstrating that $X_n \probconv 0$.
+
+    \item
+
+  \end{enumerate}
+
+  \item
+  \begin{enumerate}
+    \item We repeat the analysis used the previous part of the problem to remark that for $\omega \in (0,1)$, $Y_n(\omega) = 0$ for $n \geq 1/\omega$. Once again, although the value of at $\omega = 0$ diverges, $\{0\}$ is a measure zero set. Hence, $Y_n \asconv 0$.
+
+    \item Calculating the expectation reveals that:
+    \[\Exp{\abs{Y_n}^2} = \frac{n^2}{n} = n \]
+
+    This diverges as $n \rightarrow \infty$. So the sequence $X_n$ does not converge to zero in the mean square sense.
+
+    \item By identical considerations taken in the corresponding problem of the previous part, $X_n \probconv 0$: For arbitrarily small $\epsilon >0$:
+
+    \[ \Prob{\abs{Y_n} \geq \epsilon} \leq \frac{1}{n} \]
+
+    for sufficiently large $n$.
+  \end{enumerate}
+\end{enumerate}
+
+\section{Problem 2}
+
+\section{Problem 3}
+To show that $X_n \distconv Y$, it suffices to show that the probability mass functions of the sequence $X_n$ converge pointwise for $k = 0,1,2,\cdots$ to that of $Y$. To this end, recall that
+
+\begin{align*}
+  \Prob{X_n = k} & = {n \choose k}\left(\lambda/n\right)^k(1 - \lambda/n)^{n-k} \quad (0 \leq k \leq n) \\
+  \Prob{X_n = k} & = 0 \quad (k > n)
+\end{align*}
+
+Now for sufficiently large $n$, $\frac{n!}{(n-k)!} \approx n^k$. This will allow us to perform the followiing substitution: we can first assume $k \leq n$ by choosing a sufficiently large $n$.
+
+\[{n \choose k}\left(\lambda/n\right)^k(1 - \lambda/n)^{n-k} \approx \frac{n^k }{k!}(\lambda/n)^k \frac{(1-\lambda/n)^{n}}{(1-\lambda/n)^{k}}  = \frac{\lambda^k}{k!}\frac{(1-\lambda/n)^{n}}{(1-\lambda/n)^{k}} \rightarrow \frac{\lambda^k}{k!}e^{-\lambda}  \]
+as $n \rightarrow \infty$. This shows that $f_{X_n}(k) \rightarrow f_Y(k)$ for $k = 0,1,2, \cdots$ as required.
+
+\section{Problem 4}
+First, define the sequence $Z_n = X_n + Y_n$ and the sum of the limits $Z = X + Y$. Consider any $\epsilon >0$. Note that from the triangle inequality that if $\omega \in \Omega$ such that $\abs{Z_n(\omega) - Z(\omega)} \geq 2\epsilon$
+
+\[ 2 \epsilon \leq \abs{Z_n(\omega) - Z(\omega)} \leq \abs{X_n(\omega) - X(\omega)} + \abs{Y_n(\omega) - Y(\omega)} \]
+
+This implies that:
+
+\[ \{\omega : \abs{Z_n(\omega) - Z(\omega)} \geq 2\epsilon\} \subseteq \{\omega :\abs{X_n(\omega) - X(\omega)} \geq \epsilon \} \cup \{\omega :\abs{Y_n(\omega) - Y(\omega)} \geq \epsilon \}  \]
+
+Hence,
+\[ \Prob{\abs{Z_n(\omega) - Z(\omega)} \geq 2\epsilon} \leq \Prob{\abs{X_n(\omega) - X(\omega)} \geq \epsilon} + \abs{Y_n(\omega) - Y(\omega)} \geq \epsilon \]
+
+As $X_n \probconv X$ and $Y_n \probconv Y$, the two terms of the sum on the right vanish as $n \rightarrow \infty$. Hence, $Z_n \probconv Z$ as required.
+
+\section{Problem 5}
+From the $L^2$ triangle inequality:
+
+\begin{align*}
+\Exp{\abs{X_n - a}^2}^{1/2} = \Exp{\abs{(X_n - a_n) + (a_n - a)}^2}^{1/2} & \leq \Exp{\abs{(X_n - a_n)}^2}^{1/2} + \Exp{\abs{(a_n - a)}^2}^{1/2} \\
+& \leq \Exp{\abs{(X_n - a_n)}^2}^{1/2} + (a_n - a)
+\end{align*}
+
+By our assumptions, $\Exp{\abs{(X_n - a_n)}^2} \rightarrow 0$ and $a_n \rightarrow a$ as $n \rightarrow \infty$. Hence, $X_n \msconv a$.
+
+\section{Problem 6}
+
+\begin{enumerate}
+  \item For $0 < z < 1$, the distribution function and probability density functions for $Y_n$ will be
+  \begin{align*}
+      F_{Y_n}(z) & = 1 - (1-z)^n \\
+      f_{Y_n}(z) & = n(1-z)^{n-1}
+  \end{align*}
+
+  \item
+  To show mean square convergence, we compute the expected value of the second moment:
+  \begin{align*}
+      \Exp{Y_n^2} & = \int_0^1 z^2 f_{Y_n}(z) \; dz \\
+      & = n \int_0^1 z^2(1-z)^{n-1} \; dz \\
+      & = n \cdot \mathcal{B}(3,n) \\
+      & = n \cdot \frac{2!\cdot(n-1)!}{(n+2)!} \\
+      & = \frac{2}{(n+1)(n+2)}
+  \end{align*}
+
+  where $\mathcal{B}(a,b)$ is the beta integral with exponents $a,b$. The last term vanishes as $n \rightarrow \infty$, showing that $Y_n \msconv 0$.
+
+  \item
+\end{enumerate}
+
+
+
+
+
+
+
+
+\end{document}

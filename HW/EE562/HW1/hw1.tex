@@ -99,7 +99,7 @@ We directly calculate the conditional probability as follows: For non-negative i
  \end{align*}
 
   Solving for the expected value leads to the correct value for the geometric distribution:
-  \[\Exp[X] = 1/p \]
+  \[\Exp{X} = 1/p \]
 \end{enumerate}
 
 \section{Problem 5}
@@ -120,18 +120,23 @@ Let $T,G$ denote the random variables indicating the test result and the disease
 
   \item
 
-  Alternatively, we can decompose the probability through Law of the Total Probability and once again invoke independence:
+  Alternatively, we can decompose the probability through a convolution and once again invoke independence. Let $Z = X+Y$. W.log assume that $X,Y$ are both discrete random variables. The PDF of $Z$ can be expressed as:
+
+  $$f_Z(k) = \sum_{x} f_X(x)f_Y(k-x)$$
+
+  where $f_X,f_Y$ correspond to the probability mass functions of $X,Y$ with distribution functions $F_X,F_Y$. The sum of products can be bounded by the distribution functions of $X,Y$ to yield the desired inequality:
 
   \begin{align*}
-    \Prob{X + Y < 5} & = \Prob{X + Y < 5 \mid Y < 3} \cdot \Prob{Y < 3} + \Prob{X + Y < 5 \mid Y \geq 3} \cdot \Prob{Y \geq 3} \\
-    & = \Prob{X  \geq 2 \mid Y < 3} \cdot \Prob{Y < 3} + \Prob{X < 2 \mid Y \geq 3} \cdot \Prob{Y \geq 3} \\
-    & = \Prob{X  \geq 2} \cdot \Prob{Y < 3} + \Prob{X < 2} \cdot \Prob{Y \geq 3} \\
-    & = (1 - a)\cdot b + a \cdot (1 - b) \\
+    \Prob{Z < 5} & =  \sum_{x} f_X(x)f_Y(5-x)\\
+    & = \sum_{x \leq 2} f_X(x)f_Y(5-x) +  \sum_{x > 2} f_X(x)f_Y(5-x)\\
+    & \leq F_X(2)\sum_{x \leq 2} f_Y(5-x) + F_Y(3) \sum_{x > 2} f_X(x)\\
+    & = F_X(2)(1 - F_Y(3)) + F_Y(3)(1 - F_X(2))\\
+    & =  a \cdot (1 - b) + b \cdot (1 - a)\\
     & = a + b - 2ab \\
     & \leq a + b
   \end{align*}
 
-  since $a,b \geq 0$
+  The first inequality arises from the definition of the distribution function as a cumulative sum of at most a  countable number of non-negative real numbers.
 \end{enumerate}
 
 \section{Problem 7}
