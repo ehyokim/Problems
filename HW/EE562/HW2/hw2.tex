@@ -72,11 +72,22 @@
         \end{cases}
   \end{align*}
 
-  We see that for any point $y$ not on a discontinuty, $F_n(y) \rightarrow F(y)$. However, for any point at $x = 1,\cdots 6$, $F_n(x)$ does not converge to $F(x)$.
+  We see that for any point $y$ not on a discontinuty, $F_n(y) \rightarrow F_X(y)$ by right-continuity of $F$. However, for any point at $x = 1,\cdots 6$, $F_n(x)$ does not converge to $F_X(x)$ as for $k = 1,\cdots,6$
+  %
+  \begin{align*}
+    F_n(k) & = \frac{k-1}{6} \text{\quad for all $n$} \\
+    F(k) & = \frac{k}{6}
+  \end{align*}
 
-  \item $F_x(x)$ seems continuous for all positive integers $x \geq 1$.
+  \item
+  Note: I wasn't exactly sure how to interpret $F_x(x)$, so I list both possible cases below:
 
-  \item $X_n \distconv X$, as $\lim_{n \rightarrow \infty}F_n(x) = F(x)$ at a points $x$ where $F$ is continuous.
+  If the distribution function is actually interpreted as $F_X(x)$, then, as the CDF of the discrete random variable $X$ , $F_X(x)$ is continuous everywhere except at $x =  1, \cdots, 6$.
+
+
+  If the distribution function is actually interpreted as $F_x(x)$ where $x$ is a positive integer,  $F_x(x)$ seems continuous for all such $x \geq 1$. To see this, note that $x = 1, \cdots, 6$, does not lie on a discontinuity: $(x-1) + \frac{1}{x} \leq x < x + \frac{1}{x}$, thus $F_x(x) = (x-1)/6$ as a limit converging from both sides. For any $x > 6$, $F_x(x) = 1$.
+
+  \item $X_n \distconv X$, as $\lim_{n \rightarrow \infty}F_n(x) = F(x)$ at all points $x$ where $F$ is continuous as shown by the first part above.
 \end{enumerate}
 % $.
 
@@ -88,7 +99,7 @@ To show that $X_n \distconv Y$, it suffices to show that the sequence of probabi
   \Prob{X_n = k} & = 0 \quad (k > n)
 \end{align*}
 
-Now for sufficiently large $n$, $\frac{n!}{(n-k)!} \approx n^k$. This will allow us to perform the followiing substitution: we can first assume $k \leq n$ by choosing a sufficiently large $n$.
+Now for sufficiently large $n$, $\frac{n!}{(n-k)!} \approx n^k$. This will allow us to perform the following substitution: we can first assume $k \leq n$ by choosing a sufficiently large $n$.
 
 \[{n \choose k}\left(\lambda/n\right)^k(1 - \lambda/n)^{n-k} \approx \frac{n^k }{k!}(\lambda/n)^k \frac{(1-\lambda/n)^{n}}{(1-\lambda/n)^{k}}  = \frac{\lambda^k}{k!}\frac{(1-\lambda/n)^{n}}{(1-\lambda/n)^{k}} \rightarrow \frac{\lambda^k}{k!}e^{-\lambda}  \]
 as $n \rightarrow \infty$. This shows that $f_{X_n}(k) \rightarrow f_Y(k)$ for $k = 0,1,2, \cdots$ as required.
@@ -127,7 +138,7 @@ By our assumptions, $\Exp{\abs{(X_n - a_n)}^2} \rightarrow 0$ and $a_n \rightarr
   \end{align*}
 
   \item
-  To show mean square convergence, we compute the expected value of the second moment:
+  To show mean square convergence to the constant zero random variable over $(0,1)$, we compute the expected value of the second moment:
   \begin{align*}
       \Exp{Y_n^2} & = \int_0^1 z^2 f_{Y_n}(z) \; dz \\
       & = n \int_0^1 z^2(1-z)^{n-1} \; dz \\
@@ -136,17 +147,17 @@ By our assumptions, $\Exp{\abs{(X_n - a_n)}^2} \rightarrow 0$ and $a_n \rightarr
       & = \frac{2}{(n+1)(n+2)}
   \end{align*}
 
-  where $\mathcal{B}(a,b)$ is the beta integral with exponents $a,b$. The last term vanishes as $n \rightarrow \infty$, showing that $Y_n \msconv 0$.
+  where $\mathcal{B}(a,b)$ is the beta integral with exponent parameters $a,b$. The last term is finite and vanishes as $n \rightarrow \infty$, showing that $Y_n \msconv 0$.
 
   \item
   Consider an event $\omega \in (0,1)^\mathbb{N}$ corresponding to a sample of the sequence of independent events $X_n$ sampled uniformly from $(0,1)$. For $\epsilon > 0$, define the set of events:
   \[ E_{n,m} = \{Y_n \leq \frac{1}{m}\}, \quad m, n \geq 1 \]
 
-  The probability is computed as $\Prob{E_{n,matrix}} = 1 - (1 - \epsilon)^n$. Furthermore, $E_{n,m} \subset E_{n+1,m}$. Set $E_m = \bigcup_{n=1}^\infty E_{n,m}$. By continuity, it must be that $\Prob{E_m} = \lim_{n \rightarrow \infty} \Prob{E_{n,m}} = 1$. Therefore, the set of events $\omega\in (0,1)^\mathbb{N}$ such that there exists sufficiently large $n$ such that $Y_n(\omega) \leq \frac{1}{m}$ is of probability one. Now notice that $E_{m+1} \subset E_m$. Set $E = \bigcap_{m=1}^\infty$ and invoke continuity once again:
+  The probability is computed as $\Prob{E_{n,m}} = 1 - (1 - \epsilon)^n$. Furthermore, $E_{n,m} \subset E_{n+1,m}$. Set $E_m = \bigcup_{n=1}^\infty E_{n,m}$. By continuity, it must be that $\Prob{E_m} = \lim_{n \rightarrow \infty} \Prob{E_{n,m}} = 1$. Therefore, the set of events $\omega\in (0,1)^\mathbb{N}$ such that there exists sufficiently large $N$ such that for all $n \geq N$, $Y_n(\omega) \leq \frac{1}{m}$ is of probability one. Now notice that $E_{m+1} \subset E_m$. Set $E = \bigcap_{m=1}^\infty$ and invoke continuity once again:
 
   \[\Prob{E} = \lim_{m \rightarrow \infty} \Prob{E_m} = 1 \]
 
-Hence, these observations culminate in that:
+  Hence, these observations culminate in that:
     \[\Prob{\{\omega:\lim_{n \rightarrow \infty} Y_n(\omega) = 0\}} = 1 \] and that $Y_n \asconv 0$.
 \end{enumerate}
 
