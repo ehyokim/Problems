@@ -1,0 +1,265 @@
+\documentclass[12pt]{article}%
+\input{preamble}
+
+
+% Misc
+\newcommand{\parafrac}[2]{\para{\frac{#1}{#2}}}
+
+%HW 10
+\newcommand{\wc}{w(\mathcal{C})}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\Lcal}{\mathcal{L}}
+\newcommand{\Cep}{\mathcal{C}_\epsilon}
+\newcommand{\CR}{\mathcal{C}_R}
+\newcommand{\sgn}[1]{\text{sgn}({#1}) }
+
+
+
+
+\title{EE562 HW 4}
+\author{Edward Kim}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{Problem 1 (Hajek 3.9)}
+\begin{enumerate}
+  \item By definition, we see that $\Exp{X\mid U = u} = \frac{1}{1 + u}$ for $0 \leq u \leq 1$. Consequently, $\Exp{X \mid U} = \frac{1}{1 + U} = X$. The mean-square error (MSE) is readily calculated to be:
+  \[ \Exp{e^2} = \Exp{X^2} - \Exp{(\Exp{X \mid U})^2} = \Exp{X^2} - \Exp{X^2}  = 0  \]
+
+  This aligns with the observation that $h(U) = \frac{1}{1 + U}$ is a function dependent on the random variable $U$. Thus, $h(U) \in \mathcal{V}$ where $\mathcal{V}$ is the closed linear subspace of $L^2(\Omega,\mathcal{F},\mathbb{P})$ of unconstrained estimators dependent on $U$ and, in particular, $X \in \mathcal{V}$.
+
+  \item We find $\LinEsti{X}{U}$ by invoking the explicit form of the linear estimator of a random variable:
+
+  \begin{equation}
+ \LinEsti{X}{U} = \Exp{X} + \Cov{X}{U}\cdot\Var{U}^{-1}\left(U - \Exp{U}\right) \label{eq:one}
+  \end{equation}
+
+  Finding the required values is straightforward:
+  \begin{align*}
+      \Exp{U^2} & = \frac{1}{3}, \quad \Var{U} = \frac{1}{12} \\
+      \\
+      \Cov{X}{U} & = \Exp{XU} - \Exp{X}\Exp{U} \\
+                 & = (1 - \ln{2}) - \frac{\ln{2}}{2} \\
+                 &= \frac{2 - 3\ln{2}}{2}
+  \end{align*}
+
+  Hence, by \ref{eq:one},
+  \begin{align*}
+      \LinEsti{X}{U} & =  \ln{2} + 12 \cdot \frac{2 - 3\ln{2}}{2}\cdot\left(U - \frac{1}{2}\right)\\
+      & =  \ln{2} + (12 - 18\ln{2})\cdot\left(U - \frac{1}{2}\right)
+  \end{align*}
+  %
+  The MSE is once again computed through orthogonality:
+
+  \begin{align*}
+    \Exp{e^2} &= \Exp{X^2} - \Exp{(\LinEsti{X}{U})^2} \\
+    & = \frac{1}{2} - \Exp{\left( \ln{2} + (12 - 18\ln{2})\cdot\left(U - \frac{1}{2}\right)\right)^2} \\
+    & = \frac{1}{2} - \left(\ln^2{2} + (12 - 18\ln{2})^2\cdot \Exp{\left(U - \frac{1}{2}\right)^2}\right)
+  \end{align*}
+
+  The expectation on the right is ascertained through previous intermediate calculations used above to be $\Exp{\left(U - \frac{1}{2}\right)^2} = 1/12$. The total expression for the MSE can be simplified to give the numerical approximation:
+
+  \[ \Exp{e^2} \approx 0.001 \]
+\end{enumerate}
+
+\section{Problem 2 (Hajek 3.19)}
+   Our quadratic estimator will be the sum of the terms of $\xhat = a + bY + cY^2$ for $a,b,c \in \reals$ and we will be projecting on the subspace of quadratic estimators with input $Y$. Denote this subspace as $\mathcal{V}$ for this problem.
+\begin{enumerate}
+  \item
+  Like the linear estimator case, we will exploit the constraints imposed by the orthogonality conditions. Let $e = X - \xhat$ be the error variable. The orthogonality conditions can be succinctly expressed as follows:
+  \begin{align}
+      e & \perp 1 \iff \Exp{e} = 0 \label{eq:cond1}\\
+      e & \perp Y \iff \Cov{e}{Y} = 0 \label{eq:cond2}\\
+      e & \perp Y^2 \iff \Cov{e}{Y^2} = 0 \label{eq:cond3}
+  \end{align}
+
+  With these constraints, we can begin to solve for the coefficient factors $a,b,c$.
+
+  \begin{align*}
+    \Exp{e} & = \Exp{X - (a + bY + cY^2)} \\
+            & = \Exp{X} - a - c
+  \end{align*}
+  By the estimates given in the book and condition \ref{eq:cond1}, we arrive at the linear relation
+
+\begin{equation}
+  a + c = 4/5 \label{eq:aconstantconst}
+\end{equation}
+
+  Continuing forth, we now exploit conditions \ref{eq:cond2},\ref{eq:cond3}:
+  %
+  \begin{align*}
+    \Cov(e,Y) & = \Cov{X}{Y} - \Cov{bY}{Y} - \Cov{cY^2}{Y} \\
+      & = \Cov{X}{Y} - b\cdot\Var{Y} - c\cdot\Cov{Y^2}{Y}
+  \end{align*}
+  However, arguing on the symmetry of the standard normal distribution in respect to the origin, $\Exp{Y^3} = 0$ and $\Cov{X}{Y} = \Exp{\abs{Y}\cdot Y} = 0$. This shows that $b = 0$.
+
+  Finally, the last condition \ref{eq:cond3} imposes that:
+
+  \begin{align*}
+    \Cov{e}{Y^2} = \Cov{X}{Y^2} - b\cdot \Cov{Y}{Y^2} - c\cdot \Cov{Y^2}{Y^2} = 0
+  \end{align*}
+
+  The relevant covariances are directly determined to be:
+  \begin{align*}
+      \Cov{X}{Y^2} & = \Exp{\abs{Y}\cdot Y^2} - \Exp{\abs{Y}}\Exp{Y^2} \\
+      & = 1.6 - 0.8\cdot 1 \\
+      & = \boxed{4/5}
+      \\
+      \\
+      \Cov{Y^2}{Y^2} & = \Exp{Y^4} - (\Exp{Y^2})^2 \\
+                     & = \boxed{2}
+  \end{align*}
+
+  Substituting these values into the constraint above and simplifying after taking expectations yields that:
+
+  \[ \frac{4}{5} - 2c = 0 \implies \boxed{x = \frac{2}{5}} \]
+  The final constant $a$ is determined by linear relation \ref{eq:aconstantconst}, showing that $a = \frac{2}{5}$
+
+  \item In light of the work shown above, our estimator will be of the form:
+  \[ \xhat = \frac{2}{5} + \frac{2}{5}Y^2 \]
+
+  \item
+  The MSE will become:
+  \begin{align*}
+    \Exp{e^2} & = \Exp{X^2} - \Exp{\left(\frac{2}{5} + \frac{2}{5}Y^2\right)^2} \\
+    & = 1 - \left(\frac{2}{5}\right)^2 - 2\left(\frac{2}{5}\right)^2 \Exp{Y^2} - \left(\frac{2}{5}\right)^2 \Exp{Y^4} \\
+    & = 1 - \frac{4}{25} - \frac{8}{25} - \frac{12}{25}\\
+    & = \boxed{\frac{1}{25}}
+  \end{align*}
+\end{enumerate}
+
+\section{Problem 3}
+We first turn our attention to the unconstrained estimator based on $Y$. First, note that the expectations conditioned on $Y=1$ can be readily found through direct calculation:
+
+\begin{align*}
+  \CondExp{X}{Y = 1} & = 1\cdot \frac{\Prob{X = 1 \cap Y = 1)}}{\Prob{Y = 1}} + 3 \cdot \frac{\Prob{X = 3 \cap Y = 1)}}{\Prob{Y = 1}} + 5 \cdot \frac{\Prob{X = 5 \cap Y = 1)}}{\Prob{Y = 1}} \\
+  & = (1 + 3 + 5) \cdot \frac{1}{3} \\
+  & = \boxed{3}
+\end{align*}
+
+Similarly, $\boxed{\CondExp{X}{Y = 2} = 4}$. These two cases demonstate that the conditional expectation can be expressed as
+
+\begin{equation}
+  \CondExp{X}{Y} = Y + 2 \label{eq:prob3_unconstresti}
+\end{equation}
+Additionally, the MSE error will be:
+
+\begin{align*}
+  \Exp{X^2} - \Exp{\left(Y + 2\right)^2} & = \frac{7 \cdot 13}{6} - (4 - 2\Exp{Y} + \Exp{Y^2}) \\
+  & =\frac{7 \cdot 13}{6} - 4 - 3 - \frac{5}{2} \\
+  & = \boxed{\frac{34}{6}}
+\end{align*}
+
+Consider now the case where we optimize over all linear estimators based on $Y$:
+
+\begin{align}
+  \LinEsti{X}{Y} = \Exp{X} + \Cov{X}{Y}\Var{Y}^{-1}\left(Y - \Exp{Y}\right) \label{eq:prob3_linesti}
+\end{align}
+The covariances are found to be:
+\begin{align*}
+\Var{Y} & = \frac{5}{2} - \left(\frac{3}{2}\right)^2 = \boxed{\frac{1}{4}} \\
+\\
+\Cov{X}{Y} & = \Exp{XY} - \Exp{X}\Exp{Y} \\
+           & = \left((1+3+5)\cdot \frac{1}{6} + (2 + 4 + 6)\cdot 2 \cdot \frac{1}{6}\right) \\
+           & = \boxed{\frac{1}{4}}
+\end{align*}
+
+Once again, substitute the covariances into \ref{eq:prob3_linesti} to find the linear estimator of $X$ based on $Y$:
+
+\begin{align}
+  \LinEsti{X}{Y} & = \frac{7}{2} + \left(Y - \frac{3}{2}\right) \\
+          & = Y + 2
+\end{align}
+
+which is exactly the unconstrained estimator found in \ref{eq:prob3_unconstresti}. Thus, we deduce that the most optimal unconstrained estimator of $X$ given $Y$ is actually linear.
+
+\section{Problem 4 (Hajek 3.7(a))}
+By virtue of orthogonality, \[\Exp{X^2} = \Exp{e^2} + \Exp{W^2}\]
+where we set $W = \CondExp{X}{Y}$. From the information given in the mean vector and covariance matrix, we know that $\Var{X} = 8$ and $\Exp{X} = 2$. Thus, $\Exp{X^2} = 12$. However without additional information on the joint PDF of $X,Y$ or additional structure (e.g $X,Y$ are jointly Gaussian), the value of $\Exp{W^2}$ would be indeterminable. Without an exact value, we can bound $\Exp{e^2}\leq 12$.
+
+\section{Problem 5 (Hajek 3.5)}
+\begin{enumerate}
+  \item We first determine the conditional density function $\condPDF{X}{Y}$:
+
+  \def \xyvec{\begin{bmatrix} x \\ y \end{bmatrix}}
+  \def \GaussExpon{e^{- \frac{1}{2} Q(x,y)}}
+  \def \JointDen{\frac{1}{2\pi(\sqrt{1-\rho^2})}\cdot \GaussExpon}
+  \def \MarginalDen{{\frac{1}{\sqrt{2\pi}} e^{-\frac{y^2}{2}}}}
+
+  \begin{align*}
+      \condPDF{X}{Y} & = \frac{\jointPDF{X}{Y}}{f_Y(y)} \\
+                     & = \frac{\JointDen}{\MarginalDen}
+  \end{align*}
+
+  where $Q(x,y) = \xyvec^T K^{-1} \xyvec$ and $K^{-1} = \frac{1}{1 - \rho^2} \begin{bmatrix}
+    1 & -\rho \\ -\rho & 1
+  \end{bmatrix}$. Now expanding out $Q(x,y)$ in the exponent of the joint Gaussian allows up to simplify and massage our expression into another Gaussian:
+  %
+  \begin{align*}
+  \condPDF{X}{Y} & = \frac{1}{\sqrt{2\pi(1-\rho^2)}} e^{-\frac{1}{2(1-\rho^2)} (x^2 - 2\rho xy + \rho^2y^2)} \\
+  & = \frac{1}{\sqrt{2\pi(1-\rho^2)}} e^{-\frac{1}{2}\cdot \frac{(x - \rho y)^2}{(1 - \rho^2)}}
+  \end{align*}
+
+  It is now immediate that $\Prob{X \leq 1 \mid Y} = \Phi(\frac{1 - \rho Y}{\sqrt{1 - \rho^2}})$
+
+  \item
+  Recall that both marginal distributions of the standard joint normal distribution between a pair of random variables will be precisely $\standardnormdist$. In light of this fact:
+  \begin{align*}
+    \CondExp{(X-Y)^2}{Y=1} & = \Exp{(X-y)^2} \\
+                           & = \Exp{X^2} - 2y\Exp{X} + y^2 \\
+                           & =  1 + y^2
+  \end{align*}
+  where we have used $\Exp{X} = 0, \; \Var{X} = 1$.
+\end{enumerate}
+
+\section{Problem 6}
+\begin{enumerate}
+  \item The intuition here is that if $X \sim \standardnormdist$, then $-X$ is identically distributed as $X$ by symmetry. Thus, $Y$ should give us another standard Gaussian as a uniformly weighted sum between two identically distributed standard Gaussian variables. To this end, we first compute the values of the CDF of $Y$ as below:
+
+  \begin{align*}
+    \Prob{Y \leq y} & = \frac{1}{2}\cdot \Phi(y) + \frac{1}{2}\cdot (1 - \Phi(-y)) \\
+    & = \frac{1}{2} +\frac{\Phi(y) - \Phi(-y)}{2} \\
+    & = \frac{1}{2} +\frac{1}{2} \left(\frac{1}{\sqrt{2\pi}} \int_{-y}^y e^{-v^2/2}\; dv\right) \\
+    & = \frac{1}{\sqrt{2\pi}} \int^{0}_{-\infty} e^{-v^2/2} \; dv + \frac{1}{\sqrt{2\pi}} \int_{0}^y e^{-v^2/2} \; dv \\
+    & = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{y} e^{-v^2/2} \; dv
+  \end{align*}
+  which shows that indeed $Y = SX$ is distributed according to $\standardnormdist$ as desired.
+
+  \item On the other hand, consider the sum $X + Y = X(1+S)$. Through definition, $X+Y$ takes values $2X$ and $0$ with equal probability. This is clearly not a Gaussian variable, as there is a sharp discontiunity in the PDF $f_{X+Y}$ arising from the probability $1/2$ of the sum vanishing completely. This shows that finite linear combinations of Gaussian random variables need not be Gaussian if the family is \emph{not} independent.
+\end{enumerate}
+
+\section{Problem 7 (Hajek 3.25)}
+As according to the problem, set $W = X + 2Y + 3$
+\begin{enumerate}
+  \item
+  \begin{align}
+    \Exp{W} & = \Exp{X} + 2\Exp{Y} + 3 = 2 + 8 + 3 = \boxed{13} \\
+    \Var{W} & = \Var{X} + 4\cdot\Var{Y} + 4\cdot\Cov{X}{Y} \\
+    & = 9 + 4\cdot 25 + 4 \cdot 0.2 \\
+    & = 109.8
+  \end{align}
+
+  \item
+  As $X,Y$ are jointly Gaussian, $W$ must be Gaussian and thus must be distributed according to $\normdist{13}{109.8}$. Using any table of numerical values:
+  $\Prob{W \geq 20} \approx 0.475$
+
+  \item
+  From Proposition 3.9 from the textbook, we know that since $Y,W$ are jointly Gaussian (as finite linear combinations of joint Gaussian variables $X,Y$), the conditional distribution of $Y$ based on $W = w$ is distributed according to $\normdist{\LinEsti{Y}{W = w}}{\Cov{e}{e}}$. In particular, the taking the expectation over this conditional distribution shows that $\CondExp{Y}{W} = \LinEsti{Y}{W}$. Thus, for jointly Gaussian variables $Y,W$, our unconstrained estimator of $Y$ based on $W$ is exactly given by the linear estimator. We proceed to compute this linear estimator:
+
+  \begin{align*}
+    \LinEsti{Y}{W} & = \Exp{Y} + \Cov{Y}{W}\Var{W}^{-1}\left(W - \Exp{W}\right) \\
+    & = 4  + \frac{251}{549}(W - 13)
+  \end{align*}
+  as $\Var{W} = 109.8$ and $\Cov{Y}{W} = \Cov{Y}{X} + 2\cdot \Cov{Y}{Y} = 0.2 + 2 \cdot 25 = 50.2$.
+
+  As for the MSE, this can be readily computed as:
+  \begin{align*}
+    \Exp{e^2} & = \Exp{Y^2} - \Exp{(4 +  \frac{251}{549}(W - 13))^2} \\
+    & = 41 - \left[16 +  \left(\frac{251}{549}\right)^2\Var{W}\right] \\
+    & \approx 2.049
+  \end{align*}
+\end{enumerate}
+
+
+\end{document}

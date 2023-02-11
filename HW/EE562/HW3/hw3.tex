@@ -1,0 +1,109 @@
+\documentclass[12pt]{article}%
+\input{preamble}
+
+
+% Misc
+\newcommand{\parafrac}[2]{\para{\frac{#1}{#2}}}
+
+%HW 10
+\newcommand{\wc}{w(\mathcal{C})}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\Lcal}{\mathcal{L}}
+\newcommand{\Cep}{\mathcal{C}_\epsilon}
+\newcommand{\CR}{\mathcal{C}_R}
+\newcommand{\sgn}[1]{\text{sgn}({#1}) }
+
+
+
+
+\title{EE562 HW 3}
+\author{Edward Kim}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{Problem 1}
+If $E_n = \{X \leq n\}$ and $E = \bigcup_{n = 1}^\infty E_n$, by continuity of the probability measure, $\Prob{E} = \lim_{n \rightarrow \infty} \Prob{E_n} = 1$. Take $\omega \in E$. With probability one, $X(\omega) \leq L$ for some sufficiently large $L \geq 0$, so $\abs{a_n\cdot X(\omega)} \leq \abs{a_n} \cdot L$. The last expression vanishes as $n \rightarrow \infty$, so
+
+\[ \lim_{n \rightarrow \infty} \abs{a_n\cdot X(\omega)} = 0  \]
+
+and consequently,
+
+\[ \Prob{\{\omega \in \Omega \mid \lim_{n \rightarrow \infty} \abs{a_n\cdot X(\omega)} = 0\}} = 1 \]
+
+showing that $X_n$ indeed also vanishes almost surely.
+
+\section{Problem 2}
+For arbitrarily small $\epsilon > 0$, denoting $Y_n = \frac{1}{n} \max{\abs{X_1},\cdots,\abs{X_n}}$,
+\[ \Prob{\{\abs{Y_n} \geq \epsilon \}} \leq \sum_{i = 1}^n \Prob{\abs{X_i}/n \geq \epsilon} = n \cdot \Prob{\abs{X_i} \geq n\epsilon} \]
+
+where the inequality follows from a union bound and the equality from the i.i.d assumption on the $X_i$. By our assumption that $\lim_{x \rightarrow \infty} x\cdot \Prob{\abs{X_i} \geq x} = 0$, the last expression on the right must vanish as $n\epsilon \rightarrow \infty$ and, so $Y_n \probconv 0$.
+
+\section{Problem 3}
+Let $S_n = \sum_{i = 1}^n X_i$. We will exploit Chebyshev's inequality once again by first computing the relevant values as below:
+%
+\[ \Var{\frac{S_n}{n}} = \frac{1}{n^2}\left(\sum_{i = 1}^n \Var{X_i} + 2 \sum_{i < j} \Covar{X_i}{X_j} \right) = \frac{\sigma^2}{n} + \frac{2a\sigma^2}{n} \]
+
+Note that both sides vanish as $n \rightarrow \infty$, and therefore:
+\[ \Prob{\abs{\frac{S_n}{n} - \mu} \geq \epsilon} \leq \frac{1}{\epsilon^2} \cdot \frac{\sigma^2(1 + 2a)}{n} \]
+
+hence $\frac{S_n}{n} \probconv \mu$ where $\mu = \Exp{X_i}$.
+
+\section{Problem 4}
+
+First, observe that
+\begin{align*}
+  \Prob{\abs{X_{n+1} - X_n} \geq \epsilon} & \geq \Prob{X_{n} \leq 0}\Prob{X_{n+1} \geq \epsilon \mid X_{n} \leq 0} + \Prob{X_n > 0}\Prob{X_{n+1} \leq \epsilon \mid X_n > 0} \\
+  & \geq \Prob{X_{n} \leq 0}\Prob{W_n \geq \epsilon} + \Prob{X_n > 0}\Prob{W_{n} \leq -\epsilon} \\
+  & = \Prob{W_n \leq \epsilon}
+\end{align*}
+
+ the second inequality follows from the observation: $\abs{X_{n+1} - X_n} = \abs{W_n - \frac{1}{10}X_n}$. The last equality is just symmetry of the standard normal distribution. For any random variable $X$,
+%
+ $$\Prob{\abs{X_n - X} \geq \epsilon} \geq \Prob{\abs{X_{n+1} - X_n} \geq 2\epsilon}\cdot \Prob{\abs{X_{n+1} - X} \leq \epsilon} \geq \Prob{W_n \leq 2\epsilon} \cdot \Prob{\abs{X_{n+1} - X} \leq \epsilon}$$.
+
+
+%
+If $X_n \probconv X$, then the value of $ \lim_{n \rightarrow \infty}\Prob{\abs{X_n - X} \geq \epsilon}$ will be bounded from below by constant $\Prob{W_n \leq 2\epsilon}$, an immediate contradiction. Hence, $X_n$ cannot converge to a random variable in probability, so it cannot converge in the m.s and a.s senses either. \newline
+
+On the other hand, note that if $X_n$ for $n \geq 1$ is distributed according to $\mathcal{N}(0,\sigma^2)$ then $X_{n+1}$ will be distributed according to $\mathcal{N}(0,0.81\cdot\sigma^2 + 1)$. This is a consequence of the $W_n$ being independent standard normal Gaussian random variables.  The sequence of variances of the $X_i$, say $\sigma^2_n$, converges to $\sigma_\infty^2 = \frac{1}{0.19} \approx 5.26$ as an infinite geometric series. This shows that $X_n \distconv \mathcal{N}(0, 5.26\cdots)$.
+
+\section{Problem 5}
+\begin{enumerate}
+  \item By Markov's inequality:
+  \[ \Prob{Y_n > n} \leq \frac{\Exp{Y_n}}{n} = \frac{1}{n} \]
+
+  where the equality arises from the mutual independence of the $X_i$, $\Exp{Y_n} = \prod_{i=1}^{n} \Exp{X_i} = 1$. Taking the right-hand side with $n \rightarrow \infty$, shows that
+  \[ \lim_{n \rightarrow \infty} \Prob{Y_n > n} = 0  \]
+
+  \item
+  Since $X_i$ are i.i.d, the $Y_i = \ln{X_i}$ are also i.i.d. Furthermore, $\mu = \Exp{\ln{X_i}} = 2 \cdot \ln{2} - 2 \approx -0.614$. Hence, by the Strong Law of Large Numbers, $\frac{S_n}{n} \asconv \mu$. Take the elementary event $\omega \in E$ from the probability one event $E = \{\omega \in \Omega \mid \lim_{n \rightarrow \infty} \frac{1}{n}\cdot S_n(\omega) = \mu \}$. By definition, $\lim_{n \rightarrow \infty} \abs{S_n(\omega) - n\mu} = 0$. Through a simple invokation of the triangle inequality, with probability one, $S_n(\omega) \rightarrow -\infty$ as $n \rightarrow \infty$. By taking the exponential of both sides and leveraging continuity, this implies $Y_n \asconv 0$.
+
+  \item
+  The alternative definition of the Cauchy convergence criterion for the mean square sense asserts that $Y_n$ converges in the m.s sense iff $\lim_{m,n \rightarrow \infty} \Exp{Y_mY_n}$ exists and is finite. A direct calculation shows that, if w.log $m < n$:
+  \begin{align*}
+    \Exp{Y_mY_n} = \Exp{X^2_1}\Exp{X^2_2}\cdots \Exp{X^2_m}\Exp{X_{m+1}}\cdots \Exp{X_{n}}
+  \end{align*}
+
+  where independence of the $X_i$ is invoked. The expected values of the squared random variables are easy to compute:
+
+  \[ \Exp{X^2_i} = \frac{1}{2}\int_{0}^2 x^2 \; dx  = 4/3 \]
+
+  Substituting this into the expression calculated above:
+
+  \[ \Exp{Y_mY_n} = \left(\frac{4}{3} \right)^m \]
+
+  which implies that $\Exp{Y_mY_n} \rightarrow \infty$ as $m,n \rightarrow \infty$ and subsequently that $Y_n$ cannot converge to any random variable in the mean square sense.
+
+
+
+  %For some arbitrarily small $\epsilon > 0$, choose sufficiently large $n \geq N$ such that $Y_n(\omega) \leq \mu + \epsilon < 0$. Therefore, for all such $n \geq N$,  $\frac{S_n}{n} \leq \mu + \epsilon$.
+\end{enumerate}
+
+
+
+
+
+
+
+\end{document}
