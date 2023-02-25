@@ -1,0 +1,148 @@
+\documentclass[12pt]{article}%
+\input{preamble}
+
+
+% Misc
+\newcommand{\parafrac}[2]{\para{\frac{#1}{#2}}}
+
+%HW 10
+\newcommand{\wc}{w(\mathcal{C})}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\Lcal}{\mathcal{L}}
+\newcommand{\Cep}{\mathcal{C}_\epsilon}
+\newcommand{\CR}{\mathcal{C}_R}
+\newcommand{\sgn}[1]{\text{sgn}({#1}) }
+
+
+
+
+\title{EE562 HW 6}
+\author{Edward Kim}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Problem 1}
+
+We verify the required criteria. That the process $Z$ is of second-order is evident by the Cauchy-Schwarz Inequality:
+%
+\[\abs{\Exp{X(t)\cdot Y(t)}}^2 \leq \Exp{\abs
+{X(t)}^2} \Exp{\abs{Y(t)}^2} < \infty \]
+for all $t$ as both $X(t),Y(t)$ are WSS. By independence, the remaining two criteria are fulfilled:
+
+\begin{align*}
+  \Exp{Z(t)} & = \Exp{X(t)}\cdot\Exp{Y(t)} \\
+  \Exp{Z(t)\cdot Z(s)} & = \Exp{X(t)\cdot Y(t)}\times \Exp{X(s)\cdot Y(s)}
+\end{align*}
+
+Once again, the products of expectations of the random varables $X(t),Y(t)$ for any fixed $t$ will remain constant as both $X,Y$ are WSS processes. This directly shows that $Z = X \cdot Y$ is indeed a WSS process as well.
+
+\section{Problem 2}
+\begin{enumerate}
+  \item It is evident that, as a Gaussian process, the $X_t$ will be distributed according to some Gaussian distribution. From the correlation matrix, it is clear that $X_t \sim \normdist{0}{5}$.
+
+  \item
+  The joint distribution between $X(t),X(t+1)$ can be deduced from the joint density:
+%
+  \begin{align*}
+    f_{X(t),X(t+1)}({\bold x}) = \frac{1}{2\pi \sqrt{\det K}} \cdot e^{-\frac{1}{2}({\bold x} K^{-1} {\bold x}^T)}
+  \end{align*}
+  where ${\bold x} = (x_1,x_2)$ is a row vector in this context. The relevant values can be computed directly:
+
+  \begin{align*}
+    K^{-1} = \frac{1}{25(1 - e^{-4})}\begin{bmatrix}
+        5 & 5e^{-2} \\  5e^{-2} & 5
+  \end{bmatrix}
+  \end{align*}
+\end{enumerate}
+
+\section{Problem 3}
+\begin{enumerate}
+  \item By Proposition 4.5(c), the joint density of the arrival times conditioned on counting process $N(t)$ for some fixed $t$ will be:
+
+\[ f_{T_1,\cdots,T_n\mid N(t)}(t_1,\cdots,t_n\mid N(t) = n) = \begin{cases}
+    \frac{n!}{t^{n}} \quad 0 < t_1 < t_2 < \cdots < t_n \leq t \\
+    0 \quad \text{otherwise}
+\end{cases} \]
+
+  In light of this formula, it is evident that:
+
+  \[ f_{T_1,T_2\mid N(2)}(t_1,t_2 \mid N(2) = 2) = \begin{cases}
+      \frac{1}{2} \quad 0 < t_1 < t_2  \leq t \\
+      0 \quad \text{otherwise}
+  \end{cases} \]
+
+  The derivation concludes by properly integrating over $t_2$ to find the marginal density, and integrating once more:
+
+  \begin{align*}
+     f_{T_1\mid N(2)}(t_1\mid N(2)=2) & = \int_0^{t_1} f_{T_1,T_2\mid N(2)}(t'_1,t'_2 \mid N(2) = 2) \; dt'_2 \\
+    & = \frac{t_1}{2}
+    \end{align*}
+
+  Subsequently,
+  \begin{align*}
+    \Prob{N(1) \geq 1 \mid N(2) = 2} &  = 1 - \int_{0}^1 \frac{t_1}{2}\; dt_1 \\
+    & = 1 - \frac{1}{4} \\
+    & = \boxed{\frac{3}{4}}
+  \end{align*}
+
+  \item
+  Invoking Bayes Rule and the value computed in the previous part of this problem yields the desired value:
+
+  \begin{align}
+    \Prob{N(2) = 2  \mid N(1) \geq 1} & = \frac{\Prob{N(1) \geq 1 \mid N(2) = 2}\cdot\Prob{N(2)=2}}{\Prob{N(1) \geq 1}} \\
+    & = \frac{3}{4}\cdot \frac{\frac{(2\lambda)^2}{2!}\cdot e^{-2\lambda}}{e^{-\lambda}} \\
+    & = \frac{3}{2}\lambda^2e^{-\lambda}
+  \end{align}
+
+\end{enumerate}
+
+\section{Problem 4}
+\begin{enumerate}
+  \item Yes. The process $X$ is stationary. As the $U_n$ are independent and identically distributed, a case analysis reveals that the distributions of the nth order cumulative functions $F_{X,n}(x_1,t_1;\cdots;x_n,t_n)$ will only depend on the relative distances between the time points $t_1,\cdots ,t_n$.
+
+  To see this, we restrict ourselves to the $n=2$ case as the general case will immediately extend from it. If $\abs{t_2 - t_1} \geq 2$, then it is evident that $F_{X,2}(x_1,t_1 ; x_2, t_2) = x_1^2x_2^2$. Otherwise, if $\abs{t_2 - t_1} = 1$, then $F_{X,2}(x_1,t_1 ; x_2, t_2) = x_1x_2 \min\{x_1,x_2\}$. Finally, if $t_1 = t_2$, then $F_{X,2}(x_1,t_1 ; x_2, t_2) = \min\{x_1^2,x_2^2\}$. In particular, none of the probabilities above depend on the time points $t_1,t_2$. The argument can be generalized to the nth order by repeating it for valid pairs $(t_i, t_{i+1})$ constructed from $0 < t_1 < t_2 < \cdots < t_n$.
+
+  % Furthermore, the joint distribution will split into its constituent marginal distributions:
+  %\[F_{X,n}(x_1,t_1;\cdots;x_n,t_n) = \Prob{X_{t_1} \leq x_1, \cdots, X_{t_n} \leq x_n} \]
+
+  \item
+
+  \item
+
+\end{enumerate}
+
+\section{Problem 5}
+\begin{enumerate}
+  \item Begin by rearranging the terms of the inequality defining the event and re-expressing the Brownian motion random variables in terms of their independent increments:
+  \begin{align*}
+\Prob{W_3 \geq \frac{W_2 + W_4}{2} + 1} & = \Prob{2W_3 - (W_2 + W_4) \geq 2} \\
+& = \Prob{(W_3 - W_2) - (W_4 - W_3) \geq 2}
+  \end{align*}
+
+  As the increments are independent, the random variable on the left-hand side will be a linear combination of two standard normal distribution. Hence, it will distributed according to $\normdist{0}{2}$. The probability above can now be stated in terms of the $Q$ function:
+  \begin{align*}
+    \Prob{W_3 \geq \frac{W_2 + W_4}{2} + 1} & = Q(2/\sqrt{2}) \\
+    & = Q(\sqrt{2})
+  \end{align*}
+
+  \item Recall that the distribution of $X^2$, where $X \sim \normdist{0}{\sigma^2}$, can be expressed as:
+
+  \[F_{X^2}(x) = \Prob{\abs{X} \leq \sqrt{x}} = \Phi\left(\frac{\sqrt{x}}{\sigma}\right) - \Phi\left(-\frac{\sqrt{x}}{\sigma}\right) \]
+
+  Define $X_t = \frac{W_t^2}{t}$. Since $W_t \sim \normdist{0}{t}$, we can harness the observation above to compute the limiting distribution:
+
+  \begin{align*}
+    F_{X_t}(x) & = \Prob{X_t \leq x} \\
+      & = \Prob{W_t \leq \sqrt{xt}} \\
+      & = \Phi\left(\frac{\sqrt{xt}}{\sqrt{t}}\right) - \Phi\left(-\frac{\sqrt{x}}{\sqrt{t}}\right)  \\
+      & = \Phi(\sqrt{x}) - \Phi(-\sqrt{x}) \\
+  \end{align*}
+
+  All together, the derivations imply that $F_{X_t}(x) \distconv \widetilde{X}^2$ where $\widetilde{X} \sim \standardnormdist$.
+
+\end{enumerate}
+
+
+\end{document}
