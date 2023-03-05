@@ -1,0 +1,228 @@
+\documentclass[12pt]{article}%
+\input{preamble}
+
+
+% Misc
+\newcommand{\parafrac}[2]{\para{\frac{#1}{#2}}}
+
+%HW 10
+\newcommand{\wc}{w(\mathcal{C})}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\Lcal}{\mathcal{L}}
+\newcommand{\Cep}{\mathcal{C}_\epsilon}
+\newcommand{\CR}{\mathcal{C}_R}
+\newcommand{\sgn}[1]{\text{sgn}({#1}) }
+
+
+
+
+\title{EE562 HW 7}
+\author{Edward Kim}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Problem 1}
+\label{sec:prob_one}
+
+\begin{enumerate}
+  \item As $Y_{{k}} = X_{{k}} + X_{k+1}$, the PMF for $Y_k$ can be computed through the usual convolution formula and the independence of the $X_k$ random variables:
+        \begin{align*}
+          f_{Y_k}(y) & = \sum_{k = 0}^y f_X(k)f_X(y-k) \\
+                     & = \sum_{k = 0}^y e^{{-2\lambda}} \cdot \left(\frac{\lambda^{k}}{k!}\right)\left(\frac{\lambda^{y-k}}{(y-k)!}\right) \\
+                     & = \lambda^{y}e^{-2\lambda} \cdot \sum_{k = 0}^y \frac{1}{k!(y-k)!} \\
+                     & = \frac{\lambda^{y}e^{-2\lambda}}{y!} \sum_{k=0}^y \binom{y}{k} \\
+           & = e^{-2\lambda} \cdot \frac{(2\lambda)^y}{y!}
+        \end{align*}
+
+        By inspection, we see that $Y_k$ is distributed according to a Poisson random variable with parameter $2\lambda$.
+  \item
+        $X$ must be stationary as an iid sequence of Poisson variables:
+        \[ F_{X,n}(t_1+s,x_1;\cdots;t_n+s,x_n) = e^{-n\lambda}\prod_{\ell = 1}^n \frac{\lambda^{x_{n}}}{x_{n}!} =  F_{X,n}(t_1,x_1;\cdots;t_n,x_n)\]
+        where $t_{n},s \in \mathbb{Z}$ and $x_{n} \in \mathbb{Z}_{\geq 0}$.
+
+  \item
+        We proceed by cases. First, consider the second order distribution $F_{X,2}$ and w.log two timesteps ordered as $t_1\leq t_2$. For $a,b \in \mathbb{Z}_{\geq 0 }$, we seek to characterize $F_{X,2}(t_1,a;t_2,b)$ depending on the value of $t_{2}- t_{1}$. First, assume $t_{2} - t_{1} \geq 2$. By the independence of the base process $X =(X_n)_{n \in \mathbb{Z}}$, the variables $Y_{t_{1}}, Y_{t_2}$ will also be independent, and hence must yield the same joint distribution no matter the absolute position of $t_1,t_2$.
+
+        The case where $t_1 = t_2$ is simple since $F_{X,2}(t_1,a;t_2,b) = F_{X,1}(t, \min\{a,b\})$ where $t = t_{1} = t_{2}$. The right-hand side of the equality does not depend on $t$ by once again the independence of the base process $X$.
+
+        Finally we treat the case where $t_2-t_{1} = 1$. Once again through independence, the second order joint probabilities can be directly computed by reasoning through conditional probabilities:
+%
+\begin{equation}
+  \label{eq:1}
+  \begin{split}
+    F_{X,2}(t_1,a;t_2,b) & = \sum_{m = 0}^a \Prob{X_{t_1} = m, X_{t_{1}+1} = a -m, X_{t_{1}+ 2} = b - a + m} \\
+    & = \sum_{m = 0}^a \Prob{X_{t_1} = m} \cdot \Prob{ X_{t_{1}+1} = a -m} \cdot \Prob{ X_{t_{1}+ 2} = b - a + m}
+  \end{split}
+\end{equation}
+
+
+        Again inspecting the form of expression (\ref{eq:1}) and invoking the iid nature of the $X_n$, the probabilities do not depend on $t_{1},t_{2}$ explicitly. Similar arguments can be traced in order to reason on the stationarity of the higher order distributions $F_{{X,n}}(t_1,x_1;\cdots;t_n,x_n)$  where we assume, up to an appropriate labeling, that $0 < t_{1} \leq t_{2} \leq \cdots \leq t_{n}$.
+\end{enumerate}
+
+\section{Problem 2}
+\label{sec:problem-2}
+
+\begin{enumerate}[a.]
+  \item False. The idea here is that the new process $Y_k = X_{k}^2$ does not produce an injective mapping of states. Merging two states with highly different transition probability distributions may destroy the Markov property. As a counterexample, consider the Markov chain over the state space $\mathcal{S} = \{-1,0,1\}$. The transition matrix $P$ is defined as:
+        \[P = \begin{bmatrix} 0 & 1 & 0 \\
+                0 & 0 & 1 \\
+                0 & 1 & 0 \end{bmatrix}\]
+
+        where the columns are identified in order as $-1,0,1$. Additionally, we assert that the initial probability distribution be one over the states $-1,1$ with equal weight. Note that although there is a transition from $-1 \rightarrow 0$, there is no such transition in the reverse direction, namely $0 \rightarrow -1$. On the other hand, there are probability one transitions from $0 \leftrightarrow 1$. Now squaring this chain will collapse $-1,1$ to $1$. We claim that the process $Y = (Y_{n)})_{n \in \mathbb{Z}}$ is not Markov. To see this, observe that, due to the stark differences in the respective transition probabilities of $-1,1$, the conditional probabilties of $Y$ are dependent on the starting state. In other words, the sample sequence of $Y$ will be $\cdots 1, 1, 1, 1, \cdots$ or $\cdots 1,0,1,0,1, \cdots$ with equal probability. By conditioning on $Y_{n}$ and $Y_{n},Y_{{n-1}}$, it immediately follows that $Y$ is not Markov:
+
+        \[\Prob{Y_{n+1} = 0 \mid Y_n = 1} = \frac{1}{2} \neq 0 = \Prob{Y_{n+1} = 0 \mid Y_n = 1, Y_{n-1} = 1} \]
+
+  \item True. Unlike the square function dicussed above, the cubic function will act as bijective map between valid states.
+    \begin{equation}
+          \label{eq:2}
+\begin{split}
+   \Prob{Z_{n+1} = z_{n+1} \mid Z_{n} = z_n , \cdots, Z_0 = z_0} & = \Prob{X_{n+1} = z_{n+1}^{{1/3}} \mid X_{n} = z_{{n}}^{1/3}, \cdots, X_{0} = z_{0}^{1/3}} \\
+  & =  \Prob{X_{n+1} = z_{n+1}^{{1/3}} \mid X_{n} = z_{{n}}^{1/3}} \\
+  & = \Prob{Z_{n+1} = z_{{n+1}} \mid Z_n=z_{n}}
+\end{split}
+        \end{equation}
+
+        We understand that $z_0^{1/3},\cdots, z_n^{1/3}$ should be valid states such that $\Prob{Z_{i} = z_{i}} > 0$ in order for the conditional expectation above to be well-defined. Crucially, the second line follows from the first from the bijective mapping of states induced by the cubic function.
+
+  \item
+        False. Let $B = (B_{n})_{n \in \mathbb{Z}_{\geq 0}}$ be an iid Bernoulli process such that each $B_{n}$ takes values $-1,1$ with equal probability. Define the process $X = (X_{n})_{n \in \mathbb{Z}_{\geq 0}}$ such that $X_n = \max\{B_{n-1},B_{n}\}$. As by our assumptions $Y_n = X_n^{2}$. Note that since $X_n = -1,1$, $Y$ will simply be the process with constant random variables evaluating to $1$. Hence, $Y$ is trivially Markov. On the other hand, a case analysis shows that $\Prob{X_{n-1} = -1, X_{n+1} = -1 \mid X_{n} = 1}  = 0 \neq \frac{1}{32} = \Prob{X_{n+1} = -1 \mid X_{n} = 1}\cdot \Prob{X_{n-1} = -1 \mid X_{n} = 1}$. It follows that $X$ cannot be Markov.
+
+  \item
+        True. Suppose $X$ is stationary. Recall that the nth order distribution of $Y$ can be written as below:
+
+        \begin{align*}
+          F_{Y,n}(t_1,y_1;\cdots;t_n,y_{n})  & = \Prob{\abs{X_{t_1}} \leq y_{1}^{1/2}, \cdots,\abs{X_{t_n}} \leq y_{n}^{1/2}} \\
+          & = \Prob{-y_{1}^{1/2} \leq X_{t_1} \leq y_{1}^{1/2}, \cdots,-y_{n}^{1/2} \leq X_{t_n} \leq y_{n}^{1/2}}.
+        \end{align*}
+        Here we assert that $y_i \geq 0$ as otherwise, the joint probability can just be set to 0. Since $X$ is stationary, the joint probability referred in the second line will not depend on the absolute position of the timesteps $t_1,\cdots,t_n$.
+
+  \item
+        False. Consider an iid process $X = (X_{n})_{n \in \mathbb{Z}}$ such that the variables are distributed according to the density function:
+        \[f_{X_{n}}(x) = 3x^{-4}, \quad x \geq 1\]
+
+        It is clear that $X$ is WSS as it has bounded second moments for all $X_n$ and, by the iid condition, has the common expectation $\mu_{X}(n) = \frac{1}{2}$ and $\Cov{n}{m} = 0$. The same cannot be said for the process $Y$ as the second moment cannot exist by reasons of a divergent integral:
+
+        \[\Exp{Y_{n}^{2}} = 3\int_1^{\infty} x^4\cdot \frac{1}{x^{4}} \; dx = \infty \]
+
+  \item
+        False. Consider the symmetric random walk $S = (S_{n})_{n \in \mathbb{Z}_{\geq 0}}$ where $S_n = \sum_{i=0}^nX_{i}$ are sums of iid Bernoulli variables such that $\Prob{X_{i} = 1} = \Prob{X_{i} = -1} = 1/2$ and $S_0 = X_0 = 0$. By the iid condition on the Bernoulli variables, the symmetric random walk has the independent increment property. However, squaring the values taken by the random walk will destroy this independence. To see this, consider the partition identified by the integers $0 < m < n$:
+%
+        \begin{align*}
+          S_n^2-S_{m}^{2} & = (S_n-S_m)(S_n+S_m) \\
+                          & = (S_{n}-S_{m})((S_{n} - S_{m}) + 2 S_{m}) \\
+          & = (S_n-S_m)^2 + 2S_nS_m - 2S_{m}^{2}
+        \end{align*}
+        In particular, this increment depends on $S_m^2-S_0^2= S_m^{2}$ and thus it cannot have the independent increment property.
+
+  \item
+        False. We construct the simple counterexample by a Markov chain $X$ with a three element ordered state space $\mathcal{S} = \{-3,0,3/2\}$ along with the transition probability matrix $P$ where the columns are identified according to the order of the state space above:
+        \[P = \begin{bmatrix}
+                1 & 0 & 0 \\
+                1/3 & 0 & 2/3 \\
+                0 & 0 & 1
+              \end{bmatrix}\]
+        By considering each case for the current state of the process $X_{n}$, it is clear from the transition probabilities that conditional expectations on the next increment will vanish at states $-3,3/2$:
+
+        $\CondExp{X_{n+1} - X_{n}}{X_{n} = -3} = \CondExp{X_{n+1} - X_{n}}{X_{n} = 3/2} = 0$. The case where $X_n = 0$ will also yield an unbiased conditional expectation on the next increment:
+        \[\CondExp{X_{n+1} - X_{n}}{X_{n} = 0} = (2/3)(3/2) + (1/3)(-3) = 0\]
+        %
+        Thus, $X$ is a martingale. However, $Z$ will not preserve this property as is apparent in the next few lines of calculation:
+
+        \begin{align*}
+          \CondExp{Z_{n+1} - Z_{n}}{Z_{n} = 0} & = \CondExp{X_{n+1}^3 - X_n^3}{X^{3}_n = 0} \\
+                                               & = (2/3)(3/2)^3 + (1/3)(-3)^{3} \\
+                                               & = 9/4 - 9 \\
+          & = -27/4
+        \end{align*}
+        The conditional expectation of the next increment does not vanish, and so $Z$ cannot be a martingale.
+\end{enumerate}
+
+\section{Problem 3}%
+\label{sec:problem-3}
+
+\begin{enumerate}
+  \item We exploit the Markov property of the original Markov chain to show the property for the evenly skipped chain.
+      \begin{align*}
+        & \Prob{Y_{n+1} = i_{n+1} \mid Y_{n} = i_n, Y_{n-1} = i_{n-1}, \cdots, Y_0 = i_{0}} \\
+      = \phantom{,} & \Prob{X_{2(n+1)} = i_{n+1} \mid X_{2n} = i_n, X_{2(n-1)} = i_{n-1}, \cdots, X_0 = i_{0}} \\
+        = \phantom{,}  \sum_{k \in \statespace} \phantom{,} & \Prob{X_{2(n+1)} = i_{n+1}, X_{2n+1} = k \mid X_{2n} = i_n, X_{2(n-1)} = i_{n-1}, \cdots, X_0 = i_{0}} \\
+        = \phantom{,}  \sum_{k \in \statespace} \phantom{,} & \Prob{X_{{2(n+1)}} = i_{n+1} \mid X_{2n + 1} = k, \{X_{2i} = i_{2n}\}_{0 \leq i \leq n}} \cdot \Prob{X_{2n + 1} = k \mid  \{X_{2i} = i_{2n}\}_{0 \leq i \leq n}} \\
+        = \phantom{,}  \sum_{k \in \statespace} \phantom{,} & \Prob{X_{{2(n+1)}} = i_{n+1} \mid X_{2n + 1} = k} \cdot \Prob{X_{2n + 1} = k \mid X_{2i} = i_n} \\
+        = \phantom{,} & \Prob{X_{{2(n+1)}} = i_{n+1} \mid X_{2n} = i_{n}} \\
+        = \phantom{,} & \Prob{Y_{n+1} = i_{n+1} \mid Y_{n} = i_{n}}
+      \end{align*}
+
+        Denoting the transition probability matrix of $X$ as $P_{X}$, the definition of $Y$ implies that $P_{Y} = P_{X}^{2}$:
+
+        \[P_{Y} = \begin{bmatrix}
+                    0.15 & 0.35 & 0.5 \\
+                    0.25 & 0.25 & 0.5 \\
+                    0.25 & 0.35 & 0.4
+                  \end{bmatrix}\]
+
+  \item
+        Denote the PMF of $X_{1}$ as $f_{X_{1}}(i)$ where $i=1,2,3$. The usual definitions of conditional expectation will show that:
+%
+        \begin{align*}
+          f_{X_{1}}(i) & =  \Prob{X_1 = i \mid Y_0 = Y_1 = 3} \\
+                       & = \Prob{X_1 = i \mid X_0 = X_2 = 3} \\
+                       & = \frac{\Prob{X_{0} = 3, X_{1} = i, X_{2} = 3}}{\sum_{k=1,2,3} \Prob{X_{2} = 3 \mid X_{1} = k} \cdot \Prob{X_{1} = k \mid X_{0} = 3}} \\
+                        & = \frac{\Prob{X_{0} = 3, X_{1} = i, X_{2} = 3}}{0.4}\\
+        \end{align*}
+%
+        where we consulted the $(3,3)$ cell of $P_{Y}$ in the substitution yielding the last line. The final computed conditional probabilites can hence be derived from the expression above:
+%
+        \[f_{X_1}(i) = \begin{cases}
+                         3/8 & i = 1 \\
+                         0 & i = 2 \\
+                         5/8 & i = 3
+                       \end{cases}\]
+
+\end{enumerate}
+
+
+\section{Problem 4}%
+\label{sec:problem-4}
+
+\begin{enumerate}
+  \item The conditional probability can be shown through a combinatorial argument. In order for $X_{2k} = 0$ where $X_{k}$ are the states of our symmetric random walk, the sum of all iid mean zero increments must add to zero. In other words, the states of the random walk can be expressed as a sequence of partial sums: $X_{k} = \sum_{i=0}^{k} B_{i}$ where $\Prob{B_{i} = 1 \mid X_0 =0} = \Prob{B_i = -1 \mid X_0 = 0} = \frac{1}{2}$ and $(B_{n})_{n \in \mathbb{Z}_{\geq 0}}$ will be a Bernoulli process. So our probability to evaluate can be expressed as $\Prob{\sum_{i=0}^{2k} B_{i} = 0\mid X_{0} = 0}$.
+
+        As our random walk is symmetric, every walk of length $2n$ is equiprobable with probability $2^{-2n}$.
+        Furthermore, by the discussion above, the walk returns to the $0$ state at time step $2n$ iff it samples exactly $n$ positive and negative unit steps during its evolution. There are exactly $
+        \binom{2n}{n}$ of such paths. Hence,
+
+        \[\Prob{X_{{2k}} = 0 \mid X_0 = 0} = \binom{2n}{n} \left(\frac{1}{2}\right)^{2k}\]
+
+  \item
+        We proceed through induction on the increment $n$. The trivial case where $n = 1$ is verified directly:
+%
+        \begin{align*}
+          \Prob{N_{{2}} \mid X_0 = 0} = 3 \cdot 2 \cdot (1/2)^{2} - 1 = \frac{3}{2} - 1 = \frac{1}{2}
+        \end{align*}
+
+        This checks out as the only two paths starting from the origin which return to $0$ in exactly two steps are those which take $0 \rightarrow 1 \rightarrow 0$ and $0 \rightarrow -1 \rightarrow 0$. Both are equiprobable with probability $1/4$. Hence, the total probability must be $1/2$.
+
+        Continue to the general case for arbitrary $n$. Observe that the random variable $N_{2n}$ can be decomposed into a sum of indicator variables $Z_{2i}$ where $Z_{2i} = 1$ iff $X_{2i} = 0$ and $Z_{2i} = 0$ otherwise. In notation, $N_{2n} = \sum_{i=1}^{n} Z_{2i}$. This observation will suffice to finally show the induction hypothesis:
+
+        \begin{align*}
+          \CondExp{N_{2(n+1}}{X_{0} = 0} & = \CondExp{Z_{2(n+1)} + N_{2n}}{X_0 = 0} \\
+                                         & = \CondExp{Z_{2(n+1)}}{X_0 = 0} + \left[(2n+1)\binom{2n}{n}\left(\frac{1}{2}\right)^{2n}\right] \\
+                                         & =  \binom{2(n+1)}{n+1}\left(\frac{1}{2}\right)^{2(n+1)} + \left[(2n+1)\binom{2n}{n}\left(\frac{1}{2}\right)^{2n}\right] \\
+                                         & = \frac{1}{2(n+1)}\left[\frac{(2n+1)!}{(n!)^{2}}\left(\frac{1}{2}\right)^{2n}\right] + \left[\frac{(2n+1)!}{(n!)^{2}}\left(\frac{1}{2}\right)^{2n}\right] - 1 \\
+                                         & = \left[\frac{2n+3}{2(n+1)}\right]\left[\frac{(2n+1)!}{(n!)^{2}}\left(\frac{1}{2}\right)^{2n}\right] - 1 \\
+                                         & = \frac{(2n+3)(n+1)}{2}\left[\frac{(2n+1)!}{((n+1)!)^{2}}\left(\frac{1}{2}\right)^{2n}\right] - 1 \\
+                                         & = \frac{(2n+3)(n+1)}{2(2n +2)}\left[\frac{(2(n+1))!}{((n+1)!)^{2}}\left(\frac{1}{2}\right)^{2n}\right] - 1 \\
+          & = (2n + 3) \binom{2(n+1)}{n+1}\left(\frac{1}{2}\right)^{2(n+1)} - 1
+        \end{align*}
+The proof concludes with the verification of the hypothesis.
+\end{enumerate}
+
+
+
+
+
+
+
+\end{document}

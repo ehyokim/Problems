@@ -1,0 +1,225 @@
+\documentclass[12pt]{article}%
+\input{preamble}
+
+
+% Misc
+\newcommand{\parafrac}[2]{\para{\frac{#1}{#2}}}
+
+%HW 10
+\newcommand{\wc}{w(\mathcal{C})}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\Lcal}{\mathcal{L}}
+\newcommand{\Cep}{\mathcal{C}_\epsilon}
+\newcommand{\CR}{\mathcal{C}_R}
+\newcommand{\sgn}[1]{\text{sgn}({#1}) }
+
+
+
+
+\title{EE562 HW 5}
+\author{Edward Kim}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Problem 1}
+We first compute the relevant values required to express the density function $\jointPDF{Y_1}{Y_2}$ through a change-of-variables. Recall that, for $X_1,X_2$ jointly Gaussian:
+
+\[\jointPDF{X_1}{X_2} = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}} e^{-\frac{1}{2}{\bold x}^T C^{-1} {\bold x}} \]
+
+where $C$ is the covariance matrix of random vector $(X_1,X_2)^T$. Now we compute the determinant of $C$ and the Jacobian matrix of the change-of-variables from $X_1,X_2$ to $Y_1,Y_2$.
+%
+\begin{align*}
+  \abs{C} & = (1 - \rho^2)\sigma_1^2\sigma_2^2 \\
+   \abs{J(y_1,y_2)} & = \sigma_1^2\sigma_2^2/2
+\end{align*}
+First, we focus on the exponential, and perform the subsitution $x_1 \mapsto \frac{\sigma_1}{2}(y_1 + y_2)$ and $x_2 \mapsto \frac{\sigma_2}{2}(y_1 - y_2)$. The exponent will simplify as:
+
+\begin{align*}
+  &-\frac{1}{2\sigma_1^2\sigma_2^2(1 - \rho^2)} \left\{\frac{\sigma_1^2\sigma_2^2}{4}(y_1 + y_2)^2 - \frac{\rho\sigma_1\sigma_2}{2}(y_1^2 - y_2^2) + \frac{\sigma_1^2\sigma_2^2}{4}(y_1 - y_2)^2\right\} \\
+   = &-\frac{1}{2\sigma_1^2\sigma_2^2(1 - \rho^2)} \left\{ \left[\frac{\sigma_1^2\sigma_2^2(1-\rho)}{2}\right]y_1^2 + \left[\frac{\sigma_1^2\sigma_2^2(1+\rho)}{2}\right]y_2^2 \right\}\\
+   = &-\frac{1}{2}\left\{\frac{1}{2(1+\rho)y_1^2} + \frac{1}{2(1-\rho)}y_2^2\right\}
+\end{align*}
+%
+Now, by arguing through change-of-variables, our density function $\jointPDF{Y_1}{Y_2}$ can be expressed as:
+
+\begin{align*}
+  \jointPDF{Y_1}{Y_2} & = \frac{\sigma_1\sigma_2/2}{2\pi\sigma_1\sigma_2\sqrt{1 - \rho^2}} \exp{-\frac{1}{2}\left\{\frac{1}{2(1+\rho)y_1^2} + \frac{1}{2(1-\rho)}y_2^2\right\}} \\
+  & = \frac{1}{\sqrt{2\pi(2(1 + \rho))}}e^{-\frac{1}{2}\left(\frac{y_1^2}{2(1+\rho)}\right)}\cdot \frac{1}{\sqrt{2\pi(2(1 - \rho))}}e^{-\frac{1}{2}\left(\frac{y_2^2}{2(1-\rho)}\right)} \\
+  & = \PDF{X_1}\PDF{X_2}
+\end{align*}
+%
+As the joint PDF between $Y_1,Y_2$ factors into two components only dependent on $y_1,y_2$ respectively, they must be independent.
+
+\section{Problem 2}
+\begin{enumerate}
+  \item True. Observe that $\CondExp{X}{Y}\cos{Y} \in \mathcal{V}$ where $\mathcal{V}$ is the closed linear subspace of unconstrained functions dependent on $Y$, since $\CondExp{X}{Y} \in \mathcal{V}$. Furthermore, for any $h(Y) \in \mathcal{V}$, exploiting the orthogonality principle for $\CondExp{X}{Y}$ yields the desired relation:
+  \begin{align*}
+  &   \Exp{\left(X\cos{Y} - \CondExp{X}{Y}\cos{Y}\right)h(Y)} \\
+    = & \Exp{(X - \CondExp{X}{Y})\cdot(\cos{Y} h(Y))} \\
+    = & 0
+  \end{align*}
+  where we used the fact that $\cos{Y} h(Y) \in \mathcal{V}$
+
+  \item
+  True. Let $\mathcal{V}$ be the subspace of unconstrained functions on $Y$ and $\mathcal{V}'$ the subspace of unconstrained functions on $Y^3$. We claim that $\mathcal{V} = \mathcal{V}'$. To see this, it is evident hat $\mathcal{V}' \subseteq \mathcal{V}$ as any function $h(Y^3) \in \mathcal{V}'$ dependent on $Y^3$ is also dependent on $Y$. Conversely, any function $h(Y)$ dependent on $Y$ is also dependent on $Y^3$, demonstrated by the function composition $h(Y) = h((Y^3)^{1/3})$. This is a valid function on $Y^3$ as the cubic root function is invertible on $\reals$. In light of this, define the map $\phi: \mathcal{V} \rightarrow \mathcal{V'}$ such that $g(Y) \mapsto g((Y^3)^{1/3})$. Note that this map can be succiently re-expressed as $g \mapsto g \circ (-)^{1/3}$ where $(-)^{1/3}$ refers to the cubic root function. The well-defined inverse $\phi^{-1}$ is also readily defined to be $g(Y^3) \mapsto g((Y)^3)$. Hence, this map is bijective. Since $V' \subseteq V$, the previous discussion implies that $\mathcal{V} = \mathcal{V}'$ and $\CondExp{X}{Y} = \CondExp{X}{Y^3}$.
+
+  \item
+  False. Consider a simple Bernoulli trial $X$ with parameter $p$ and set $Y$ to be a constant random variable. Then $\CondExp{X^3}{Y},\CondExp{X}{Y}$ will be attained in the subspace of constant functions. Hence, $\CondExp{X^3}{Y} = \Exp{X^3}$ and $\CondExp{X}{Y} = \Exp{X}$ and
+  \[\CondExp{X^3}{Y} = p \neq p^3 = \left(\CondExp{X}{Y}\right)^3 \]
+
+  \item False. Define $Y$ to be a Bernoulli trial taking values $\pm 1$ with equal probability, and condition $X$ on $Y$ such that $X$ takes $1$ with probability $p$ and $-1$ with probability $1-p$ conditioned on the event that $Y = 1$. If $Y = -1$, then $X = 0$.
+
+  It is immediate that $Y^2$ is constant, hence \[ \CondExp{X}{Y^2} = \Exp{X} = 1\cdot \frac{p}{2} - 1 \cdot \frac{1-p}{2} = p - \frac{1}{2}\]
+
+  On the other hand, the random variable $\CondExp{X}{Y}$ is not constant:
+
+  \[\CondExp{X}{Y} = \begin{cases}
+    2p - 1 \text{ prob. } 1/2 \\
+    0\phantom{p - 1} \text{ prob. } 1/2
+  \end{cases}\]
+  Hence, $\CondExp{X}{Y} \neq \CondExp{X}{Y^2}$
+
+  \item
+  False. Set $X = Y \sim \text{Uni}(0,1)$. Then  $\LinEsti{X}{Y} = \Exp{Y}$ by definition. However
+  \begin{align*}
+    \LinEsti{X}{Y^3} & = \Exp{X} + \Cov{X}{Y^3}\Var{Y^3}^{-1}\left(Y^3 - \Exp{Y^3}\right) \\
+    & = \frac{1}{2} + \frac{112}{120}\left(Y^3  - \frac{1}{4}\right)
+  \end{align*}
+  which can be easily calculated through the identity $\Exp{Y^k} = \frac{1}{k+1}$.
+
+  \item
+  If $e = X - Z^*$ and $Z^* = \CondExp{X}{Y}$, our assumption becomes $\Exp{e^2} = \Var{X}$. By Proposition 3.4 from the textbook, $\Exp{e^2} \leq \Var{X}$ since the subspace of constant functions is strictly contained within the subspace of unconstrained estimators. We analyze the case where this inequality is saturated as stated in our assumption. Recall that for two closed linear subspaces of $L^2(\Omega,\mathcal{F},\mathbb{P})$, denoted as $\mathcal{V}_1, \mathcal{V}_2 $ such that $\mathcal{V}_1 \subseteq \mathcal{V}_2$, if $\Pi_{\mathcal{V}_1}, \Pi_{\mathcal{V}_2}$ are the corresponding projections of $X$ onto subspaces $\mathcal{V}_1, \mathcal{V}_2$:
+
+  \[ \Exp{(X - \Pi_{\mathcal{V}_2}(X))^2} =  \Exp{(X - \Pi_{\mathcal{V}_1}(X))^2} +  \Exp{(\Pi_{\mathcal{V}_1}(X) - \Pi_{\mathcal{V}_2}(X))^2}\]
+
+  If we respectively designate $\mathcal{V}_1,\mathcal{V}_2$ to be the subspace of unconstrained estimators dependent on $Y$ and the subspace of constant functions, our assumption equivalently translates to:
+
+  \[\Exp{(\Pi_{\mathcal{V}_1}(X) - \Pi_{\mathcal{V}_2}(X))^2} = 0 \]
+
+  which, by non-negativity of the square error, implies that $\Pi_{\mathcal{V}_1}(X) = \Pi_{\mathcal{V}_2}(X)$ almost surely. By uniqueness of the optimal estimator (Theorem 3.2), this implies that $\CondExp{X}{Y} = \Exp{X}$. However, recall that the subspace of \emph{linear estimators} based on $Y$, say $\widehat{\mathcal{V}}$, is a nested subspace within $\mathcal{V}_1$ and that $\Exp{X} \in \mathcal{V}_2 \subset \widehat{\mathcal{V}}$. By a similar argument as above, it is clear that
+  $$ \Exp{(X - \CondExp{X}{Y})^2} \leq \Exp{(X - \LinEsti{X}{Y})^2} \leq \Var{X}$$
+
+   Our assumption with this string of inequalities tells us that $\Exp{(X - \LinEsti{X}{Y})} = \Var{X}$. Following the logic we traced above also demonstrates that $\LinEsti{X}{Y} = \Exp{X}$ and therefore $\CondExp{X}{Y} = \LinEsti{X}{Y}$ as required.
+\end{enumerate}
+
+\section{Problem 3}
+\begin{enumerate}
+  \item True. This inequality is a consequence of the nested subspaces $\widehat{\mathcal{V}} \subseteq \mathcal{V}$ where $\mathcal{V}$ is the usual subspace consisting of unconstrained estimators of $X$ given $Y$ and $\widehat{\mathcal{V}}$ will be the subspace. of linear estimators given $Y,Y^2$. To see this, just view all linear estimators of the form $\widehat{X} = a + bY + cY^2$ for $a,b,c \in \reals$ as a function dependent on $Y$. Such estimators belong to $\mathcal{V}$ by definition. Hence, by Proposition 3.4 and Theorem 3.2 (a) stated in the textbook, the inequality holds.
+
+  \item
+  True. By Proposition 3.9, we know that the conditional distribution $\CondExp{X}{Y = y}$ is distributed according $\normdist{\LinEsti{X}{Y = y}}{\Cov{e}{e}}$. This implies that $\CondExp{X}{Y} = \LinEsti{X}{Y}$. But $\LinEsti{X}{Y} \in \mathcal{V}_L \subset \mathcal{V}_Q$ where $\mathcal{V}_L = \{a + bY \mid a,b \in \reals \}$ and $\mathcal{V}_Q = \{a + bY + cY^2 \mid a,b,c \in \reals \}$. Hence, $\LinEsti{X}{Y} = \LinEsti{X}{Y,Y^2}$ and
+  %
+  \begin{align*}
+  \Exp{\left(X - \CondExp{X}{Y}\right)^2} & = \Exp{\left(X - \LinEsti{X}{Y}\right)^2} \\
+  & = \Exp{\left(X - \LinEsti{X}{Y,Y^2}\right)^2}
+  \end{align*}
+
+  \item False. Consider random variables $X,Y,Z$ such that $X = Y$,$X,Z$ are independent, and $\Var{X} > 0$. Then $\CondExp{X}{Z} = \Exp{X}$ and $\CondExp{X}{Y} = X$. Hence,
+  $\Exp{(X - \CondExp{\CondExp{X}{Z}}{Y})} = \Exp{(X - \Exp{X})^2}$ and $\Exp{(X - \CondExp{X}{Y})^2} = 0$. The contradiction arises by the assumed positivity of the variance of $X$.
+
+  \item False. We define $X,Y$ to be two random variables similar to those defined in Problem 2 Part 4. Let $Y$ be a Bernoulli trial taking values $\pm 1$ with equal probability. The random variable $X$ will be conditioned on $Y$ in such a way that if $Y = 1$, then $X$ flips a fair coin and takes values $\pm 1$ with equal probability. Otherwise, $X = 0$.  A brief calculation shows that $\CondExp{X}{Y} = 0 = \Exp{X}$, and therefore $\Exp{(X - \CondExp{X}{Y})^2} = \Var{X}$. But $X,Y$ are dependent by construction.
+
+\end{enumerate}
+
+\section{Problem 4}
+Proceed by first calculating the mean function $\mu_X(t)$. By independence and the usual angle addtiion formulas, we can express the mean as a sum of a product of expectations:
+
+\begin{align*}
+\mu_X(t) & = \Exp{A(\cos{(2\pi V t)}\cos{(\Theta)} - \sin{(2\pi V t)}\sin{(\Theta)}} \\
+& = \Exp{A}\left(\Exp{\cos{(2\pi V t)}}\Exp{\cos{(\Theta)}} - \Exp{\sin{(2\pi V t)}}\Exp{\sin{(\Theta)}}\right) \\
+\end{align*}
+
+However, $\Exp{\cos{(\Theta)}} = \Exp{\sin{(\Theta)}} = 0$ as $\Theta$ is distributed uniformly along the interval $[0,2\pi]$. Hence, $\mu_X(t) = 0$ for all $t$. As for $R_X(s,t)$, invoking the angle addition formulas and independence once again shows that:
+
+\begin{align*}
+  R_X(s,t) & = \Exp{\left(A\cos{(2\pi V t + \Theta)}\right)\left(A\cos{(2\pi V s + \Theta)}\right)} \\
+  & = \frac{\Exp{A^2}}{2} \left[\Exp{\cos{(2 \pi V (s-t))}} + \Exp{\cos{(2\pi V(t+s) + 2\Theta)}}\right]
+\end{align*}
+
+The two expectations within the bracket can be found directly:
+
+\begin{align*}
+\Exp{\cos{(2\pi V(t-s))}} & = \frac{1}{5}\int_0^5 \cos{(2\pi v (t-s))} \; dv \\
+& = \frac{1}{10\pi(t-s)}\sin{(10\pi(t-s))}
+\end{align*}
+
+This expression only depends on the difference $s-t$. Furthermore:
+
+\begin{align*}
+  \Exp{\cos{2\pi v (t+s) + 2\Theta}} & = \frac{1}{10\pi}\int_0^5\int_0^{2\pi} \cos{(2\pi v (t+s) + 2\theta)} \; d\theta dv \\
+  & = \frac{1}{20\pi}\int_0^5\int_{2\pi v (t-s)}^{2\pi v (t-s) + 4\pi} \cos{\ell} \; d\ell dv
+\end{align*}
+
+where the last line follows from the substitution $\ell = 2\pi v (t-s) + 2\theta$. However, the inner integral vanishes since $\sin{\ell}$ has a period of $2\pi$. Therefore, the total auto-correlation function is found to be:
+
+\[R_X(s,t) = 4 \cdot \left(\frac{1}{10\pi(t-s)}\sin{(10\pi(t-s))}\right) = \frac{2}{5\pi(t-s)}\sin{(10\pi(t-s))} \]
+
+where $\Exp{A^2} = 8$. By observing the two derived functions $\mu_X(t), R_X(s,t)$, it is clear that neither depends on the absolute positions of $s,t$ but only on the length of the interval $t-s$. These facts, along with the information that $\Exp{X_t^2} < \infty$ for all $t$, imply that $X$ is WSS.
+
+\section{Problem 5}
+
+\begin{enumerate}
+  \item Both. As all $X_t$  are both independent and distributed according to $\standardnormdist$,
+  \[ F_{X,t}(x_1,t_1;\cdots;x_n,t_n) = \prod_{i=1}^n \Phi(x_i) = F_{X,t}(x_1,t_1+s;\cdots;x_n,t_n+s) \]
+where $x_i\in \reals, \; t_i \in \integers$ and $\Phi$ denotes the CDF for the usual standard normal distribution. Furthermore, recall that any finite linear combination of Gaussian random variables yields another Gaussian random variable. This shows that $X_t$ is also a Gaussian process.
+
+\item As $\{X_t\}_{t \in \integers}$ is a sequence of  independent random variables distributed as $\standardnormdist$,
+%
+\begin{align*}
+ \mu_{X}(t) & =  0 \\
+ R_X(t_1,t_2) & = \Exp{X_{t_1}X_{t_2}} - \mu_X(t_1)\mu_X(t_2) \\
+ & = 0
+\end{align*}
+where $R_X$ is the auto-correlation function of $X$.
+
+\item
+A sequence of independent i.i.d Bernoulli trials $(Y_t)_{t \in \mathbb{Z}}$ such that $\Exp{Y_t} = 0$ (say $Y_t = \pm 1$ with prob. $1/2$) suffices as it is evident that $\Exp{Y_t^2} < \infty$ and has the same mean and auto-correlation function as the Gaussian process $(X_t)_{t \in \mathbb{Z}}$.
+
+\item Modify the above sequence of independent Bernoulli trials to define $(Z_t)_{t \in \mathbb{Z}}$ such that:
+%
+\begin{align*}
+  Z_t = \begin{cases}
+          \phantom{-}t \text{ prob. } \frac{1}{2} \\
+          -t \text{ prob. } \frac{1}{2}
+        \end{cases}
+\end{align*}
+
+Note that $Z_{t},Z_{-t}$ are distributed identically. It is simple to show that $\mu_{Z}(t) = R_Z(t_1,t_2) = 0$ for $t,t_1,t_2 \in \reals$. Furthermore $Z$ is WSS, but not stationary. To see this, fix three distinct time steps $\tau_1,\tau_2, \tau_3 > 0$ and $x_1 = x_2 = x_3 = \max_i{\tau_i}$. Then, by independence of the $X_t$,
+\begin{align*}
+  F_{Z,3}(x_1,\tau_1;x_2,\tau_2;x_3,\tau_3) = 1 \neq \frac{1}{8} =  F_{Z,3}(x_1,\tau_1+s;x_2,\tau_2+s;x_3,\tau_3+s)
+\end{align*}
+where $s > \max_i{\tau_i} - \min_i{\tau_i}$.
+\end{enumerate}
+
+\section{Problem 6}
+It suffices to check the orthogonality principles. Set $\mathcal{V} = \{h(Y)\mid \Exp{h(Y)^2} < \infty\}$ to be the closed, linear subspace of unconstrained functions conditioned on $Y$.
+\begin{itemize}
+  \item As $\Exp{X}$ is simply a constant, it is contained in $\mathcal{V}$.
+  \item Let $h(Y) \in \mathcal{V}$ be some function conditioned on $Y$. Then by independence of $X$ and $h(Y)$:
+  \begin{align*}
+    \Exp{(X - \Exp{X})\cdot h(Y)} & = \Exp{X\cdot h(Y)} - \Exp{X}\cdot \Exp{h(Y)} \\
+    & = \Exp{X}\cdot\Exp{h(Y)} - \Exp{X}\cdot\Exp{h(Y)} \\
+    & = 0
+  \end{align*}
+
+  Hence, the required assumptions hold and, by the orthogonality principle, $\Exp{X\mid Y} = \Exp{X}$ where $\Exp{X\mid Y}$ represents the orthogonal projection of $X$ onto $\mathcal{V}$.
+\end{itemize}
+
+\section{Problem 7}
+
+\def \bias {\mathbb{E}[\hat{X}] - \Exp{X}}
+
+Define the bias to be $b  = \bias$, and consider the simple modification to the original estimator $\widetilde{X} = h(\vec{Y}) - b$. The MSE of this new estimator simplifies as below:
+
+\begin{align*}
+  \Exp{(X - \widetilde{X})^2} & = \Exp{(X - (h(\vec{Y}) - b))^2} \\
+  & = \Exp{X^2 - 2X(h(\vec{Y}) - b) + (h(\vec{Y}) - b)^2)} \\
+  & = \Exp{X^2 - 2Xh(\vec{Y}) + (h(\vec{Y}))^2} +  2b\cdot\Exp{X} - 2b\cdot\mathbb{E}[\widehat{X}] + b^2 \\
+  & = \Exp{(X - \widehat{X})^2} - b^2
+\end{align*}
+
+This shows that our new estimator improves the MSE by the square of the bias between $X$ and $\widehat{X}$.
+
+\end{document}
