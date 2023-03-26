@@ -143,7 +143,7 @@
 \label{sec:problem-3}
 
 \begin{enumerate}
-  \item We exploit the Markov property of the original Markov chain to show the property for the evenly skipped chain.
+  \item We exploit the Markov property of the original Markov chain to show the same property for the evenly skipped chain.
       \begin{align*}
         & \Prob{Y_{n+1} = i_{n+1} \mid Y_{n} = i_n, Y_{n-1} = i_{n-1}, \cdots, Y_0 = i_{0}} \\
       = \phantom{,} & \Prob{X_{2(n+1)} = i_{n+1} \mid X_{2n} = i_n, X_{2(n-1)} = i_{n-1}, \cdots, X_0 = i_{0}} \\
@@ -208,8 +208,8 @@
 
         \begin{align*}
           \CondExp{N_{2(n+1}}{X_{0} = 0} & = \CondExp{Z_{2(n+1)} + N_{2n}}{X_0 = 0} \\
-                                         & = \CondExp{Z_{2(n+1)}}{X_0 = 0} + \left[(2n+1)\binom{2n}{n}\left(\frac{1}{2}\right)^{2n}\right] \\
-                                         & =  \binom{2(n+1)}{n+1}\left(\frac{1}{2}\right)^{2(n+1)} + \left[(2n+1)\binom{2n}{n}\left(\frac{1}{2}\right)^{2n}\right] \\
+                                         & = \CondExp{Z_{2(n+1)}}{X_0 = 0} + \left[(2n+1)\binom{2n}{n}\left(\frac{1}{2}\right)^{2n}\right] -1 \\
+                                         & =  \binom{2(n+1)}{n+1}\left(\frac{1}{2}\right)^{2(n+1)} + \left[(2n+1)\binom{2n}{n}\left(\frac{1}{2}\right)^{2n}\right] -1\\
                                          & = \frac{1}{2(n+1)}\left[\frac{(2n+1)!}{(n!)^{2}}\left(\frac{1}{2}\right)^{2n}\right] + \left[\frac{(2n+1)!}{(n!)^{2}}\left(\frac{1}{2}\right)^{2n}\right] - 1 \\
                                          & = \left[\frac{2n+3}{2(n+1)}\right]\left[\frac{(2n+1)!}{(n!)^{2}}\left(\frac{1}{2}\right)^{2n}\right] - 1 \\
                                          & = \frac{(2n+3)(n+1)}{2}\left[\frac{(2n+1)!}{((n+1)!)^{2}}\left(\frac{1}{2}\right)^{2n}\right] - 1 \\

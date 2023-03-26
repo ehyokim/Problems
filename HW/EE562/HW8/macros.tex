@@ -1,0 +1,116 @@
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+
+% Misc Notation
+\newcommand{\xhat}{\widehat{X}}
+
+
+% General Mathematical Notation
+\newcommand{\reals}{{\mathbb{R}}}
+\newcommand{\complex}{{\mathbb{C}}}                    %reals                  %reals
+\newcommand{\nnreal}{{\nnnum R}}
+                   %nonnegative
+
+\newcommand{\nat}{\mathbb{N}}                      %natural numbers
+\newcommand{\integers}{\mathbb{Z}}                      %integers
+\newcommand{\rat}{{\num Q}}                      %rationals
+\newcommand{\nnrat}{{\nnnum Q}}
+
+\newcommand{\boldu}{\textbf{u}}
+\newcommand{\boldv}{\textbf{v}}
+%\newcommand{\ip}[1][2]{\langle {#1}, {#2},\rangle}
+
+% Differentiation
+\newcommand{\totderop}[1][]{\frac{d^{#1}}{dx^{#1}}}
+\newcommand{\partder}[2]{\frac{\partial{#1}}{\partial{#2}}}
+\newcommand{\totder}[2]{\frac{d{#1}}{d{#2}}}
+
+% Integration
+\newcommand{\doubinfint}{\int_{-\infty}^{\infty}}
+
+% Environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+
+% Series
+\newcommand{\powaseries}[1][0]{\sum_{n = {#1}}^{\infty}}
+
+% Vector Spaces
+
+% Hilbert Space
+\newcommand{\hil}{\mathcal{H}}
+\newcommand{\bhilop}{\mathcal{B}(\mathcal{H})}
+
+% Distributions
+\newcommand{\testfunc}{C_F^{\infty}(\reals)}
+\newcommand{\prinval}[1]{P\left({#1}\right)}
+
+% Typesetting
+\newcommand{\para}[1]{\left( {#1} \right)}
+% \newcommand{\brack}[1]{\left[ {#1} \right]}
+
+\newcommand{\Uone}{\mathcal{U}_1}
+\newcommand{\Utwo}{\mathcal{U}_2}
+\newcommand{\Uint}{\Uone \cap \Utwo}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\gpart}[1][t]{\frac{\partial g(x,t)}{\partial {#1}}}
+\setlength\parindent{0pt}
+\newcommand{\Legen}[1][n]{(x^2 - 1)^{#1}}
+
+\newcommand{\normphi}[1][v]{\abs{\Phi\left({#1}
+\right)}}
+
+\newcommand{\disip}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\infsum}[1][0]{\sum^{\infty}_{n = {#1}}}
+\newcommand{\posinfint}[1][0]{\int_{#1}^\infty}
+\newcommand{\neginfint}[1][0]{\int_{-\infty}^{#1}}
+
+% Fourier Shortcuts
+\newcommand{\piinter}{[-\pi,\pi]}
+\newcommand{\pifrac}{\frac{1}{\pi}}
+\newcommand{\piint}[2][x]{\int_{-\pi}^\pi {#2} \; d{#1}}
+\newcommand{\twopiint}[2][x]{\int_{0}^{2\pi} {#2} \; d{#1}}
+\newcommand{\foutranscoeff}[1][k]{\tilde{f}({#1})}
+\newcommand{\foutrans}[1]{\mathcal{F}\left[{#1}\right](k)}
+
+% Complex Analysis
+\newcommand{\contint}[1][\mathcal{C}]{\oint_{#1}} %Contour integral over integral curve C
+
+
+% Probability
+\newcommand{\Prob}[1]{\mathbb{P}\left[#1\right]} % mathbb probability symbol
+
+\newcommand{\CondProb}[2]{\mathbb{P}\left[{#1}\mid {#2}\right]} % conditional expectation.
+
+\newcommand{\Exp}[1]{\mathbb{E}\left[#1\right]} % mathbb expectation operator
+
+\newcommand{\asconv}{\xrightarrow[]{a.s}} % almost surely convergence rightarrow
+
+\newcommand{\probconv}{\xrightarrow[]{p}} % convergence in probability rightarrow
+
+\newcommand{\msconv}{\xrightarrow[]{m.s}} % mean square convergence rightarrow
+
+\newcommand{\distconv}{\xrightarrow[]{d}} % mean square convergence rightarrow
+
+\newcommand{\Var}[1]{\text{Var}\left[#1\right]} % variance of random variable
+
+\newcommand{\Cov}[2]{\text{Cov}\left[#1,#2\right]} % covariance of pair of random variables.
+
+\newcommand{\LinEsti}[2]{\widehat{
+\mathbb{E}}\left[{#1} \mid {#2}\right]} % Linear estimator for square-integrable random variable
+
+\newcommand{\CondExp}[2]{\mathbb{E}\left[{#1}\mid {#2}\right]} % conditional expectation.
+
+\newcommand{\PDF}[1]{{f_{{#1}}(\lowercase{#1})}}
+
+\newcommand{\condPDF}[2]{f_{{#1}\mid {#2}}(\lowercase{#1}\mid\lowercase{#2})} % Conditional PDF
+
+\newcommand{\jointPDF}[2]{f_{{#1}, {#2}}(\lowercase{#1},\lowercase{#2})} % Conditional PDF
+
+\newcommand{\standardnormdist}{\mathcal{N}(0,1)} % Standard normal distribution notation.
+
+\newcommand{\normdist}[2]{\mathcal{N}(#1,#2)} % Normal disribution with first argument acting as the mean and the second argument acting as the variance.
+
+\newcommand{\statespace}{\mathcal{S}} % Symbol for the state space for a Markov process.
