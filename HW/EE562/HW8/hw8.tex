@@ -54,7 +54,7 @@
           \label{tab:mc1}
         \end{table}
 
-  \item The format will be identitical to the part above. The chain is portrayed in Figure \ref{fig:mc2}.
+  \item The format will be identical to the part above. The chain is portrayed in Figure \ref{fig:mc2}.
 
         \begin{figure}[h]
           \centering
@@ -173,11 +173,11 @@ by the natural condition that $Z_{0} = 1$. The summing over terms of the left fo
 \end{equation*}
 
 
-The crucial claim is that the sequence $(Z_{n})_{n \geq 0}$ converges to zero as $n \rightarrow \infty$. To see this, recall that $p_{n,n+1} = \left(\frac{n+1}{n}\right)^{2}p_{n,n-1}$. As $n \rightarrow \infty$, the transition probabilities approach $p_{n,n+1} = p_{n,n-1} = \frac{1}{2}$. In other words, the dynamics of the chain converge to that of a symmetric random walk. Hence, for sufficiently large $k$, we may attempt to approximate the distribution of the Markov chain $X$ where $X_{0} = k$ by that of a symmetric random walk. Denote this conditioned chain as $X^{(k)}$. By the Central Limit Theorem and Hajek Page 107, \[\lim_{n \rightarrow \infty}\Prob{\frac{X_{n}^{(k)}}{\sqrt{n}} \leq c} = \Phi(c) \] This implies that sufficiently large $n$ allows us to perform the approximation $X^{(k)}_{n}/\sqrt{n} \sim \standardnormdist$. In particular, $X^{(k)}_{n}$ is tightly concentrated around $k$ in the sense that \[ \lim_{n \rightarrow \infty} \Prob{-\sqrt{cn} \leq X^{(k)}_{n} \leq \sqrt{cn}} = \Phi(c) - \Phi(-c)\]
+The crucial claim is that the sequence $(Z_{n})_{n \geq 0}$ converges to zero as $n \rightarrow \infty$. To see this, recall that $p_{n,n+1} = \left(\frac{n+1}{n}\right)^{2}p_{n,n-1}$. As $n \rightarrow \infty$, the transition probabilities approach $p_{n,n+1} = p_{n,n-1} = \frac{1}{2}$. In other words, the dynamics of the chain converge to that of a symmetric random walk. Hence, for sufficiently large $k$, we may attempt to approximate the distribution of the Markov chain $X$ where $X_{0} = k$ by that of a symmetric random walk. Denote this conditioned chain as $X^{(k)}$. By the Central Limit Theorem and Hajek Page 107, \[\lim_{n \rightarrow \infty}\Prob{\frac{X_{n}^{(k)} - k}{\sqrt{n}} \leq c} = \Phi(c) \] This implies that sufficiently large $n$ allows us to perform the approximation $X^{(k)}_{n}/\sqrt{n} \sim \standardnormdist$. In particular, $X^{(k)}_{n}$ is tightly concentrated around $k$ in the sense that \[ \lim_{n \rightarrow \infty} \Prob{k-c\sqrt{n} \leq X^{(k)}_{n} \leq k+c\sqrt{n}} = \Phi(c) - \Phi(-c)\]
 %
-Hence, for sufficiently large $c > 0$ and $n$, $-\sqrt{cn} \leq X_{n}^{(k)} \leq \sqrt{cn}$ with very high probability. As $k \rightarrow \infty$, this will shift this Gaussian to the right. All together, this shows that $Z_{n} \rightarrow 0$ as $n \rightarrow \infty$.
+Hence, for sufficiently large $c > 0$ and $n$, $k-c\sqrt{n} \leq X_{n}^{(k)} \leq k+c\sqrt{n}$ with very high probability. As $k \rightarrow \infty$, the Gaussian will shift to infinity. All together, this shows that $Z_{n} \rightarrow 0$ as $n \rightarrow \infty$.
 
-In light of this observation, we can take the limit of both sides of the expression for $Z_{n+1}$ above to yield the required probablity:
+In light of this observation, we can take the limit of both sides of the expression for $Z_{n+1}$ above to yield the required probability:
 
 \begin{align*}
   0 & = \left[1 +  \sum_{i = 1}^\infty \left(\frac{1}{i+1}\right)^{2}\right]Z_{1} -  \sum_{i = 1}^\infty \left(\frac{1}{i+1}\right)^{2} \\
@@ -189,7 +189,7 @@ In light of this observation, we can take the limit of both sides of the express
 \section{Problem 5}
 \label{sec:problem-5}
 
-Let $X_{n}$ be the number of white balls in urn at the $n^{{th}}$ step. In total, there are three possible evolutions of this process in respect to any fixed state: the number of white, black balls stays the same, a white ball is removed and a black ball is added, and a black ball is removed to be replaced by a white ball. Observe then that these possible states and their transition probabilities only depend on the current number of white, black balls. Thus, this process satisfies the Markov property. As such, its transition probabilities can be determined to be:
+Let $X_{n}$ be the number of white balls in urn at the $n^{{th}}$ step. In total, there are three possible evolutions of this process in respect to any fixed state: the number of white, black balls stays the same, a white ball is removed and a black ball is added, and a black ball is removed and a white ball is added. Observe then that these possible states and their transition probabilities only depend on the current number of white, black balls. Thus, this process satisfies the Markov property. As such, its transition probabilities are be determined to be:
 
 \begin{equation*}
 P_{ij} = \begin{cases}
