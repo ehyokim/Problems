@@ -62,7 +62,7 @@ However, notice that by symmetry the probability of hitting $2 (4)$ first before
   The probability will simply be the sum of two conditional probabilities of sampling heads for three consecutive days in respect to a biased coin.
 
 +  The process $(Y_n)_(n gt 0)$ is a Markov chain as it is evident that the coin to be flipped the next day is only dependent on the current day's coin. The transition probabilities are given by the @mc3 and the matrix:
-   $ P_Y = mat(0.7,0.15,0.15; 0.25, 0.5, 0.25; 0.5, 0.5, 0) $
+   $ P_Y = mat(0.7, 0.15, 0.15 ; 0.25 , 0.5 , 0.25 ; 0.5, 0.5, 0) $
 
    #align(center)[
      #figure(
@@ -114,3 +114,6 @@ $ EE[T_(00)] = 2 + sum_(i =2)^(oo) PP[T_(00) gt n] $
   $ sum_(i=0)^(oo) pi_i = pi_0 dot.c sum_(i=0)^(oo) p^i  = pi_0/(1-p) $
 
   Notice how as $p ->1$, the stationary distribution tend to spread out more towards higher values with $pi_0$ decreasing (as we would expect it to).
+
+
+대만c

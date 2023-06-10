@@ -245,7 +245,7 @@ As according to the problem, set $W = X + 2Y + 3$
   $\Prob{W \geq 20} \approx 0.475$
 
   \item
-  From Proposition 3.9 from the textbook, we know that since $Y,W$ are jointly Gaussian (as finite linear combinations of joint Gaussian variables $X,Y$), the conditional distribution of $Y$ based on $W = w$ is distributed according to $\normdist{\LinEsti{Y}{W = w}}{\Cov{e}{e}}$. In particular, the taking the expectation over this conditional distribution shows that $\CondExp{Y}{W} = \LinEsti{Y}{W}$. Thus, for jointly Gaussian variables $Y,W$, our unconstrained estimator of $Y$ based on $W$ is exactly given by the linear estimator. We proceed to compute this linear estimator:
+  From Proposition 3.9 from the textbook, we know that since $Y,W$ are jointly Gaussian (as finite linear combinations of joint Gaussian variables $X,Y$), the conditional distribution of $Y$ based on $W = w$ is distributed according to $\normdist{\LinEsti{Y}{W = w}}{\Cov{e}{e}}$. In particular, taking the expectation over this conditional distribution shows that $\CondExp{Y}{W} = \LinEsti{Y}{W}$. Thus, for jointly Gaussian variables $Y,W$, our unconstrained estimator of $Y$ based on $W$ is exactly given by the linear estimator. We proceed to compute this linear estimator:
 
   \begin{align*}
     \LinEsti{Y}{W} & = \Exp{Y} + \Cov{Y}{W}\Var{W}^{-1}\left(W - \Exp{W}\right) \\
